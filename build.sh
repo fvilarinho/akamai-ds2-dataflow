@@ -19,6 +19,7 @@ function checkDependencies() {
 # Builds the services.
 function build() {
   echo Building converter...
+
   ./gradlew clean build --warning-mode all
 }
 
