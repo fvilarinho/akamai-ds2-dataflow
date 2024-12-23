@@ -2,7 +2,7 @@ name: Akamai SIEM Connector Pipeline
 
 on:
   push:
-    tags: [ "*" ]
+    branches: [ "*" ]
     paths-ignore:
       - "iac/*.tf"
       - "iac/*.sh"
