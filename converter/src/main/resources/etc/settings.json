@@ -1,0 +1,17 @@
+{
+  "kafka": {
+    "brokers": [
+      "queue-broker:9092"
+    ],
+    "inboundTopic": "rawlogs",
+    "outboundTopic": "processedlogs"
+  },
+  "filters": [
+    {
+      "fieldName": "UA",
+      "regex": "Googlebot|AdsBot-Google|Google-Structured-Data-Testing-Tool",
+      "include": false
+    }
+  ],
+  "workers": 10
+}

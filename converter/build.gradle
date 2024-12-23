@@ -1,0 +1,50 @@
+// Build plugins.
+plugins {
+    // Applies the application plugin to add support for building a CLI application in Java.
+    id "application"
+}
+
+// Compiler/Binary compliance.
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+// Dependency repositories.
+repositories {
+    // Uses Maven Central for resolving dependencies.
+    maven {
+        url "https://repo1.maven.org/maven2"
+    }
+    mavenCentral()
+}
+
+// Dependencies list.
+dependencies {
+    testImplementation "org.junit.jupiter:junit-jupiter:5.11.4"
+    testRuntimeOnly "org.junit.platform:junit-platform-launcher"
+
+    implementation "org.apache.kafka:kafka-clients:3.9.0"
+    implementation "org.apache.logging.log4j:log4j-api:2.24.3"
+    implementation "org.apache.logging.log4j:log4j-core:2.24.3"
+    implementation "org.slf4j:slf4j-nop:2.0.16"
+    implementation "com.fasterxml.jackson.core:jackson-core:2.18.2"
+    implementation "com.fasterxml.jackson.core:jackson-databind:2.18.2"
+    implementation "org.apache.commons:commons-lang3:3.17.0"
+}
+
+jar {
+    exclude("**/bin/**")
+    exclude("**/etc/banner.txt")
+}
+
+// Test task.
+test {
+    useJUnitPlatform()
+}
+
+// Application packaging.
+application {
+    // Defines the main class for the application.
+    mainClass = "com.akamai.ds2.converter.App"
+}
