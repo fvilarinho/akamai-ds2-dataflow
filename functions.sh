@@ -30,6 +30,7 @@ function showBanner() {
 function prepareToExecute() {
   # Mandatory binaries.
   export JAVA_CMD=$(which java)
+  export DOCKER_CMD=$(which docker)
   export TERRAFORM_CMD=$(which terraform)
   export KUBECTL_CMD=$(which kubectl)
 }
