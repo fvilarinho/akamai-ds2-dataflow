@@ -28,7 +28,7 @@ jobs:
       - name: Setting up environment.
         uses: actions/setup-java@v3
         with:
-          java-version: "71"
+          java-version: "17"
           distribution: "corretto"
 
       - name: Build services.
