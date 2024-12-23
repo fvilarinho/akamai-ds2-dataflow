@@ -1,4 +1,4 @@
-name: Akamai SIEM Connector Pipeline
+name: Akamai DS2 Dataflow Pipeline
 
 on:
   push:
