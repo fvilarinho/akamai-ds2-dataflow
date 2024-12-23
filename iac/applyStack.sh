@@ -1,15 +1,17 @@
 #!/bin/bash
 
 function checkDependencies() {
-  if [ -z "$KUBECTL_CMD" ]; then
-    echo "kubectl is not installed! Please install it first to continue!"
+  if [ -z "$KUBECONFIG" ]; then
+    echo "Please specify the kubeconfig filename!"
 
     exit 1
   fi
-}
 
-function prepareToExecute() {
-  export KUBECTL_CMD=$(which kubectl)
+  if [ -z "$NAMESPACE" ]; then
+    echo "Please specify the namespace!"
+
+    exit 1
+  fi
 }
 
 # Creates the required namespaces.
@@ -60,7 +62,8 @@ function applyIngress() {
   $KUBECTL_CMD apply -f ingress.yaml
 
   while true; do
-    CERTIFICATE_ISSUED=$($KUBECTL_CMD get certificate -n akamai-ds2-dataflow | grep ingress-tls | grep True)
+    CERTIFICATE_ISSUED=$($KUBECTL_CMD get certificate \
+                                      -n "$NAMESPACE" | grep ingress-tls | grep True)
 
     if [ -n "$CERTIFICATE_ISSUED" ]; then
       break
@@ -71,7 +74,6 @@ function applyIngress() {
 }
 
 function main() {
-  prepareToExecute
   checkDependencies
   applyNamespaces
   applyCertManager

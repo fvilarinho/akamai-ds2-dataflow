@@ -6,7 +6,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: inbound
-  namespace: akamai-ds2-dataflow
+  namespace: ${var.settings.cluster.identifier}
 spec:
   selector:
     app: inbound
@@ -19,7 +19,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: queue-broker-manager
-  namespace: akamai-ds2-dataflow
+  namespace: ${var.settings.cluster.identifier}
 spec:
   selector:
     app: queue-broker-manager
@@ -32,7 +32,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: queue-broker
-  namespace: akamai-ds2-dataflow
+  namespace: ${var.settings.cluster.identifier}
 spec:
   selector:
     app: queue-broker
@@ -45,7 +45,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: queue-broker-ui
-  namespace: akamai-ds2-dataflow
+  namespace: ${var.settings.cluster.identifier}
 spec:
   selector:
     app: queue-broker-ui
@@ -58,7 +58,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: proxy
-  namespace: akamai-ds2-dataflow
+  namespace: ${var.settings.cluster.identifier}
 spec:
   selector:
     app: proxy

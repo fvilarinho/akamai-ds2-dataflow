@@ -6,7 +6,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: inbound-settings
-  namespace: akamai-ds2-dataflow
+  namespace: ${var.settings.cluster.identifier}
 data:
   fluentd.conf: |
     <source>
@@ -28,7 +28,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: outbound-settings
-  namespace: akamai-ds2-dataflow
+  namespace: ${var.settings.cluster.identifier}
 data:
   fluentd.conf: |
     <source>
@@ -64,7 +64,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: queue-broker-settings
-  namespace: akamai-ds2-dataflow
+  namespace: ${var.settings.cluster.identifier}
 data:
   settings.conf: |
     zookeeper.connect=queue-broker-manager:2181
@@ -80,7 +80,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: proxy-settings
-  namespace: akamai-ds2-dataflow
+  namespace: ${var.settings.cluster.identifier}
 data:
   default.conf: |
     server {
@@ -132,7 +132,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: converter-settings
-  namespace: akamai-ds2-dataflow
+  namespace: ${var.settings.cluster.identifier}
 data:
   settings.json: |
     {

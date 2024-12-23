@@ -11,7 +11,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ingress
-  namespace: akamai-ds2-dataflow
+  namespace: ${var.settings.cluster.identifier}
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-production
 spec:

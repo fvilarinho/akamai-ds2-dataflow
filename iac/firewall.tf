@@ -59,7 +59,7 @@ resource "linode_firewall" "cluster" {
     linode_instance.clusterWorker,
     null_resource.clusterManagerSetup,
     null_resource.clusterWorkerSetup,
-    null_resource.stackSetup,
+    null_resource.downloadKubeconfig,
     null_resource.applyStack
   ]
 }

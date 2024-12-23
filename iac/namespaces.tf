@@ -5,6 +5,6 @@ resource "local_file" "namespaces" {
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: akamai-ds2-dataflow
+  name: ${var.settings.cluster.identifier}
 EOT
 }

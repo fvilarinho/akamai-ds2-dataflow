@@ -6,7 +6,7 @@ apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: inbound
-  namespace: akamai-ds2-dataflow
+  namespace: ${var.settings.cluster.identifier}
 spec:
   selector:
     matchLabels:
@@ -34,7 +34,7 @@ apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: outbound
-  namespace: akamai-ds2-dataflow
+  namespace: ${var.settings.cluster.identifier}
 spec:
   selector:
     matchLabels:
@@ -60,7 +60,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: queue-broker-manager
-  namespace: akamai-ds2-dataflow
+  namespace: ${var.settings.cluster.identifier}
 spec:
   replicas: 1
   selector:
@@ -97,7 +97,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: queue-broker
-  namespace: akamai-ds2-dataflow
+  namespace: ${var.settings.cluster.identifier}
 spec:
   serviceName: queue-broker
   replicas: ${var.settings.cluster.nodes.count}
@@ -144,7 +144,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: queue-broker-ui
-  namespace: akamai-ds2-dataflow
+  namespace: ${var.settings.cluster.identifier}
 spec:
   replicas: 1
   strategy:
@@ -178,7 +178,7 @@ apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: proxy
-  namespace: akamai-ds2-dataflow
+  namespace: ${var.settings.cluster.identifier}
 spec:
   selector:
     matchLabels:
@@ -214,7 +214,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: converter
-  namespace: akamai-ds2-dataflow
+  namespace: ${var.settings.cluster.identifier}
 spec:
   replicas: 1
   selector:

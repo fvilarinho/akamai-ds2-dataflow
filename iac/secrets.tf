@@ -11,7 +11,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: proxy-auth
-  namespace: akamai-ds2-dataflow
+  namespace: ${var.settings.cluster.identifier}
 data:
   .htpasswd: ${base64encode(local.inboundAuth)}
 EOT

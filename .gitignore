@@ -11,3 +11,4 @@
 /.idea/
 /.gradle/
 /converter/build/
+/iac/.kubeconfig
