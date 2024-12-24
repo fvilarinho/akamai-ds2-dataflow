@@ -19,15 +19,9 @@ data:
     </source>
 
     <match ingest>
-      @type kafka2
+      @type kafka
       brokers queue-broker:9092
       default_topic ${var.settings.dataflow.inbound.identifier}
-      <format>
-        @type json
-      </format>
-      sasl_over_ssl false
-      username ${var.settings.dataflow.auth.user}
-      password ${var.settings.dataflow.auth.password}
     </match>
 ---
 apiVersion: v1
@@ -38,13 +32,9 @@ metadata:
 data:
   fluentd.conf: |
     <source>
-      @type kafka_group
+      @type kafka
       brokers queue-broker:9092
       topics ${var.settings.dataflow.outbound.identifier}
-      consumer_group outbound
-      sasl_over_ssl false
-      username ${var.settings.dataflow.auth.user}
-      password ${var.settings.dataflow.auth.password}
     </source>
 
     <match ${var.settings.dataflow.outbound.identifier}>
@@ -77,19 +67,12 @@ metadata:
   namespace: ${var.settings.cluster.identifier}
 data:
   server.properties: |
-    listeners=SASL_PLAINTEXT://:9092
-    security.protocol=SASL_PLAINTEXT
-    security.inter.broker.protocol=SASL_PLAINTEXT
-    sasl.mechanism.inter.broker.protocol=PLAIN
-    sasl.enabled.mechanisms=PLAIN
     zookeeper.connect=queue-broker-manager:2181
     log.dir=/bitnami/kafka/data
     log.retention.minutes=10
     message.max.bytes=16777216
     replica.fetch.max.bytes=16777216
     default.replication.factor=${var.settings.cluster.nodes.count}
-    offsets.topic.replication.factor=${var.settings.cluster.nodes.count}
-    transaction.state.log.replication.factor=${var.settings.cluster.nodes.count}
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -155,10 +138,6 @@ data:
         "brokers": [
           "queue-broker:9092"
         ],
-        "auth": {
-          "user": "${var.settings.dataflow.auth.user}",
-          "password": "${var.settings.dataflow.auth.password}"
-        },
         "inboundTopic": "${var.settings.dataflow.inbound.identifier}",
         "outboundTopic": "${var.settings.dataflow.outbound.identifier}"
       },

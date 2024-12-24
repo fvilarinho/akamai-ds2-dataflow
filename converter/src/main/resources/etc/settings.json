@@ -3,10 +3,6 @@
     "brokers": [
       "queue-broker:9092"
     ],
-    "auth": {
-      "user": "user",
-      "password": "password"
-    },
     "inboundTopic": "rawlogs",
     "outboundTopic": "processedlogs"
   },

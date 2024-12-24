@@ -14,11 +14,6 @@ public class SettingsConstants {
     public static final String  FILEPATH = "${ETC_DIR}/".concat(DEFAULT_FILENAME);
     public static final String  FILTERS_ATTRIBUTE_ID = "filters";
     public static final String  KAFKA_BROKERS_ATTRIBUTE_ID = "kafka.brokers";
-    public static final String  KAFKA_AUTH_PROTOCOL_ATTRIBUTE_ID = "security.protocol";
-    public static final String  KAFKA_AUTH_MECHANISM_ATTRIBUTE_ID = "sasl.mechanism";
-    public static final String  KAFKA_AUTH_CONFIG_ATTRIBUTE_ID = "sasl.jaas.config";
-    public static final String  KAFKA_AUTH_USER_ATTRIBUTE_ID = "kafka.auth.user";
-    public static final String  KAFKA_AUTH_PASSWORD_ATTRIBUTE_ID = "kafka.auth.password";
     public static final String  KAFKA_INBOUND_TOPIC_ATTRIBUTE_ID = "kafka.inboundTopic";
     public static final String  KAFKA_OUTBOUND_TOPIC_ATTRIBUTE_ID = "kafka.outboundTopic";
     public static final String  WORKERS_ATTRIBUTE_ID = "workers";

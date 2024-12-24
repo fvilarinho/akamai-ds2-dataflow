@@ -127,19 +127,12 @@ spec:
             - name: queue-broker-settings
               mountPath: /bitnami/kafka/config/server.properties
               subPath: server.properties
-            - name: queue-broker-auth
-              mountPath: /opt/bitnami/kafka/config/server_jaas.conf
-              subPath: server_jaas.conf
-              readOnly: true
             - name: queue-broker-data
               mountPath: /bitnami/kafka/data
       volumes:
         - name: queue-broker-settings
           configMap:
             name: queue-broker-settings
-        - name: queue-broker-auth
-          secret:
-            secretName: queue-broker-auth
   volumeClaimTemplates:
     - metadata:
         name: queue-broker-data
@@ -176,15 +169,6 @@ spec:
               value: "queue-cluster"
             - name: KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS
               value: "queue-broker:9092"
-            - name: KAFKA_CLUSTERS_0_PROPERTIES_SECURITY_PROTOCOL
-              value: "SASL_PLAINTEXT"
-            - name: KAFKA_CLUSTERS_0_PROPERTIES_SASL_MECHANISM
-              value: "PLAIN"
-            - name: KAFKA_CLUSTERS_0_PROPERTIES_SASL_JAAS_CONFIG
-              valueFrom:
-                secretKeyRef:
-                  name: queue-broker-auth
-                  key: client_jaas.conf
             - name: SERVER_SERVLET_CONTEXT_PATH
               value: "/panel"
           ports:
