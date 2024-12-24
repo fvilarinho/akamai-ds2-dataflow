@@ -169,7 +169,7 @@ data:
           "include": false
         }
       ],
-      "workers": 100
+      "workers": 10
     }
 EOT
 }
