@@ -38,9 +38,10 @@ metadata:
 data:
   fluentd.conf: |
     <source>
-      @type kafka
+      @type kafka_group
       brokers queue-broker:9092
       topics ${var.settings.dataflow.outbound.identifier}
+      consumer_group outbound
       sasl_over_ssl false
       username ${var.settings.dataflow.auth.user}
       password ${var.settings.dataflow.auth.password}
@@ -168,7 +169,7 @@ data:
           "include": false
         }
       ],
-      "workers": 10
+      "workers": 100
     }
 EOT
 }

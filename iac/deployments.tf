@@ -120,7 +120,7 @@ spec:
                 fieldRef:
                   fieldPath: metadata.name
             - name: KAFKA_OPTS
-              value: "-Djava.security.auth.login.config=/opt/bitnami/kafka/config/jaas.conf"
+              value: "-Djava.security.auth.login.config=/opt/bitnami/kafka/config/server_jaas.conf"
           ports:
             - containerPort: 9092
           volumeMounts:
@@ -128,8 +128,8 @@ spec:
               mountPath: /bitnami/kafka/config/server.properties
               subPath: server.properties
             - name: queue-broker-auth
-              mountPath: /opt/bitnami/kafka/config/jaas.conf
-              subPath: jaas.conf
+              mountPath: /opt/bitnami/kafka/config/server_jaas.conf
+              subPath: server_jaas.conf
               readOnly: true
             - name: queue-broker-data
               mountPath: /bitnami/kafka/data
@@ -173,25 +173,18 @@ spec:
           imagePullPolicy: Always
           env:
             - name: KAFKA_CLUSTERS_0_NAME
-              value: "queue-broker"
+              value: "queue-cluster"
             - name: KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS
               value: "queue-broker:9092"
-            - name: KAFKA_CLUSTERS_0_SECURITY_PROTOCOL
+            - name: KAFKA_CLUSTERS_0_PROPERTIES_SECURITY_PROTOCOL
               value: "SASL_PLAINTEXT"
-            - name: KAFKA_CLUSTERS_0_SASL_MECHANISM
+            - name: KAFKA_CLUSTERS_0_PROPERTIES_SASL_MECHANISM
               value: "PLAIN"
-            - name: KAFKA_CLUSTERS_0_SASL_USERNAME
+            - name: KAFKA_CLUSTERS_0_PROPERTIES_SASL_JAAS_CONFIG
               valueFrom:
                 secretKeyRef:
-                   name: queue-broker-auth
-                   key: user
-            - name: KAFKA_CLUSTERS_0_SASL_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                   name: queue-broker-auth
-                   key: password
-            - name: KAFKA_CLUSTERS_0_ZOOKEEPER
-              value: "queue-broker-manager:2181"
+                  name: queue-broker-auth
+                  key: client_jaas.conf
             - name: SERVER_SERVLET_CONTEXT_PATH
               value: "/panel"
           ports:
