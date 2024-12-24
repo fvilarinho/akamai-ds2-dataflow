@@ -52,7 +52,7 @@ data:
         @type file
         path /opt/bitnami/fluentd/logs
         timekey ${var.settings.dataflow.outbound.storage.aggregationPeriod}
-        timekey_wait 1m
+        timekey_wait 10m
         timekey_use_utc true
         chunk_limit_size 256m
         flush_mode interval
