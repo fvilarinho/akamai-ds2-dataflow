@@ -4,9 +4,6 @@ public class SettingsConstants {
     public static final String  DEFAULT_ETC_DIR = "etc/";
     public static final String  DEFAULT_FILENAME = "settings.json";
     public static final String  DEFAULT_FILEPATH = DEFAULT_ETC_DIR.concat(DEFAULT_FILENAME);
-    public static final String  DEFAULT_KAFKA_AUTH_CONFIG = "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"%s\" password=\"%s\";";
-    public static final String  DEFAULT_KAFKA_AUTH_MECHANISM = "PLAIN";
-    public static final String  DEFAULT_KAFKA_AUTH_PROTOCOL = "SASL_PLAINTEXT";
     public static final String  DEFAULT_KAFKA_INBOUND_TOPIC = "rawlogs";
     public static final String  DEFAULT_KAFKA_OUTBOUND_TOPIC = "processedlogs";
     public static final String  DEFAULT_KAFKA_BROKERS = "kafka-broker:9092";

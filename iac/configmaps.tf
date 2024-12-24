@@ -73,6 +73,8 @@ data:
     message.max.bytes=16777216
     replica.fetch.max.bytes=16777216
     default.replication.factor=${var.settings.cluster.nodes.count}
+    offsets.topic.replication.factor=${var.settings.cluster.nodes.count}
+    transaction.state.log.replication.factor=${var.settings.cluster.nodes.count}
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -148,7 +150,7 @@ data:
           "include": false
         }
       ],
-      "workers": 10
+      "workers": 100
     }
 EOT
 }

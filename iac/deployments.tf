@@ -119,8 +119,6 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.name
-            - name: KAFKA_OPTS
-              value: "-Djava.security.auth.login.config=/opt/bitnami/kafka/config/server_jaas.conf"
           ports:
             - containerPort: 9092
           volumeMounts:
