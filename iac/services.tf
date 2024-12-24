@@ -44,6 +44,21 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  name: external-queue-broker
+  namespace: ${var.settings.cluster.identifier}
+spec:
+  type: NodePort
+  selector:
+    app: queue-broker
+  ports:
+    - name: backend
+      port: 9093
+      targetPort: 9093
+      nodePort: 30093
+---
+apiVersion: v1
+kind: Service
+metadata:
   name: queue-broker-ui
   namespace: ${var.settings.cluster.identifier}
 spec:

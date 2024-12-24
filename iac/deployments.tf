@@ -121,6 +121,7 @@ spec:
                   fieldPath: metadata.name
           ports:
             - containerPort: 9092
+            - containerPort: 9093
           volumeMounts:
             - name: queue-broker-settings
               mountPath: /bitnami/kafka/config/server.properties

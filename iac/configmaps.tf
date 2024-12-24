@@ -68,6 +68,13 @@ metadata:
   namespace: ${var.settings.cluster.identifier}
 data:
   server.properties: |
+    listeners=INTERNAL://:9092,EXTERNAL://:9093
+    listener.security.protocol.map=INTERNAL:PLAINTEXT,EXTERNAL:SASL_PLAINTEXT
+    inter.broker.listener.name=INTERNAL
+    sasl.enabled.mechanisms=PLAIN
+    listener.name.external.sasl.enabled.mechanisms=PLAIN
+    listener.name.external.plain.sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username="${var.settings.dataflow.auth.user}" password="${var.settings.dataflow.auth.password}";
+
     zookeeper.connect=queue-broker-manager:2181
     log.dir=/bitnami/kafka/data
     log.retention.minutes=10
