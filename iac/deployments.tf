@@ -119,18 +119,27 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.name
+            - name: KAFKA_OPTS
+              value: "-Djava.security.auth.login.config=/opt/bitnami/kafka/config/jaas.conf"
           ports:
             - containerPort: 9092
           volumeMounts:
             - name: queue-broker-settings
               mountPath: /bitnami/kafka/config/server.properties
-              subPath: settings.conf
+              subPath: server.properties
+            - name: queue-broker-auth
+              mountPath: /opt/bitnami/kafka/config/jaas.conf
+              subPath: jaas.conf
+              readOnly: true
             - name: queue-broker-data
               mountPath: /bitnami/kafka/data
       volumes:
         - name: queue-broker-settings
           configMap:
             name: queue-broker-settings
+        - name: queue-broker-auth
+          secret:
+            secretName: queue-broker-auth
   volumeClaimTemplates:
     - metadata:
         name: queue-broker-data
@@ -163,14 +172,28 @@ spec:
           image: provectuslabs/kafka-ui:master
           imagePullPolicy: Always
           env:
-            - name: "KAFKA_CLUSTERS_0_NAME"
+            - name: KAFKA_CLUSTERS_0_NAME
               value: "queue-broker"
-            - name: "KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS"
+            - name: KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS
               value: "queue-broker:9092"
-            - name: "KAFKA_CLUSTERS_0_ZOOKEEPER"
+            - name: KAFKA_CLUSTERS_0_SECURITY_PROTOCOL
+              value: "SASL_PLAINTEXT"
+            - name: KAFKA_CLUSTERS_0_SASL_MECHANISM
+              value: "PLAIN"
+            - name: KAFKA_CLUSTERS_0_SASL_USERNAME
+              valueFrom:
+                secretKeyRef:
+                   name: queue-broker-auth
+                   key: user
+            - name: KAFKA_CLUSTERS_0_SASL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                   name: queue-broker-auth
+                   key: password
+            - name: KAFKA_CLUSTERS_0_ZOOKEEPER
               value: "queue-broker-manager:2181"
-            - name: "SERVER_SERVLET_CONTEXT_PATH"
-              value: "/ui"
+            - name: SERVER_SERVLET_CONTEXT_PATH
+              value: "/panel"
           ports:
             - containerPort: 8080
 ---

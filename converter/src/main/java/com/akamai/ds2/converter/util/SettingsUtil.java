@@ -83,6 +83,14 @@ public abstract class SettingsUtil {
         return brokers.toString();
     }
 
+    public static String getKafkaAuthUser() throws IOException {
+        return JsonUtil.getAttribute(get(), SettingsConstants.KAFKA_AUTH_USER_ATTRIBUTE_ID);
+    }
+
+    public static String getKafkaAuthPassword() throws IOException {
+        return JsonUtil.getAttribute(get(), SettingsConstants.KAFKA_AUTH_PASSWORD_ATTRIBUTE_ID);
+    }
+
     public static String getKafkaInboundTopic() throws IOException {
         String inboundTopic = JsonUtil.getAttribute(get(), SettingsConstants.KAFKA_INBOUND_TOPIC_ATTRIBUTE_ID);
 

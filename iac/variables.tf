@@ -22,13 +22,13 @@ variable "settings" {
     }
 
     dataflow = {
+      auth = {
+        user     = "<user>"
+        password = "<password>"
+      }
+
       inbound = {
         identifier = "rawlogs"
-
-        auth = {
-          user     = "<user>"
-          password = "<password>"
-        }
 
         storage = {
           size = 10
@@ -38,14 +38,9 @@ variable "settings" {
       outbound = {
         identifier = "processedlogs"
 
-        auth = {
-          user      = "<user>"
-          password  = "<password>"
-          accessKey = "<accessKey>"
-          secretKey = "<secretKey>"
-        }
-
         storage = {
+          accessKey         = "<accessKey>"
+          secretKey         = "<secretKey>"
           bucket            = "<bucket>"
           endpoint          = "<endpoint>"
           path              = "logs/"

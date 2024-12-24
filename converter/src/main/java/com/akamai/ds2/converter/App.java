@@ -2,6 +2,7 @@ package com.akamai.ds2.converter;
 
 import com.akamai.ds2.converter.constants.Constants;
 import com.akamai.ds2.converter.constants.ConverterConstants;
+import com.akamai.ds2.converter.constants.SettingsConstants;
 import com.akamai.ds2.converter.util.SettingsUtil;
 import com.akamai.ds2.converter.util.helpers.ConverterWorker;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -40,6 +41,9 @@ public class App implements Runnable {
 
         Properties properties = new Properties();
 
+        properties.setProperty(SettingsConstants.KAFKA_AUTH_PROTOCOL_ATTRIBUTE_ID, SettingsConstants.DEFAULT_KAFKA_AUTH_PROTOCOL);
+        properties.setProperty(SettingsConstants.KAFKA_AUTH_MECHANISM_ATTRIBUTE_ID, SettingsConstants.DEFAULT_KAFKA_AUTH_MECHANISM);
+        properties.setProperty(SettingsConstants.KAFKA_AUTH_CONFIG_ATTRIBUTE_ID, String.format(SettingsConstants.DEFAULT_KAFKA_AUTH_CONFIG, SettingsUtil.getKafkaAuthUser(), SettingsUtil.getKafkaAuthPassword()));
         properties.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, SettingsUtil.getKafkaBrokers());
         properties.setProperty(ConsumerConfig.GROUP_ID_CONFIG, Constants.DEFAULT_APP_NAME);
         properties.setProperty(ConsumerConfig.CLIENT_ID_CONFIG, getId());
@@ -57,6 +61,9 @@ public class App implements Runnable {
 
         Properties properties = new Properties();
 
+        properties.setProperty(SettingsConstants.KAFKA_AUTH_PROTOCOL_ATTRIBUTE_ID, SettingsConstants.DEFAULT_KAFKA_AUTH_PROTOCOL);
+        properties.setProperty(SettingsConstants.KAFKA_AUTH_MECHANISM_ATTRIBUTE_ID, SettingsConstants.DEFAULT_KAFKA_AUTH_MECHANISM);
+        properties.setProperty(SettingsConstants.KAFKA_AUTH_CONFIG_ATTRIBUTE_ID, String.format(SettingsConstants.DEFAULT_KAFKA_AUTH_CONFIG, SettingsUtil.getKafkaAuthUser(), SettingsUtil.getKafkaAuthPassword()));
         properties.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, SettingsUtil.getKafkaBrokers());
         properties.setProperty(ProducerConfig.CLIENT_ID_CONFIG, getId());
         properties.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());

@@ -19,9 +19,15 @@ data:
     </source>
 
     <match ingest>
-      @type kafka
+      @type kafka2
       brokers queue-broker:9092
       default_topic ${var.settings.dataflow.inbound.identifier}
+      <format>
+        @type json
+      </format>
+      sasl_over_ssl false
+      username ${var.settings.dataflow.auth.user}
+      password ${var.settings.dataflow.auth.password}
     </match>
 ---
 apiVersion: v1
@@ -35,12 +41,15 @@ data:
       @type kafka
       brokers queue-broker:9092
       topics ${var.settings.dataflow.outbound.identifier}
+      sasl_over_ssl false
+      username ${var.settings.dataflow.auth.user}
+      password ${var.settings.dataflow.auth.password}
     </source>
 
     <match ${var.settings.dataflow.outbound.identifier}>
       @type s3
-      aws_key_id ${var.settings.dataflow.outbound.auth.accessKey}
-      aws_sec_key ${var.settings.dataflow.outbound.auth.secretKey}
+      aws_key_id ${var.settings.dataflow.outbound.storage.accessKey}
+      aws_sec_key ${var.settings.dataflow.outbound.storage.secretKey}
       s3_bucket ${var.settings.dataflow.outbound.storage.bucket}
       s3_endpoint ${var.settings.dataflow.outbound.storage.endpoint}
       s3_region us-east-1
@@ -66,7 +75,12 @@ metadata:
   name: queue-broker-settings
   namespace: ${var.settings.cluster.identifier}
 data:
-  settings.conf: |
+  server.properties: |
+    listeners=SASL_PLAINTEXT://:9092
+    security.protocol=SASL_PLAINTEXT
+    security.inter.broker.protocol=SASL_PLAINTEXT
+    sasl.mechanism.inter.broker.protocol=PLAIN
+    sasl.enabled.mechanisms=PLAIN
     zookeeper.connect=queue-broker-manager:2181
     log.dir=/bitnami/kafka/data
     log.retention.minutes=10
@@ -110,8 +124,8 @@ data:
         proxy_busy_buffers_size 256k;
       }
 
-      location ^~ /ui {
-        proxy_pass http://queue-broker-ui:8080/ui;
+      location ^~ /panel {
+        proxy_pass http://queue-broker-ui:8080/panel;
         proxy_set_header X-Forwarded-For $remote_addr;
         proxy_set_header X-Forwarded-Proto $scheme;
         proxy_set_header Host $host;
@@ -140,6 +154,10 @@ data:
         "brokers": [
           "queue-broker:9092"
         ],
+        "auth": {
+          "user": "${var.settings.dataflow.auth.user}",
+          "password": "${var.settings.dataflow.auth.password}"
+        },
         "inboundTopic": "${var.settings.dataflow.inbound.identifier}",
         "outboundTopic": "${var.settings.dataflow.outbound.identifier}"
       },
