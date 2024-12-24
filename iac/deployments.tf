@@ -167,6 +167,8 @@ spec:
               value: "queue-cluster"
             - name: KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS
               value: "queue-broker:9092"
+            - name: "KAFKA_CLUSTERS_0_ZOOKEEPER"
+              value: "zookeeper:2181"
             - name: SERVER_SERVLET_CONTEXT_PATH
               value: "/panel"
           ports:
