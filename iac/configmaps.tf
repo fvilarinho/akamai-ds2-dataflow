@@ -32,9 +32,10 @@ metadata:
 data:
   fluentd.conf: |
     <source>
-      @type kafka
+      @type kafka_group
       brokers queue-broker:9092
       topics ${var.settings.dataflow.outbound.identifier}
+      consumer_group outbound
     </source>
 
     <match ${var.settings.dataflow.outbound.identifier}>
