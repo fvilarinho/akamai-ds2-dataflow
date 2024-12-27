@@ -10,11 +10,10 @@ data "http" "myIp" {
 
 # Definition of the firewall rules.
 resource "linode_firewall" "cluster" {
+  linodes         = local.clusterInstances
   label           = "${var.settings.general.identifier}-firewall"
   inbound_policy  = "DROP"
   outbound_policy = "ACCEPT"
-
-  linodes = local.clusterInstances
 
   inbound {
     action   = "ACCEPT"
@@ -59,7 +58,7 @@ resource "linode_firewall" "cluster" {
     action   = "ACCEPT"
     label    = "allowed-ips-for-inbound"
     protocol = "TCP"
-    ports    = "443"
+    ports    = "80,443"
     ipv4     = concat(var.settings.dataflow.inbound.allowedIps.ipv4, [ "${jsondecode(data.http.myIp.response_body).ip}/32" ])
     ipv6     = var.settings.dataflow.inbound.allowedIps.ipv6
   }
