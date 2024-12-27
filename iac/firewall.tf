@@ -59,7 +59,7 @@ resource "linode_firewall" "cluster" {
     action   = "ACCEPT"
     label    = "allowed-ips-for-inbound"
     protocol = "TCP"
-    ports    = "80,443"
+    ports    = "443"
     ipv4     = concat(var.settings.dataflow.inbound.allowedIps.ipv4, [ "${jsondecode(data.http.myIp.response_body).ip}/32" ])
     ipv6     = var.settings.dataflow.inbound.allowedIps.ipv6
   }
