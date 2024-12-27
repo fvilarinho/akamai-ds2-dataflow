@@ -6,12 +6,6 @@
     "inboundTopic": "rawlogs",
     "outboundTopic": "processedlogs"
   },
-  "filters": [
-    {
-      "fieldName": "UA",
-      "regex": "Googlebot|AdsBot-Google|Google-Structured-Data-Testing-Tool",
-      "include": false
-    }
-  ],
+  "filters": [],
   "workers": 100
 }
