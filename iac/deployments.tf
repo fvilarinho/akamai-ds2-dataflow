@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: inbound
-          image: ghcr.io/fvilarinho/fluentd:latest
+          image: $DOCKER_REGISTRY_URL/$DOCKER_REGISTRY_ID/fluentd:$BUILD_VERSION
           ports:
             - containerPort: 9880
           volumeMounts:
@@ -46,7 +46,7 @@ spec:
     spec:
       containers:
         - name: outbound
-          image: ghcr.io/fvilarinho/fluentd:latest
+          image: $DOCKER_REGISTRY_URL/$DOCKER_REGISTRY_ID/fluentd:$BUILD_VERSION
           volumeMounts:
             - name: outbound-settings
               mountPath: /opt/bitnami/fluentd/conf/fluentd.conf
@@ -238,7 +238,7 @@ spec:
       restartPolicy: Always
       containers:
         - name: converter
-          image: ghcr.io/fvilarinho/ds2-kafka-converter:latest
+          image: $DOCKER_REGISTRY_URL/$DOCKER_REGISTRY_ID/ds2-kafka-converter:$BUILD_VERSION
           imagePullPolicy: Always
           volumeMounts:
             - name: converter-settings

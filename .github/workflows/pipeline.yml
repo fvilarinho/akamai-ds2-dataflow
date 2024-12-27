@@ -9,8 +9,8 @@ on:
       - "undeploy.sh"
       - "banner.txt"
       - "*.md"
-      - "*.drawio"
       - "LICENSE"
+      - "*.drawio"
       - ".gitignore"
 
 permissions:
@@ -28,7 +28,7 @@ jobs:
       - name: Setting up environment.
         uses: actions/setup-java@v3
         with:
-          java-version: "21"
+          java-version: "17"
           distribution: "corretto"
 
       - name: Build services.

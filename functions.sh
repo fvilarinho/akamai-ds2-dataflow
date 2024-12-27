@@ -33,6 +33,11 @@ function prepareToExecute() {
   export DOCKER_CMD=$(which docker)
   export TERRAFORM_CMD=$(which terraform)
   export KUBECTL_CMD=$(which kubectl)
+
+  # Mandatory environment variables.
+  export BUILD_ENV_FILENAME=./.env
+
+  source $BUILD_ENV_FILENAME
 }
 
 prepareToExecute

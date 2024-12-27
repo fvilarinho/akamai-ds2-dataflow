@@ -49,7 +49,16 @@ function applyConfigMaps() {
 
 # Containers.
 function applyDeployments() {
-  $KUBECTL_CMD apply -f deployments.yaml
+  manifestFilename=deployments.yaml
+
+  cp -f $manifestFilename $manifestFilename.tmp
+  sed -i -e 's|$DOCKER_REGISTRY_URL|'"$DOCKER_REGISTRY_URL"'|g' $manifestFilename.tmp
+  sed -i -e 's|$DOCKER_REGISTRY_ID|'"$DOCKER_REGISTRY_ID"'|g' $manifestFilename.tmp
+  sed -i -e 's|$BUILD_VERSION|'"$BUILD_VERSION"'|g' $manifestFilename.tmp
+
+  $KUBECTL_CMD apply -f $manifestFilename.tmp
+
+  rm -f $manifestFilename.tmp*
 }
 
 # Exposed ports for communication between containers.

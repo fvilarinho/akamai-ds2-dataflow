@@ -20,11 +20,11 @@ function checkDependencies() {
 function package() {
   cd fluentd || exit 1
 
-  $DOCKER_CMD build -t ghcr.io/fvilarinho/fluentd:latest . || exit 1
+  $DOCKER_CMD build -t $DOCKER_REGISTRY_URL/$DOCKER_REGISTRY_ID/fluentd:$BUILD_VERSION . || exit 1
 
   cd ../converter || exit 1
 
-  $DOCKER_CMD build -t ghcr.io/fvilarinho/ds2-kafka-converter:latest . || exit 1
+  $DOCKER_CMD build -t $DOCKER_REGISTRY_URL/$DOCKER_REGISTRY_ID/ds2-kafka-converter:$BUILD_VERSION . || exit 1
 
   cd ..
 }
