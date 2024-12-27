@@ -35,9 +35,16 @@ jobs:
         run: ./build.sh
 
       - name: Package services.
+        env:
+          DOCKER_REGISTRY_URL: ${{ secrets.DOCKER_REGISTRY_URL }}
+          DOCKER_REGISTRY_ID: ${{ secrets.DOCKER_REGISTRY_ID }}
+          BUILD_VERSION: ${{ secrets.BUILD_VERSION }}
         run: ./package.sh
 
       - name: Publish services.
         env:
+          DOCKER_REGISTRY_URL: ${{ secrets.DOCKER_REGISTRY_URL }}
+          DOCKER_REGISTRY_ID: ${{ secrets.DOCKER_REGISTRY_ID }}
           DOCKER_REGISTRY_PASSWORD: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
+          BUILD_VERSION: ${{ secrets.BUILD_VERSION }}
         run: ./publish.sh
