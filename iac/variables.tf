@@ -8,7 +8,7 @@ variable "settings" {
     }
 
     cluster = {
-      region  = "<region>"
+      region = "<region>"
 
       nodes = {
         type  = "<type>"

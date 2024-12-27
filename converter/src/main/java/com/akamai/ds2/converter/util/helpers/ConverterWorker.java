@@ -33,13 +33,20 @@ public class ConverterWorker implements Runnable {
                 List<String> messages = ConverterUtil.process(value);
 
                 if (messages != null && !messages.isEmpty()) {
+                    int cont = 0;
+
                     for (String message : messages) {
                         if(ConverterUtil.filter(message)) {
                             this.outbound.send(new ProducerRecord<>(this.outboundTopic, key, message));
 
                             this.outbound.flush();
+
+                            cont++;
                         }
                     }
+
+                    if(cont > 0)
+                        logger.info("{} messages processed...", cont);
                 }
             }
             catch (Throwable e) {

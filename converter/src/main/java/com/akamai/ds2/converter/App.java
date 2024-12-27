@@ -91,12 +91,8 @@ public class App implements Runnable {
                     ConsumerRecords<String, String> inboundMessages = inbound.poll(Duration.ofMillis(100));
 
                     if (!inboundMessages.isEmpty()) {
-                        logger.info("{} messages fetched from the queue {}", inboundMessages.count(), inboundTopic);
-
                         for (ConsumerRecord<String, String> inboundMessage : inboundMessages)
                             workersManager.submit(new ConverterWorker(inboundMessage, outbound, outboundTopic));
-
-                        logger.info("{} messages stored in the queue {}", inboundMessages.count(), outboundTopic);
                     }
                 }
                 catch(Throwable e) {
