@@ -6,7 +6,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: inbound-settings
-  namespace: ${var.settings.cluster.identifier}
+  namespace: ${var.settings.general.identifier}
 data:
   fluentd.conf: |
     <source>
@@ -28,7 +28,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: outbound-settings
-  namespace: ${var.settings.cluster.identifier}
+  namespace: ${var.settings.general.identifier}
 data:
   fluentd.conf: |
     <source>
@@ -65,15 +65,19 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: queue-broker-settings
-  namespace: ${var.settings.cluster.identifier}
+  namespace: ${var.settings.general.identifier}
 data:
   server.properties: |
     listeners=INTERNAL://:9092,EXTERNAL://:9093
     listener.security.protocol.map=INTERNAL:PLAINTEXT,EXTERNAL:SASL_PLAINTEXT
     inter.broker.listener.name=INTERNAL
     sasl.enabled.mechanisms=PLAIN
+    sasl.mechanism.inter.broker.protocol=PLAIN
     listener.name.external.sasl.enabled.mechanisms=PLAIN
-    listener.name.external.plain.sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username="${var.settings.dataflow.auth.user}" password="${var.settings.dataflow.auth.password}";
+    listener.name.sasl_plaintext.plain.sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required \
+      username="${var.settings.dataflow.auth.user}" \
+      password="${var.settings.dataflow.auth.password}" \
+      user_${var.settings.dataflow.auth.user}="${var.settings.dataflow.auth.password}";
 
     zookeeper.connect=queue-broker-manager:2181
     log.dir=/bitnami/kafka/data
@@ -88,7 +92,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: proxy-settings
-  namespace: ${var.settings.cluster.identifier}
+  namespace: ${var.settings.general.identifier}
 data:
   default.conf: |
     server {
@@ -140,7 +144,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: converter-settings
-  namespace: ${var.settings.cluster.identifier}
+  namespace: ${var.settings.general.identifier}
 data:
   settings.json: |
     {

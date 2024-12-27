@@ -7,7 +7,7 @@ resource "null_resource" "applyStack" {
   provisioner "local-exec" {
     environment = {
       KUBECONFIG = local.kubeconfigFilename
-      NAMESPACE  = var.settings.cluster.identifier
+      NAMESPACE  = var.settings.general.identifier
     }
 
     quiet   = true

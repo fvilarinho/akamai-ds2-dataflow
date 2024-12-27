@@ -5,6 +5,6 @@ resource "local_file" "namespaces" {
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: ${var.settings.cluster.identifier}
+  name: ${var.settings.general.identifier}
 EOT
 }

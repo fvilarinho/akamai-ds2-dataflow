@@ -11,7 +11,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ingress
-  namespace: ${var.settings.cluster.identifier}
+  namespace: ${var.settings.general.identifier}
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-production
 spec:

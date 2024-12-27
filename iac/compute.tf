@@ -18,8 +18,8 @@ data "linode_instances" "clusterInstances" {
 
 # Defines the cluster manager.
 resource "linode_instance" "clusterManager" {
-  tags            = var.settings.cluster.tags
-  label           = "${var.settings.cluster.identifier}-manager"
+  tags            = var.settings.general.tags
+  label           = "${var.settings.general.identifier}-manager"
   region          = var.settings.cluster.region
   type            = var.settings.cluster.nodes.type
   image           = "linode/debian12"
@@ -29,8 +29,8 @@ resource "linode_instance" "clusterManager" {
 
 resource "linode_instance" "clusterWorker" {
   count           = (var.settings.cluster.nodes.count - 1)
-  tags            = var.settings.cluster.tags
-  label           = "${var.settings.cluster.identifier}-worker${count.index}"
+  tags            = var.settings.general.tags
+  label           = "${var.settings.general.identifier}-worker${count.index}"
   region          = var.settings.cluster.region
   type            = var.settings.cluster.nodes.type
   image           = "linode/debian12"

@@ -10,7 +10,7 @@ data "http" "myIp" {
 
 # Definition of the firewall rules.
 resource "linode_firewall" "cluster" {
-  label           = "${var.settings.cluster.identifier}-firewall"
+  label           = "${var.settings.general.identifier}-firewall"
   inbound_policy  = "DROP"
   outbound_policy = "ACCEPT"
 
@@ -25,30 +25,64 @@ resource "linode_firewall" "cluster" {
 
   inbound {
     action   = "ACCEPT"
-    label    = "allowed-ips"
+    label    = "allow-tcp-for-nodebalancers"
     protocol = "TCP"
-    ipv4     = concat(var.settings.cluster.allowedIps.ipv4, [ "${jsondecode(data.http.myIp.response_body).ip}/32" ])
-    ipv6     = var.settings.cluster.allowedIps.ipv6
+    ports    = "30000-32767"
+    ipv4     = [ "192.168.255.0/24" ]
   }
 
   inbound {
     action   = "ACCEPT"
-    label    = "allowed-ips"
+    label    = "allow-udp-for-nodebalancers"
     protocol = "UDP"
-    ipv4     = concat(var.settings.cluster.allowedIps.ipv4, [ "${jsondecode(data.http.myIp.response_body).ip}/32" ])
-    ipv6     = var.settings.cluster.allowedIps.ipv6
+    ports    = "30000-32767"
+    ipv4     = [ "192.168.255.0/24" ]
   }
 
   inbound {
     action   = "ACCEPT"
-    label    = "allow-intracluster-traffic"
+    label    = "allowed-ips-for-ssh"
+    protocol = "TCP"
+    ports    = "22"
+    ipv4     = [ "${jsondecode(data.http.myIp.response_body).ip}/32" ]
+  }
+
+  inbound {
+    action   = "ACCEPT"
+    label    = "allowed-ips-for-controlplane"
+    protocol = "TCP"
+    ports    = "6443"
+    ipv4     = [ "${jsondecode(data.http.myIp.response_body).ip}/32" ]
+  }
+
+  inbound {
+    action   = "ACCEPT"
+    label    = "allowed-ips-for-inbound"
+    protocol = "TCP"
+    ports    = "80,443"
+    ipv4     = concat(var.settings.dataflow.inbound.allowedIps.ipv4, [ "${jsondecode(data.http.myIp.response_body).ip}/32" ])
+    ipv6     = var.settings.dataflow.inbound.allowedIps.ipv6
+  }
+
+  inbound {
+    action   = "ACCEPT"
+    label    = "allowed-ips-for-outbound"
+    protocol = "TCP"
+    ports    = "30093"
+    ipv4     = concat(var.settings.dataflow.outbound.allowedIps.ipv4, [ "${jsondecode(data.http.myIp.response_body).ip}/32" ])
+    ipv6     = var.settings.dataflow.outbound.allowedIps.ipv6
+  }
+
+  inbound {
+    action   = "ACCEPT"
+    label    = "allow-intracluster-tcp-traffic"
     protocol = "TCP"
     ipv4     = local.clusterInstancesIps
   }
 
   inbound {
     action   = "ACCEPT"
-    label    = "allow-intracluster-traffic"
+    label    = "allow-intracluster-udp-traffic"
     protocol = "UDP"
     ipv4     = local.clusterInstancesIps
   }

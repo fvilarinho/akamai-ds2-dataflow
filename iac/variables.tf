@@ -1,23 +1,18 @@
 variable "settings" {
   default = {
     general = {
-      email = "<email>"
-      token = "<token>"
+      identifier = "akamai-ds2-dataflow"
+      tags       = [ "demo" ]
+      email      = "<email>"
+      token      = "<token>"
     }
 
     cluster = {
-      identifier = "akamai-ds2-dataflow"
-      tags       = [ "demo" ]
-      region     = "<region>"
+      region  = "<region>"
 
       nodes = {
         type  = "<type>"
         count = 1
-      }
-
-      allowedIps = {
-        ipv4 = [ "0.0.0.0/0" ]
-        ipv6 = [ "::/0" ]
       }
     }
 
@@ -33,6 +28,11 @@ variable "settings" {
         storage = {
           size = 10
         }
+
+        allowedIps = {
+          ipv4 = [ "0.0.0.0/0" ]
+          ipv6 = [ "::/0" ]
+        }
       }
 
       outbound = {
@@ -46,6 +46,11 @@ variable "settings" {
           path              = "logs/"
           format            = "<gzip|json>"
           aggregationPeriod = "1m"
+        }
+
+        allowedIps = {
+          ipv4 = [ "0.0.0.0/0" ]
+          ipv6 = [ "::/0" ]
         }
       }
     }

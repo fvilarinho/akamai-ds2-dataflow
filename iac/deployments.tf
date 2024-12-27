@@ -6,7 +6,7 @@ apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: inbound
-  namespace: ${var.settings.cluster.identifier}
+  namespace: ${var.settings.general.identifier}
 spec:
   selector:
     matchLabels:
@@ -34,7 +34,7 @@ apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: outbound
-  namespace: ${var.settings.cluster.identifier}
+  namespace: ${var.settings.general.identifier}
 spec:
   selector:
     matchLabels:
@@ -60,7 +60,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: queue-broker-manager
-  namespace: ${var.settings.cluster.identifier}
+  namespace: ${var.settings.general.identifier}
 spec:
   replicas: 1
   selector:
@@ -97,7 +97,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: queue-broker
-  namespace: ${var.settings.cluster.identifier}
+  namespace: ${var.settings.general.identifier}
 spec:
   serviceName: queue-broker
   replicas: ${var.settings.cluster.nodes.count}
@@ -119,6 +119,8 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.name
+            - name: KAFKA_OPTS
+              value: "-Djava.security.auth.login.config=/opt/bitnami/kafka/config/server_jaas.conf"
           ports:
             - containerPort: 9092
             - containerPort: 9093
@@ -126,12 +128,19 @@ spec:
             - name: queue-broker-settings
               mountPath: /bitnami/kafka/config/server.properties
               subPath: server.properties
+            - name: queue-broker-auth
+              mountPath: /opt/bitnami/kafka/config/server_jaas.conf
+              subPath: server_jaas.conf
+              readOnly: true
             - name: queue-broker-data
               mountPath: /bitnami/kafka/data
       volumes:
         - name: queue-broker-settings
           configMap:
             name: queue-broker-settings
+        - name: queue-broker-auth
+          secret:
+            secretName: queue-broker-auth
   volumeClaimTemplates:
     - metadata:
         name: queue-broker-data
@@ -145,7 +154,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: queue-broker-ui
-  namespace: ${var.settings.cluster.identifier}
+  namespace: ${var.settings.general.identifier}
 spec:
   replicas: 1
   strategy:
@@ -179,7 +188,7 @@ apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: proxy
-  namespace: ${var.settings.cluster.identifier}
+  namespace: ${var.settings.general.identifier}
 spec:
   selector:
     matchLabels:
@@ -215,7 +224,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: converter
-  namespace: ${var.settings.cluster.identifier}
+  namespace: ${var.settings.general.identifier}
 spec:
   replicas: 1
   selector:

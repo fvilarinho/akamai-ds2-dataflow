@@ -6,7 +6,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: inbound
-  namespace: ${var.settings.cluster.identifier}
+  namespace: ${var.settings.general.identifier}
 spec:
   selector:
     app: inbound
@@ -19,7 +19,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: queue-broker-manager
-  namespace: ${var.settings.cluster.identifier}
+  namespace: ${var.settings.general.identifier}
 spec:
   selector:
     app: queue-broker-manager
@@ -32,7 +32,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: queue-broker
-  namespace: ${var.settings.cluster.identifier}
+  namespace: ${var.settings.general.identifier}
 spec:
   selector:
     app: queue-broker
@@ -45,7 +45,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: external-queue-broker
-  namespace: ${var.settings.cluster.identifier}
+  namespace: ${var.settings.general.identifier}
 spec:
   type: NodePort
   selector:
@@ -60,7 +60,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: queue-broker-ui
-  namespace: ${var.settings.cluster.identifier}
+  namespace: ${var.settings.general.identifier}
 spec:
   selector:
     app: queue-broker-ui
@@ -73,7 +73,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: proxy
-  namespace: ${var.settings.cluster.identifier}
+  namespace: ${var.settings.general.identifier}
 spec:
   selector:
     app: proxy
