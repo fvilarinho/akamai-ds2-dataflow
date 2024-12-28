@@ -61,7 +61,7 @@ The following environment variables must be set in your operating system or in y
 - `DOCKER_REGISTRY_PASSWORD`: Define the rocker registry repository password.
 
 #### Latest build status
-- [![CI/CD Pipeline](https://github.com/fvilarinho/akamai-siem-connector/actions/workflows/pipeline.yml/badge.svg)](https://github.com/fvilarinho/akamai-siem-connector/actions/workflows/pipeline.yml)
+- [![CI/CD Pipeline](https://github.com/fvilarinho/akamai-ds2-dataflow/actions/workflows/pipeline.yml/badge.svg)](https://github.com/fvilarinho/akamai-ds2-dataflow/actions/workflows/pipeline.yml)
 
 ### To deploy
 Just execute the shell script `deploy.sh` (after the setup) to start the provisioning, and execute `undeploy.sh` for
