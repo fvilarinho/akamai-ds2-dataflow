@@ -28,11 +28,17 @@ function undeploy() {
                  -auto-approve
 }
 
+# Clean-up.
+function cleanUp() {
+  rm -f .kubeconfig
+}
+
 # Main function.
 function main() {
   prepareToExecute
   checkDependencies
   undeploy
+  cleanUp
 }
 
 main

@@ -18,5 +18,6 @@ terraform {
 
 # Akamai Cloud Computing provider definition.
 provider "linode" {
-  token = var.settings.general.token
+  config_path    = abspath(pathexpand("~/.aws/credentials"))
+  config_profile = "akamai"
 }

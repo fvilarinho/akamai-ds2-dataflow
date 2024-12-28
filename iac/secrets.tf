@@ -1,4 +1,4 @@
-# Required variables.
+# Required local variables.
 locals {
   htpasswd   = "${var.settings.dataflow.auth.user}:${bcrypt(var.settings.dataflow.auth.password)}"
   serverJaas = <<EOT

@@ -1,4 +1,4 @@
-# Required variables.
+# Required local variables.
 locals {
   clusterHostnames = [ for clusterInstance in data.linode_instances.clusterInstances.instances : "        - ${replace(clusterInstance.ip_address, ".", "-")}.ip.linodeusercontent.com" ]
 }

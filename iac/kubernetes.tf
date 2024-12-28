@@ -1,3 +1,4 @@
+# Required local variables.
 locals {
   kubeconfigFilename = abspath(pathexpand("./.kubeconfig"))
 }

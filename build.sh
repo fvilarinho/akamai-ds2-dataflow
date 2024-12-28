@@ -10,7 +10,7 @@ function prepareToExecute() {
 # Checks the dependencies of this script.
 function checkDependencies() {
   if [ -z "$JAVA_CMD" ]; then
-    echo "Java is not installed! Please install it first to continue!"
+    echo "java is not installed! Please install it first to continue!"
 
     exit 1
   fi

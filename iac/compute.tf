@@ -1,9 +1,11 @@
+# Required local variables.
 locals {
   sshPrivateKeyFilename = abspath(pathexpand("~/.ssh/id_rsa"))
   sshPublicKeyFilename  = abspath(pathexpand("~/.ssh/id_rsa.pub"))
   clusterInstances      = concat([ linode_instance.clusterManager.id ], [ for clusterWorker in linode_instance.clusterWorker : clusterWorker.id ])
 }
 
+# Fetches the metadata of the cluster instances.
 data "linode_instances" "clusterInstances" {
   filter {
     name   = "id"
@@ -27,6 +29,7 @@ resource "linode_instance" "clusterManager" {
   authorized_keys = [ chomp(file(local.sshPublicKeyFilename)) ]
 }
 
+# Defines the cluster workers.
 resource "linode_instance" "clusterWorker" {
   count           = (var.settings.cluster.nodes.count - 1)
   tags            = var.settings.general.tags

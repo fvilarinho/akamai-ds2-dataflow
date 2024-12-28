@@ -1,4 +1,19 @@
-# Akamai DS2 Dataflow
+```text
+    ___    __                         _
+   /   |  / /______ _____ ___  ____ _(_)
+  / /| | / //_/ __ `/ __ `__ \/ __ `/ /
+ / ___ |/ ,< / /_/ / / / / / / /_/ / /
+/_/  |_/_/|_|\__,_/_/ /_/ /_/\__,_/_/
+    ____  ________
+   / __ \/ ___/__ \
+  / / / /\__ \__/ /
+ / /_/ /___/ / __/
+/_____//____/____/        ______
+   / __ \____ _/ /_____ _/ __/ /___ _      __
+  / / / / __ `/ __/ __ `/ /_/ / __ \ | /| / /
+ / /_/ / /_/ / /_/ /_/ / __/ / /_/ / |/ |/ /
+/_____/\__,_/\__/\__,_/_/ /_/\____/|__/|__/
+```
 
 ## 1. Introduction
 Customers often need to access, analyze, and process their logs in real-time to gain insights and make swift decisions. 
@@ -32,7 +47,7 @@ set up your build environment.
 - [![CI/CD Pipeline](https://github.com/fvilarinho/akamai-ds2-dataflow/actions/workflows/pipeline.yml/badge.svg)](https://github.com/fvilarinho/akamai-ds2-dataflow/actions/workflows/pipeline.yml)
 
 ## 3. Architecture
-Follow this [diagram](https://viewer.diagrams.net/?tags=%7B%7D&lightbox=1&highlight=0000ff&layers=1&nav=1&title=software_architecture.drawio#R%3Cmxfile%3E%3Cdiagram%20name%3D%22Page-1%22%20id%3D%2292RJ4OFCEY1Zh97tm0ry%22%3E7Vxbc5s6EP41nmkfnAEEOH60nTjNadKmJ6dz2kfZlm0aQFSI2O6vr4SFuUi2yRSISZ2HDLoA0n7ab1e7wh0w8tY3BAbLezxDbsfQZusOuOoYRt8y2X9esdlW6MDWtjUL4sxEXVrx6PxCojLpFjkzFOY6Uoxd6gT5yin2fTSluTpICF7lu82xm39rABdIqnicQleu%2Fd%2BZ0aWo1e1%2B2vABOYulePWl0ds2eDDpLGYSLuEMrzJV4LoDRgRjur3y1iPkcuElctneN97TuhsYQT4tc4MpxvEM3UhMTgyMbpLZEhz5M8Rv0DtguFo6FD0GcMpbVwxfVrekniua5QGIMT0jQtE6UyUGdIOwhyjZsC6i1bDEoMTy6IniKhW1nYx7mZGymQgVCngXu0enEmAXQgh7JGhK80czBr4oYkKXeIF96F6ntcNUQhorpX3uMA6EXH4gSjdiJcOI4rzU0Nqh3%2FjtF5Yofc%2B0XK3Fk%2BPCRhRCSvATGmEXk3icYDy%2B1DTtEAYhjshUzGo870Z0eP%2FB0ibRl3%2Bvv%2Fmf5343USZIFoge6CcWCZfMQUQJciF1nvNq8yfwHBp1Zg0PnqAHnY5hQ4%2BvT38SBrFcbJfNajhzntnlgl9eQQqZIBH02AOMpAMbRabPqyuE2c8rRNcAskrohkIl7Co0AvzNGmGU1AjwWhoBXoewfDbMDD68%2BD3BhBdShOLSXogYPtp4XDVEiX6cCEEZEkE9ELzeKPjo3aeb20%2Ff3reEiPoN0lC%2FLSxUmWpUwF6gJHuZJ6UuQFKXW3%2FCoVQpzJh18ulVW1RGv2xQZ3oHpt9yu2yWXNl21Ss7vnVACNxkOgTY8WmYefIDr0hXgVXY0lhAK%2BC4fWKK6m5o5Xw0edfWIDvqmZWgXfSskvSYI0dx2wF%2BnGOf5hyHfl%2Fb41KMRrbdyOqyToo3TYk3v0QoQqGKNgeM9JaI9f4I50%2BwLezZqMeh69L8m3Q5ckpllFQqPa9UxikpldVKZ8SSlGqE%2FXgFE5Ve%2FQOfIev%2BGBDHXwx5HM%2FQBkFwqgrWM19RwQ4Z7Iy8H0F3hL3AdSA3qZLIP09%2B8BgvkznFhAduT1PSRSqz9CapTF7FS0qDUJIKmwzNTx26zsJn11M2dbbkwZBP2ZlCdyAaPGc221IfCp1fcBI%2FinOIcIrYc61hx7riz2JsF26JT5dIxsc%2Bf8rccd1iVZ6kjnuP5VGxtML6tyRQLAUmoApM5JXeZUUmcOhPuWWmsX2mBM7nzjRZ1ROSrGjeeRCxTj6HgyJ1j6GLp0%2F8rT57D3s1p82fzCegL8HeRXP65pC3CxszhTqqoK9EHXtndSyljjsEmtDHS6U%2Bikid0EZm1JnuONg%2FQ2Udh0oHdWHVV2I1xmQFyUyFlsb8bLHZ6fCML%2BFVyAuYyxDPKkychzOseYNoyrACvSZYE%2FcnAyudnmlR9lIUoNRFi7vRppiMHTfe%2FbwJTtxteSvAyU78bIETAIbMiSofvxKgDAkoviPiCGHf5aOcx7ghzo8uXrRTrSqFS8vDZfSMC9n%2F11VnTSoB7FJCoIH4UkGeo5GmqSM%2Bu5Z9Ca1drGlPbGkvQtlIkVE2KlRPIP94pL5fQHo7UHFXAeyXBe3N14kv7om%2FH4sU7s%2FcqyOWoPDXORi%2FZIUHRBwmPU4zf7Z8QK%2BWpfLSnI9ZWEnJmbVxyf7d%2FNG9P84RGXIMaDCl3BEuLMJwCQN%2BGXnutkNK%2B3dwgtwHRuOxuQdXE0wp9hR2geLqI2gWyNO1bShc05p27IYcrBkjOl3unCDJtrJRUd78CNi%2F0d1tK63tzgZUAV%2BRWRWZcEOry9bKG8b2RlwqRUU7jkpdWwvwRgxgKUuVCOx0019A3n0r0i1JSln7ervvfG0x83Is%2Bxw%2F7FQzZMZlYe%2FdZIYMyEeh2ktbx%2FXlBdm0YqC4QdZ6S7m0KjExikfdFJpSGyjqZFo%2BeP%2B1nU5YlRgB8zhGel1OGJDTXncYcpdZJD2JnMN8d%2FPf%2FftXNwLSFxiqZEdtRmBPYioK%2Bf5iEPdNPnjRCFx1Xhze%2Bxvyu11d8R2Zbte11N%2FSfqPOVIYSlrqshGlIqOwUh5mKgM1ic3pcoyuyPbWRjSl7nGeyeTnZqE7518U1pnzu98w1Sq5pMLZhyruEnXOTQ8X%2BGfGPvWM5dLfyG7AOuhmst5tn0Z44RB%2BjCSI%2BovEefORGYeYgKhvUZO%2FGWUa%2FLETlV4mKHfMBGz5NEZrRzWpgtgs79EZ1T%2FbNVEdUI5r7ful4gKRlXzUBlW9Vm4lSH%2F4RJmpPOL64r4iPA80dH8a%2FTMHPL%2FiwtWcY6jwAZKq8D%2BXPL1QAbfLusyk7YspUqFRkylgx%2Ff2RbZ4x%2FRUXcP0b%3C%2Fdiagram%3E%3C%2Fmxfile%3E) to check out the architecture.
+Follow this [diagram](https://viewer.diagrams.net/?tags=%7B%7D&lightbox=1&highlight=0000ff&layers=1&nav=1&title=architecture.drawio#R%3Cmxfile%3E%3Cdiagram%20name%3D%22Page-1%22%20id%3D%2292RJ4OFCEY1Zh97tm0ry%22%3E7Vpbd5s4EP41Pmf3ITmAwJdHG8dpdtM2XZ%2BeTR9lIxs1gDhCxHZ%2F%2FUogzEVgky527N3mwUHDIEvzzXwzGtMDtr%2B9pzB0PxIHeT1Dc7Y9MO0Zxsgy%2BacQ7FKBDvpaKllT7EhZLpjjH0gKM7UYOygqKTJCPIbDsnBJggAtWUkGKSWbstqKeOVvDeEaKYL5Enqq9G%2FsMFdK9f4ov%2FEB4bUrv3poDNIbPsyU5U4iFzpkUxCBux6wKSEsvfK3NvKE8TK7pM%2FNGu7uF0ZRwFo9IKGI2C7bHHL4XuWQUOaSNQmgd5dLJ5TEgYPEDBof5TqPhIRcqHPhd8TYTgIHY0a4yGW%2BJ%2B%2BiLWbP4vFbS46%2BFe5Mt3LmZLCTg4hR8oJs4hGarBPMZkNNE3fUPUszRCSmS7mr2eomZpOPHyxtEX%2F56%2B45%2BLwKbjLfgXSN2AE9I9UTlil8gbToPSI%2BYnTHFSjyIMOvZS%2BB0tnWe70cD34hIamH59CqX6EXy28av0Af4p7Rhz4HYBIsojCxS9%2Fju5o4%2BJVfrsXlFDLIDYmgzycwMgW%2BioKO4hA53AKhjYsZmocwMeyGx3cZ2kYwXhFlaHvQfPKuOZLBIenhJguWTSHWMplbCLOMRf6NxXXwfw4Io2VAgPcKCPA%2BfBXwZRbwEcNvGSZikCOUjBoh4vhos1nXEAHtovjJUPjpiZLtroaOfvt0%2F%2FDp%2Bfcr4aHRGWlodC0s1FlodMBeoCV7mRcVLkAJl4dgIaCsC5gZVwrY9FpCRh%2BeMWYGB7Z%2F5XnZbOnZ%2Fa49O3l0TCncFRRCggMWFWZ%2BEoLcCyyr7AUW0Co4pjPmqO6X1q5GM96THfWCJ2i3A6slPZbIUT52gB9XJGClwmE00hpKCtvu98%2FiXdZF8aap8OaXGMUoqqPNMSc9F3HtP%2BHqBV4Le5614tB1Zf%2FnLDlKQWW0DCq9HFTGJQWVdZXFiKUElU2CxINpXVz9AV8hV5%2BHFAfriehaGdo4DC81wAbmOwbYoYRdsPcc3NjEDz0MRUpVTP558V10NLnNGaGiTXmZlq5SmXnOQlAfKla94UN5CtVYkgm4w6KIYRIotuJbZGWDQA%2BvA3695AbhgQAmwhB4Cb2xvOFjx0kJEUX4B1wkUwlmkaUSn9ea9KypmItzYJTSoa5QT0ACMcsKe15VVKau4zVle6yq5Zpu1WAFarACXWA1qsVqRugGUqcOLY3nEJnIe6J3T4UI%2BSEPh2RXURYYv2Atk52pwgr0E8G6X24O6wx7SRb5T8TfvnToAKi%2BbpWAAsBox5WdAKV260RmEQiRwBOrXCW4IRGLHllHv%2BDSynAZA%2BPWUgEzTwXYUEHgDHV6xZ62rWn1lfP%2BTlNjcF%2BzN9TojQgVK26jbXV9mobI8Y7HqIJ0ulD5VAXstzU%2FzPc5p%2F1sH6P5J5D6ox%2Bo%2FB0%2BCPLBE6KYm0%2FwzAn8xziJ%2F7y1oWZW3KuvVX7VP6KvA6vidYUGnPp00%2B%2Bv3TuzoZ43x0smSrqKi0cuDMVl7HupQp5UHuECeU88SSTFBJguCGPEr8k6jHR%2FzrFAORlYNeecutK5i2OOoR4eZ4gt3X2JpWRuviombs8B%2F7AfH64yl%2B8zTBfwVXm75uhjaCfK5OCimPznibwV42YGu9x%2BWLbCQjjV9F%2ByHrP29aHpfZtqK%2BZYOzqZ7FJbZsawcoo8Z8sMqAynNnK%2BXieNHQ%2Bf9iCBSl9TrwPpZDTW0G2LI5Fqxolu9oKaRuHm7edID63YJUDWaXemX4aspjmj90%2BEmKkiVtdpjlnpNYTjtHZlLyeAwRmpzKzvc8ooaajXUjMuaGbCpPO5wjzd8%2F%2BOaJ8F8GpbaKfsdZp14VTXkTHfDi0f5u9np2ee%2FC13cPcP%3C%2Fdiagram%3E%3C%2Fmxfile%3E) to check out the architecture.
 
 ### Software
 Here are the software components of the stack:
@@ -66,7 +81,8 @@ If you want to customize the stack and its provisioning by yourself, just edit t
 directory:
 
 - `variables.tf`: Defines the provisioning variables. You can also use `terraform.tfvars`.
-- `main.tf`: Defines the provisioning providers.
+- `main.tf`: Defines the provisioning providers. You need to create an API Token in advance and add a section called 
+`akamai` in the file `~/.aws/credentials`. To create the API Token, please refer the documentation [here](#6-other-resources). 
 - `compute.tf`: Defines the provisioning of the compute instances.
 - `firewall.tf`: Defines the provisioning of the firewall rules.
 - `kubernetes.tf`: Defines the provisioning of Kubernetes.

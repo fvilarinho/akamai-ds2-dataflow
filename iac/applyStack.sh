@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Check the dependencies of this script.
 function checkDependencies() {
   if [ -z "$KUBECONFIG" ]; then
     echo "Please specify the kubeconfig filename!"
@@ -82,6 +83,7 @@ function applyIngress() {
   done
 }
 
+# Main function.
 function main() {
   checkDependencies
   applyNamespaces
