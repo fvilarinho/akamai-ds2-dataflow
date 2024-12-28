@@ -4,7 +4,7 @@ plugins {
     id "application"
 }
 
-// Compiler/Binary compliance.
+// Compiler compliance.
 java {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
@@ -33,6 +33,7 @@ dependencies {
     implementation "org.apache.commons:commons-lang3:3.17.0"
 }
 
+// Exclusion list for the package.
 jar {
     exclude("**/bin/**")
     exclude("**/etc/banner.txt")
