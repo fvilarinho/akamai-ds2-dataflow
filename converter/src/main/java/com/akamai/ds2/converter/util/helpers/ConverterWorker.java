@@ -47,9 +47,9 @@ public class ConverterWorker implements Runnable {
 
                     if(cont > 0) {
                         if (cont > 1)
-                            logger.info("{} message processed...", cont);
-                        else
                             logger.info("{} messages processed...", cont);
+                        else
+                            logger.info("{} message processed...", cont);
                     }
                 }
             }
