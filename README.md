@@ -185,6 +185,9 @@ After provisioning, execute the following commands:
    ```  
    Please replace the `<ip>` placeholder, with the IP address fetched in the procedure described above.
 
+   You can also configure Akamai GTM to balance traffic within the Kubernetes cluster and/or set up an Akamai Property 
+   to restrict traffic to Akamai SiteShield IPs.
+
 ## 6. Other resources
 - [Akamai Techdocs](https://techdocs.akamai.com)
 - [Akamai Cloud Computing](https://www.linode.com)

@@ -25,6 +25,7 @@ resource "linode_instance" "clusterManager" {
   region          = var.settings.cluster.region
   type            = var.settings.cluster.nodes.type
   image           = "linode/debian12"
+  backups_enabled = true
   private_ip      = true
   authorized_keys = [ chomp(file(local.sshPublicKeyFilename)) ]
 }
@@ -37,6 +38,7 @@ resource "linode_instance" "clusterWorker" {
   region          = var.settings.cluster.region
   type            = var.settings.cluster.nodes.type
   image           = "linode/debian12"
+  backups_enabled = true
   private_ip      = true
   authorized_keys = [ chomp(file(local.sshPublicKeyFilename)) ]
 }
