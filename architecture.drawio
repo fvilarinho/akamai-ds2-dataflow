@@ -1,101 +1,168 @@
-<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36" version="25.0.3">
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36" version="26.0.1">
   <diagram name="Page-1" id="92RJ4OFCEY1Zh97tm0ry">
-    <mxGraphModel dx="954" dy="1360" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+    <mxGraphModel dx="1390" dy="1452" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;strokeColor=#FF8000;" parent="1" source="Ff-utBMH50buQREXnOfn-1" target="Ff-utBMH50buQREXnOfn-2" edge="1">
+        <mxCell id="86" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;" parent="1" vertex="1">
+          <mxGeometry x="190" y="-707" width="800" height="940" as="geometry" />
+        </mxCell>
+        <mxCell id="78" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;" parent="1" vertex="1">
+          <mxGeometry x="370" y="253" width="470" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="65" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;" parent="1" vertex="1">
+          <mxGeometry x="230" y="-407" width="730" height="530" as="geometry" />
+        </mxCell>
+        <mxCell id="14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;strokeColor=#FF8000;" parent="1" source="66" target="Ff-utBMH50buQREXnOfn-2" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="Ff-utBMH50buQREXnOfn-1" value="Akamai&amp;nbsp;&lt;div&gt;Datastream 2&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="490" y="-20" width="120" height="60" as="geometry" />
+        <mxCell id="70" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;strokeColor=#FF8000;" parent="1" source="Ff-utBMH50buQREXnOfn-1" target="66" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Ff-utBMH50buQREXnOfn-1" value="Akamai&amp;nbsp;&lt;div&gt;Datastream 2&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fontStyle=1" parent="1" vertex="1">
+          <mxGeometry x="460" y="-687" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;strokeColor=#FF8000;" parent="1" source="Ff-utBMH50buQREXnOfn-2" target="Ff-utBMH50buQREXnOfn-3" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="34" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeColor=#0000FF;" parent="1" source="Ff-utBMH50buQREXnOfn-2" target="30" edge="1">
+        <mxCell id="34" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeColor=#6666FF;" parent="1" source="Ff-utBMH50buQREXnOfn-2" target="30" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="Ff-utBMH50buQREXnOfn-2" value="Proxy&lt;div&gt;(NGINX)&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="490" y="90" width="120" height="60" as="geometry" />
+          <mxGeometry x="460" y="-287" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeColor=#FF8000;" parent="1" source="Ff-utBMH50buQREXnOfn-3" target="Ff-utBMH50buQREXnOfn-4" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="Ff-utBMH50buQREXnOfn-3" value="Inbound&lt;div&gt;(FluentD)&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="490" y="180" width="120" height="60" as="geometry" />
+          <mxGeometry x="460" y="-177" width="120" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="7" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;strokeColor=#FF8000;" parent="1" source="Ff-utBMH50buQREXnOfn-4" target="Ff-utBMH50buQREXnOfn-6" edge="1">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="550" y="530" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;fontColor=#009900;strokeColor=#00CC66;" parent="1" source="Ff-utBMH50buQREXnOfn-4" target="Ff-utBMH50buQREXnOfn-5" edge="1">
+        <mxCell id="57" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;strokeColor=#00FF00;" parent="1" source="Ff-utBMH50buQREXnOfn-4" target="Ff-utBMH50buQREXnOfn-5" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="Ff-utBMH50buQREXnOfn-4" value="Queues&lt;div&gt;(Apache Kafka)&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="490" y="290" width="120" height="60" as="geometry" />
+        <mxCell id="Ff-utBMH50buQREXnOfn-4" value="Queue Broker&lt;div&gt;(Apache Kafka)&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="460" y="-57" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.25;exitDx=0;exitDy=0;entryX=1;entryY=0.25;entryDx=0;entryDy=0;fontColor=#009900;strokeColor=#00CC66;" parent="1" source="Ff-utBMH50buQREXnOfn-5" target="Ff-utBMH50buQREXnOfn-4" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="Ff-utBMH50buQREXnOfn-5" value="Converter&lt;div&gt;(Java SpringBoot App)&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="740" y="290" width="120" height="60" as="geometry" />
+          <mxGeometry x="815" y="-57" width="120" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="Ff-utBMH50buQREXnOfn-6" value="S3-Compliant&lt;div&gt;Object Storage&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="490" y="480" width="120" height="60" as="geometry" />
+        <mxCell id="Ff-utBMH50buQREXnOfn-6" value="S3-Compliant&lt;div&gt;Object Storage&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fontStyle=1" parent="1" vertex="1">
+          <mxGeometry x="460" y="155" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="18" value="- Proxy the ingestion" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#FF8000;" parent="1" vertex="1">
-          <mxGeometry x="550" y="150" width="130" height="30" as="geometry" />
+          <mxGeometry x="519" y="-217" width="130" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="19" value="- Forward the ingestion to Kafka for temporary storage" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#FF8000;" parent="1" vertex="1">
-          <mxGeometry x="550" y="240" width="310" height="30" as="geometry" />
+        <mxCell id="19" value="- Store the logs in the ingestion topic&amp;nbsp;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#FF8000;" parent="1" vertex="1">
+          <mxGeometry x="519" y="-117" width="220" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="21" value="Filter the ingestion" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#009900;" parent="1" vertex="1">
-          <mxGeometry x="615" y="332" width="120" height="30" as="geometry" />
+        <mxCell id="22" value="Store the filtered logs in processed topic" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#009900;rotation=0;" parent="1" vertex="1">
+          <mxGeometry x="580" y="-67" width="240" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="22" value="Store only filtered logs" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#009900;" parent="1" vertex="1">
-          <mxGeometry x="605" y="272.5" width="140" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontColor=#CC0000;strokeColor=#CC0000;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" parent="1" source="25" target="Ff-utBMH50buQREXnOfn-6" edge="1">
+        <mxCell id="28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontColor=#EA6B66;strokeColor=#EA6B66;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" parent="1" source="25" target="Ff-utBMH50buQREXnOfn-6" edge="1">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="550" y="590" as="targetPoint" />
+            <mxPoint x="520" y="243" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="41" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.75;entryDx=0;entryDy=0;strokeColor=#0000FF;exitX=0;exitY=0.3333333333333333;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" source="25" target="Ff-utBMH50buQREXnOfn-2" edge="1">
+        <mxCell id="62" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#6666FF;" parent="1" source="25" target="50" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="450" y="600" />
-              <mxPoint x="450" y="135" />
+              <mxPoint x="160" y="303" />
+              <mxPoint x="160" y="-547" />
             </Array>
-            <mxPoint x="490" y="-20" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="76" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#EA6B66;entryX=1;entryY=0.25;entryDx=0;entryDy=0;" parent="1" source="25" target="74" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="740" y="-527" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="1020" y="303" />
+              <mxPoint x="1020" y="-562" />
+            </Array>
           </mxGeometry>
         </mxCell>
         <mxCell id="25" value="Actor" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" parent="1" vertex="1">
-          <mxGeometry x="535" y="580" width="30" height="60" as="geometry" />
+          <mxGeometry x="505" y="283" width="30" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="26" value="Fetch the filtered logs with S3 CLI" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#CC0000;" parent="1" vertex="1">
-          <mxGeometry x="550" y="550" width="200" height="30" as="geometry" />
+        <mxCell id="26" value="- Fetch the filtered logs with S3 CLI" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#EA6B66;" parent="1" vertex="1">
+          <mxGeometry x="518" y="253" width="210" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="31" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#0000FF;" parent="1" source="30" target="Ff-utBMH50buQREXnOfn-4" edge="1">
+        <mxCell id="31" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#6666FF;" parent="1" source="30" target="Ff-utBMH50buQREXnOfn-4" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="30" value="&lt;div&gt;Queues UI&amp;nbsp;&lt;/div&gt;&lt;div&gt;(Apache Kafka UI)&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="280" y="290" width="120" height="60" as="geometry" />
+          <mxGeometry x="255" y="-57" width="120" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="36" value="- Proxy the UI" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#0000FF;" parent="1" vertex="1">
-          <mxGeometry x="340" y="190" width="100" height="30" as="geometry" />
+        <mxCell id="36" value="&lt;font color=&quot;#6666ff&quot;&gt;Proxy the UI -&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=default;" parent="1" vertex="1">
+          <mxGeometry x="360" y="-287" width="100" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="38" value="- Push All Akamai raw logs" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#FF8000;" parent="1" vertex="1">
-          <mxGeometry x="560" y="40" width="160" height="30" as="geometry" />
+        <mxCell id="54" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#FF8000;" parent="1" source="48" target="Ff-utBMH50buQREXnOfn-4" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="60" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeColor=#FF8000;" parent="1" source="48" target="Ff-utBMH50buQREXnOfn-6" edge="1">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="48" value="&lt;div&gt;Outbound&lt;/div&gt;&lt;div&gt;(FluentD)&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="490" y="370" width="120" height="60" as="geometry" />
+          <mxGeometry x="460" y="44" width="120" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="49" value="- Push the filtered logs&lt;br&gt;to final destination" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#FF8000;" parent="1" vertex="1">
-          <mxGeometry x="550" y="440" width="140" height="40" as="geometry" />
+        <mxCell id="51" value="- Push All Akamai raw logs" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#FF8000;" parent="1" vertex="1">
+          <mxGeometry x="528" y="-617" width="160" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="55" value="- Fetch the filtered logs" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#FF8000;" parent="1" vertex="1">
+          <mxGeometry x="518" y="10" width="150" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="21" value="Filter the ingestion topic" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#009900;" parent="1" vertex="1">
+          <mxGeometry x="620" y="-39" width="150" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="61" value="- Store the filtered logs in a long-term storage" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#FF8000;" parent="1" vertex="1">
+          <mxGeometry x="520" y="125" width="260" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="64" value="Access the UI -" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#6666FF;" parent="1" vertex="1">
+          <mxGeometry x="390" y="303" width="100" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="73" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;strokeColor=#6666FF;" parent="1" source="66" target="Ff-utBMH50buQREXnOfn-2" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="66" value="Ingress&lt;div&gt;(Traefik)&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="460" y="-387" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="71" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;strokeColor=#6666FF;" parent="1" source="50" target="66" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="50" value="Node Balancer&lt;br&gt;(Inbound)" style="rounded=1;whiteSpace=wrap;html=1;fontStyle=1" parent="1" vertex="1">
+          <mxGeometry x="460" y="-577" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="84" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.75;entryY=0;entryDx=0;entryDy=0;strokeColor=#EA6B66;" parent="1" source="74" target="Ff-utBMH50buQREXnOfn-4" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="790" y="-547" />
+              <mxPoint x="790" y="-77" />
+              <mxPoint x="550" y="-77" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="74" value="Node Balancer&lt;br&gt;(Outbound)" style="rounded=1;whiteSpace=wrap;html=1;fontStyle=1" parent="1" vertex="1">
+          <mxGeometry x="619" y="-577" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="77" value="- Fetch the filtered logs with a Apache Kafka CLI" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#EA6B66;" parent="1" vertex="1">
+          <mxGeometry x="540" y="303" width="280" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="80" value="Customer Network" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1" parent="1" vertex="1">
+          <mxGeometry x="640" y="363" width="240" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="83" value="Cloud Firewall" style="rounded=1;whiteSpace=wrap;html=1;fontStyle=1" parent="1" vertex="1">
+          <mxGeometry x="220" y="-497" width="740" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="85" value="Kubernetes cluster" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1" parent="1" vertex="1">
+          <mxGeometry x="710" y="93" width="240" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="88" value="Akamai Connected Cloud" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1" parent="1" vertex="1">
+          <mxGeometry x="688" y="203" width="240" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="89" value="Akamai Datastream 2 Dataflow" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=25;fontStyle=1" parent="1" vertex="1">
+          <mxGeometry x="389" y="-800" width="390" height="40" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

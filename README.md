@@ -26,7 +26,7 @@ That’s exactly what you will get here!
 
 This solution integrates [Akamai Datastream 2](https://techdocs.akamai.com/datastream2/docs/welcome-datastream2) with
 [Apache Kafka](https://kafka.apache.org/), a distributed and scalable queue system, deployed in a Kubernetes cluster 
-powered by [Akamai Cloud Computing](https://www.linode.com). It enables systems and applications to fetch logs in 
+powered by [Akamai Connected Cloud](https://www.linode.com). It enables systems and applications to fetch logs in 
 real-time by simply subscribing to relevant topics.
 
 The system is designed to scale seamlessly, ensuring reliable performance even during traffic spikes, and offers easy 
@@ -47,33 +47,34 @@ set up your build environment.
 - [![CI/CD Pipeline](https://github.com/fvilarinho/akamai-ds2-dataflow/actions/workflows/pipeline.yml/badge.svg)](https://github.com/fvilarinho/akamai-ds2-dataflow/actions/workflows/pipeline.yml)
 
 ## 3. Architecture
-Follow this [diagram](https://viewer.diagrams.net/?tags=%7B%7D&lightbox=1&highlight=0000ff&layers=1&nav=1&title=architecture.drawio#R%3Cmxfile%3E%3Cdiagram%20name%3D%22Page-1%22%20id%3D%2292RJ4OFCEY1Zh97tm0ry%22%3E7Vpbd5s4EP41Pmf3ITmAwJdHG8dpdtM2XZ%2BeTR9lIxs1gDhCxHZ%2F%2FUogzEVgky527N3mwUHDIEvzzXwzGtMDtr%2B9pzB0PxIHeT1Dc7Y9MO0Zxsgy%2BacQ7FKBDvpaKllT7EhZLpjjH0gKM7UYOygqKTJCPIbDsnBJggAtWUkGKSWbstqKeOVvDeEaKYL5Enqq9G%2FsMFdK9f4ov%2FEB4bUrv3poDNIbPsyU5U4iFzpkUxCBux6wKSEsvfK3NvKE8TK7pM%2FNGu7uF0ZRwFo9IKGI2C7bHHL4XuWQUOaSNQmgd5dLJ5TEgYPEDBof5TqPhIRcqHPhd8TYTgIHY0a4yGW%2BJ%2B%2BiLWbP4vFbS46%2BFe5Mt3LmZLCTg4hR8oJs4hGarBPMZkNNE3fUPUszRCSmS7mr2eomZpOPHyxtEX%2F56%2B45%2BLwKbjLfgXSN2AE9I9UTlil8gbToPSI%2BYnTHFSjyIMOvZS%2BB0tnWe70cD34hIamH59CqX6EXy28av0Af4p7Rhz4HYBIsojCxS9%2Fju5o4%2BJVfrsXlFDLIDYmgzycwMgW%2BioKO4hA53AKhjYsZmocwMeyGx3cZ2kYwXhFlaHvQfPKuOZLBIenhJguWTSHWMplbCLOMRf6NxXXwfw4Io2VAgPcKCPA%2BfBXwZRbwEcNvGSZikCOUjBoh4vhos1nXEAHtovjJUPjpiZLtroaOfvt0%2F%2FDp%2Bfcr4aHRGWlodC0s1FlodMBeoCV7mRcVLkAJl4dgIaCsC5gZVwrY9FpCRh%2BeMWYGB7Z%2F5XnZbOnZ%2Fa49O3l0TCncFRRCggMWFWZ%2BEoLcCyyr7AUW0Co4pjPmqO6X1q5GM96THfWCJ2i3A6slPZbIUT52gB9XJGClwmE00hpKCtvu98%2FiXdZF8aap8OaXGMUoqqPNMSc9F3HtP%2BHqBV4Le5614tB1Zf%2FnLDlKQWW0DCq9HFTGJQWVdZXFiKUElU2CxINpXVz9AV8hV5%2BHFAfriehaGdo4DC81wAbmOwbYoYRdsPcc3NjEDz0MRUpVTP558V10NLnNGaGiTXmZlq5SmXnOQlAfKla94UN5CtVYkgm4w6KIYRIotuJbZGWDQA%2BvA3695AbhgQAmwhB4Cb2xvOFjx0kJEUX4B1wkUwlmkaUSn9ea9KypmItzYJTSoa5QT0ACMcsKe15VVKau4zVle6yq5Zpu1WAFarACXWA1qsVqRugGUqcOLY3nEJnIe6J3T4UI%2BSEPh2RXURYYv2Atk52pwgr0E8G6X24O6wx7SRb5T8TfvnToAKi%2BbpWAAsBox5WdAKV260RmEQiRwBOrXCW4IRGLHllHv%2BDSynAZA%2BPWUgEzTwXYUEHgDHV6xZ62rWn1lfP%2BTlNjcF%2BzN9TojQgVK26jbXV9mobI8Y7HqIJ0ulD5VAXstzU%2FzPc5p%2F1sH6P5J5D6ox%2Bo%2FB0%2BCPLBE6KYm0%2FwzAn8xziJ%2F7y1oWZW3KuvVX7VP6KvA6vidYUGnPp00%2B%2Bv3TuzoZ43x0smSrqKi0cuDMVl7HupQp5UHuECeU88SSTFBJguCGPEr8k6jHR%2FzrFAORlYNeecutK5i2OOoR4eZ4gt3X2JpWRuviombs8B%2F7AfH64yl%2B8zTBfwVXm75uhjaCfK5OCimPznibwV42YGu9x%2BWLbCQjjV9F%2ByHrP29aHpfZtqK%2BZYOzqZ7FJbZsawcoo8Z8sMqAynNnK%2BXieNHQ%2Bf9iCBSl9TrwPpZDTW0G2LI5Fqxolu9oKaRuHm7edID63YJUDWaXemX4aspjmj90%2BEmKkiVtdpjlnpNYTjtHZlLyeAwRmpzKzvc8ooaajXUjMuaGbCpPO5wjzd8%2F%2BOaJ8F8GpbaKfsdZp14VTXkTHfDi0f5u9np2ee%2FC13cPcP%3C%2Fdiagram%3E%3C%2Fmxfile%3E) to check out the architecture.
+Follow this [diagram](https://viewer.diagrams.net/?tags=%7B%7D&lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1#R%3Cmxfile%3E%3Cdiagram%20name%3D%22Page-1%22%20id%3D%2292RJ4OFCEY1Zh97tm0ry%22%3E7Vxdl6I4EP01nrPz4BwIBPBR7Xamd763d8%2FOPEaNyjQSN4a2e379JhAQSFRsUeT09EtDSDDUrVupVBV0rOHy6R1Fq8UnMsVBBxjTp4510wHAtHoG%2FydanmWLDUHSMqf%2BVLZtG%2B79X1g2yoHzyJ%2FidaEjIyRg%2FqrYOCFhiCes0IYoJZtitxkJir%2B6QnOsNNxPUKC2%2FutP2UK2mk5ve%2BE99ucL%2BdMecJMLS5R2lk%2ByXqAp2eSarNuONaSEsORo%2BTTEgZBeKpdk3GjH1WxiFIesygDPSUY8oiCSDycnxp7Tp6UkCqdYDDA71mCz8Bm%2BX6GJuLrhAPO2BVsG8vLMD4IhCQjl5yEJeaeBOic5zUdMGX7KNck5vsNkiRl95l3Sq6nKSI3puoaU6GYrf8%2BQnRY50fds2Ygk5vPs5lux8AMpGb2UXK8VUrLcopQAtBQh2a5GSGYdQnJgK4QErJIq2RpVci2NlKBVg5RMWxEKnnLjIk8JZQsyJyEKbretg63YDH627fORkJUU1k%2FM2LO0lChipChK%2FOSz72L4WyjPfuSu3DzJO8cnz%2FJkzSh5wCkAHWCNRpxhxj4U1iSiE%2FlUjrQsDNE5lt1Gs27EBp%2FeQ2Mcffvr9nv4ZRZ2pZYIKezFj%2BIAMf%2BxaIJPYrXxSqDQit1U4UkhuzwU%2B2aYsyf9B7REfgc4aClsRTher2IZOAF%2FgsHUf%2BSHc3F4gxjiQsNoyW8A0g58Frk%2BJxonErJUUzSr7tFmyXZKZsnxVLNkAo1ZcuqwStZrpgKoaKmspuhhNbNohHyaOXzE6Y8UE3GyRSg%2B2wmRw%2F9Go7ohSlfjK7FWQLFWXyl5etYYpz8%2Bv7v7%2FP3NOazSOQwRuKQh6rXFDtVGjhrsl1XRftlXRRhLIcxdOBZQ6igz4p1CdtMa0pjuBUkD3SZZY%2BY4Y7x1YUXaFEgjhx3DG8MYjU7kjV2RN%2FCqeGMrvPkWYX4IjIEQEdXRp8%2BVfyG6fECzB9QaFsFLusCm8vyXXHoKJAIVSWQWSQQOkUhsWgoU6vWMHeQaDvlu8BRywVYuSmoMa0jCWIO1vPoTPSLe%2FX5F%2FXA%2BEFFbYPRXq2slmGfC5gimlbcafr63ukOyXAU%2B4o%2BpivzL%2BKeI6HOZM0JFmL6Fe3sTwgvaNTV23eWncnNisHhZ4NqL18wnoSI4%2FoisKB0U%2BPOQH0%2B4QDgrrIEQhD9BQV9eWPrTaWId8dr%2FhcbxrYSZWRE%2FZPGjwEEH3oh7cYO4TmyjqdghGfPVhIFLduywC10dK2j2ihQBpoYjuvBwLdHhnhYsoes4Aysg83WMmQ4%2Bg5GVP1FDZL9hLcJqamAFOg7WAStQgwNFSLkwuNC5fSqiu6JkgtfruF3i2kIcMzeDEoZiLU1%2Brw5YvXLUVIOqfS5UvSY8xpJwb%2FvOIPbUFB8uu7IrVJF5jzu8xUq%2BH6jq59WeW5BDvwqtzWkEKOVAbat4i2SiclQJ7Gwa1RKeoAn8d%2B2gj95AHxeV1eEMa4%2FAxkP7lKLnXAdpl3ZCbpbcK8uw8sge7N%2BFtltShWQKL1UM12lCMSoYgGP3iy%2FWDLf2XZ0eStcuQ5lW2hyg%2B9E6ZoAjlaw8oAulvahLy4C6V%2B1PuFeh6N56gVbiMFoGSYetT%2FARjXHwla%2FxclkeE8bIUuM0MFL%2FbhQaxd0o8NRyFZ2jXceuCKgbT%2BFojzCbLPZ4ZRuficv3fKLG8ONdK92xzCzUAWG6u9xTcZRV7dXtf1nNROyaWX9TgV1vPC2dYaH%2BS4nfxLFqQaV%2F7nbVcZRDOYfC2fHNrjXkBmCDITdLV92ZiEkYhY6okE310fkvIonEYs2czfJNiTCLMSMBoNHNiT255Q65X71lnOIZigJWD%2BpWpSS6rl61DsMI1RRRE5byxFS37V27xUtBbmlZzpngaKyI0NZVaasJhIgVqgwOrzYtqz2w7cstMFCt0YyTC9FauMn9uG9atGlQtMk86cqrQ4BnrPG1oe5gNCh6zV1Hl2NwzrU6qPvGClufti3ntecPipCle5o8YPBccWaVZKMYns6e%2FE8L8cryBDXg5ZSjL1bvcoA5eqtYKeWD4vNw3uUXlzGGMs3dQkDrtZmlHDpQc%2BjgXCbTUR3q%2FkRk5pTNUAtROhyHOGLf09NHSS%2By7XEbfokBvKh6GFyytv76X8py1JDFXTinMddU1%2FxvivDMf2iLa961LllL7zZb0dgGPkBNVLW5t%2BCgGkH9TKZxZS8KUDjZ1iCOaUYBWTT%2F5jRlP%2FvrbPCSBfFe0%2B9Luacp8eEUTV6J3ap17OdJyh6bSnXL7%2FKX0u%2BHB7j7%2B0O4t%2F%2Fp6X3VGzxM0zTsdGU8dcp1cRflafpbL8vCiq2Skgn6nZUV8f%2FDXjjwzuSFe%2BoiNoz4LnYZxys%2BY7Yh9KECRFXlWB1KHbWKRr92dpWBcDRAnKs80VNfsBsGJBI8GvkUb5DofU22CJRjNnZP82UOnbjcOsSlhkU%2FRGNMQ8zifPUk4FosdPhVaK5rFrHoXVJx1TxOlkMYJl90ilcDqc2vAg%2FHKxXa6Ez62QBR30rIACl%2FaSNumAVk055VWDr08cazbtwsr%2BRfZR%2Bpyhe59TTAveCTTPx0%2B%2BWwxLHdfoDNuv0f%3C%2Fdiagram%3E%3C%2Fmxfile%3E) to check out the architecture.
 
 ### Software
 Here are the software components of the stack:
 
 - `Inbound`: Handles the reception of log streams from `Akamai Datastream 2` and pushes them to the `Queue Broker`. 
 It operates using [FluentD](https://www.fluentd.org/).
-- `Converter`: Converts and filters logs pushed to the `Queue Broker` by the `Inbound`. It was built using [Java Sprint Boot Aapplication](https://spring.io/projects/spring-boot).
-- `Outbound`: Transfers logs from the `Queue Broker` to external storage, such as S3-compliant storage. It operates 
-- using `FluentD`.
-- `Queue Broker Cluster`: Cluster built on top of `Apache Kafka`.
-- `Queue Broker Manager`: Responsible to manage the state of the `Queue Broker Cluster`. It operates using [Zookeeper](https://zookeeper.apache.org/).
-- `Queue Broker UI`: UI for `Apache Kafka`. It operates using [Provectus](https://docs.kafka-ui.provectus.io/).
+- `Converter`: Converts and filters the logs sent to the `Queue Broker` by the `Inbound`. It was built using [Java Sprint Boot Aapplication](https://spring.io/projects/spring-boot).
+- `Outbound`: Transfers processed logs by the `Converter` to an external storage, including S3-compatible solutions. It 
+operates using`FluentD`.
+- `Queue Broker`: A cluster built on `Apache Kafka` for temporary log storage.
+- `Queue Broker Manager`: Responsible to manage the state of the `Queue Broker`. It operates using [Zookeeper](https://zookeeper.apache.org/).
+- `Queue Broker UI`: UI for `Queue Broker`. It operates using [Provectus](https://docs.kafka-ui.provectus.io/).
 - `Proxy`: Routes incoming traffic to the appropriate component based on the specified path (e.g., `/ingest` routes to 
 `Inbound`, and `/panel` routes to the `Queue Manager UI`). It operates using [NGINX](https://nginx.org/).
-- `Cert Manager`: It automates the creation, renewal, and deployment of the TLS certificate used by the stack.
-- `Ingress`: Enables external traffic to access the stack. It operates using [Traefik](https://doc.traefik.io/traefik/)
+- `Cert Manager`: It automates the creation, renewal, and deployment of the TLS certificate used by the `Ingress`.
+- `Ingress`: Enables external HTTPS traffic within the stack. It operates using [Traefik](https://doc.traefik.io/traefik/)
 - `Kubernetes`: Container orchestration platform that automates the deployment, scaling, and management of the stack. It
 operates using [K3S](https://k3s.io/).
 
 ### IaaS
-Here are the IaaS components provisioned in `Akamai Cloud Computing` and used by the stack.
+Here are the IaaS components provisioned in `Akamai Connected Cloud` and used by the stack.
 
-- `Linodes`: Compute Instance or Virtual Private Server (VPS).
-- `Volumes`: It provides scalable, high-performance block storage volumes that can be attached to a compute instance.
-- `Object Storage`: S3-Compliant Storage.
-- `Cloud Firewall`: Defines the firewall rules that permit traffic to and from the stack.
+- `Linodes`: Compute instances (also known as Virtual Private Servers) used to run the software described above.
+- `Volumes`: Offers scalable, high-performance block storage volumes attachable to compute instances.
+- `Object Storage`: Specifies the S3-compliant storage for long-term log retention.
+- `Node Balancers`: Manages load balancing of external traffic to compute instances.
+- `Cloud Firewall`: Specifies the firewall rules to manage the traffic to and from the stack.
 
 ### Settings and Provisioning
 The settings and provisioning are handled by [Terraform](https://terraform.io/). 
@@ -82,7 +83,7 @@ directory:
 
 - `variables.tf`: Defines the provisioning variables. You can also use `terraform.tfvars`.
 - `main.tf`: Defines the provisioning providers. You need to create an API Token in advance and add a section called 
-`akamai` in the file `~/.aws/credentials`. To create the API Token, please refer the documentation [here](#6-other-resources). 
+`akamai` in the file `~/.aws/credentials`. To create the API Token, please refer the documentation [here](#5-other-resources). 
 - `compute.tf`: Defines the provisioning of the compute instances.
 - `firewall.tf`: Defines the provisioning of the firewall rules.
 - `kubernetes.tf`: Defines the provisioning of Kubernetes.
@@ -164,16 +165,27 @@ After provisioning, execute the following commands:
    ```bash
    kubectl get service traefik -n kube-system -o jsonpath='{.status.loadBalancer.ingress}'
    ```  
-   Open your browser and navigate to:
+   Depending on the number of compute instances provisioned in the Kubernetes cluster, it will show multiple IPs.
+
+
+5. You can also retrieve the inbound node balancer IP address:
+   ```bash
+   linode-cli nodebalancers list | grep inbound | awk -F' ' '{print $10}'
+   ```  
+   Please make sure that you have the [linode-cli](https://github.com/linode/linode-cli) installed and authenticated in
+   your environment.
+
+
+6. Open your browser and navigate to:
    ```text
    https://<ip>/panel
    ```  
-   Please replace the `<ip>` placeholder, with the IP address fetched in the procedure described above.
+   Please replace the `<ip>` placeholder, with any IP address fetched in the procedure described above.
 
    A login prompt will appear. Enter the credentials defined in the variables file.
 
 
-5. Configure Akamai Datastream 2 in ACC:  
+7. Configure Akamai Datastream 2 in ACC:  
    In the destination section, use the following settings:
    ```text
    Destination Type: Custom HTTPs
@@ -188,8 +200,8 @@ After provisioning, execute the following commands:
    You can also configure Akamai GTM to balance traffic within the Kubernetes cluster and/or set up an Akamai Property 
    to restrict traffic to Akamai SiteShield IPs.
 
-## 6. Other resources
+## 5. Other resources
 - [Akamai Techdocs](https://techdocs.akamai.com)
-- [Akamai Cloud Computing](https://www.linode.com)
+- [Akamai Connected Cloud](https://www.linode.com)
 
 And that’s it! Enjoy!
