@@ -119,6 +119,9 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.name
+            - name: KAFKA_ADVERTISED_LISTENERS
+              value: |
+                INTERNAL://queue-broker-$(KAFKA_CFG_BROKER_ID).queue-broker.svc.cluster.local:9092,EXTERNAL://${linode_nodebalancer.outbound.ipv4}:9093
             - name: KAFKA_OPTS
               value: "-Djava.security.auth.login.config=/opt/bitnami/kafka/config/server_jaas.conf"
           ports:
@@ -249,4 +252,6 @@ spec:
           configMap:
             name: converter-settings
 EOT
+
+  depends_on = [ linode_nodebalancer.outbound ]
 }

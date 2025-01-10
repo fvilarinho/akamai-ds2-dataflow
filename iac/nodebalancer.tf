@@ -25,7 +25,7 @@ resource "linode_nodebalancer_node" "outboundManager" {
   config_id       = linode_nodebalancer_config.outbound.id
   label           = "outbound-manager"
   address         = "${linode_instance.clusterManager.private_ip_address}:30093"
-  weight          = (100 / var.settings.cluster.nodes.count)
+  weight          = floor(100 / var.settings.cluster.nodes.count)
 
   lifecycle {
     replace_triggered_by = [ linode_instance.clusterManager.id ]
@@ -45,7 +45,7 @@ resource "linode_nodebalancer_node" "outboundWorker" {
   config_id       = linode_nodebalancer_config.outbound.id
   label           = "outbound-worker${count.index}"
   address         = "${linode_instance.clusterWorker[count.index].private_ip_address}:30093"
-  weight          = (100 / var.settings.cluster.nodes.count)
+  weight          = floor(100 / var.settings.cluster.nodes.count)
 
   lifecycle {
     replace_triggered_by = [ linode_instance.clusterWorker[count.index].id ]
@@ -99,7 +99,7 @@ resource "linode_nodebalancer_node" "inboundManager" {
   config_id       = linode_nodebalancer_config.inbound.id
   label           = "inbound-manager"
   address         = "${linode_instance.clusterManager.private_ip_address}:${data.external.inboundPort.result.port}"
-  weight          = (100 / var.settings.cluster.nodes.count)
+  weight          = floor(100 / var.settings.cluster.nodes.count)
 
   lifecycle {
     replace_triggered_by = [ linode_instance.clusterManager.id ]
@@ -120,7 +120,7 @@ resource "linode_nodebalancer_node" "inboundWorker" {
   config_id       = linode_nodebalancer_config.inbound.id
   label           = "inbound-worker${count.index}"
   address         = "${linode_instance.clusterWorker[count.index].private_ip_address}:${data.external.inboundPort.result.port}"
-  weight          = (100 / var.settings.cluster.nodes.count)
+  weight          = floor(100 / var.settings.cluster.nodes.count)
 
   lifecycle {
     replace_triggered_by = [ linode_instance.clusterWorker[count.index].id ]
