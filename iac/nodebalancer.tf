@@ -1,12 +1,19 @@
+# Required local variables.
+locals {
+  clusterBodeBalancers = (var.settings.cluster.nodes.count > 1 ? [ linode_nodebalancer.inbound[0].id, linode_nodebalancer.outbound[0].id ] : [])
+}
+
 # Outbound node balancer, used to balance the traffic of external Apache Kafka consumers.
 resource "linode_nodebalancer" "outbound" {
+  count  = (var.settings.cluster.nodes.count > 1 ? 1 : 0)
   label  = "${var.settings.general.identifier}-outbound"
   tags   = var.settings.general.tags
   region = var.settings.cluster.region
 }
 
 resource "linode_nodebalancer_config" "outbound" {
-  nodebalancer_id = linode_nodebalancer.outbound.id
+  count           = (var.settings.cluster.nodes.count > 1 ? 1 : 0)
+  nodebalancer_id = linode_nodebalancer.outbound[0].id
   port            = 9092
   protocol        = "tcp"
   check           = "connection"
@@ -21,8 +28,9 @@ resource "linode_nodebalancer_config" "outbound" {
 
 # Manager node for outbound.
 resource "linode_nodebalancer_node" "outboundManager" {
-  nodebalancer_id = linode_nodebalancer.outbound.id
-  config_id       = linode_nodebalancer_config.outbound.id
+  count           = (var.settings.cluster.nodes.count > 1 ? 1 : 0)
+  nodebalancer_id = linode_nodebalancer.outbound[0].id
+  config_id       = linode_nodebalancer_config.outbound[0].id
   label           = "outbound-manager"
   address         = "${linode_instance.clusterManager.private_ip_address}:30093"
   weight          = floor(100 / var.settings.cluster.nodes.count)
@@ -41,8 +49,8 @@ resource "linode_nodebalancer_node" "outboundManager" {
 # Worker nodes for outbound.
 resource "linode_nodebalancer_node" "outboundWorker" {
   count           = var.settings.cluster.nodes.count - 1
-  nodebalancer_id = linode_nodebalancer.outbound.id
-  config_id       = linode_nodebalancer_config.outbound.id
+  nodebalancer_id = linode_nodebalancer.outbound[0].id
+  config_id       = linode_nodebalancer_config.outbound[0].id
   label           = "outbound-worker${count.index}"
   address         = "${linode_instance.clusterWorker[count.index].private_ip_address}:30093"
   weight          = floor(100 / var.settings.cluster.nodes.count)
@@ -60,13 +68,15 @@ resource "linode_nodebalancer_node" "outboundWorker" {
 
 # Inbound node balancer, used to balance the traffic of external HTTPs clients.
 resource "linode_nodebalancer" "inbound" {
+  count  = (var.settings.cluster.nodes.count > 1 ? 1 : 0)
   label  = "${var.settings.general.identifier}-inbound"
   tags   = var.settings.general.tags
   region = var.settings.cluster.region
 }
 
 resource "linode_nodebalancer_config" "inbound" {
-  nodebalancer_id = linode_nodebalancer.inbound.id
+  count           = (var.settings.cluster.nodes.count > 1 ? 1 : 0)
+  nodebalancer_id = linode_nodebalancer.inbound[0].id
   port            = 443
   protocol        = "tcp"
   check           = "connection"
@@ -81,6 +91,8 @@ resource "linode_nodebalancer_config" "inbound" {
 
 # Fetches the inbound port to be configured in the node balancer.
 data "external" "inboundPort" {
+  count = (var.settings.cluster.nodes.count > 1 ? 1 : 0)
+
   program = [
     abspath(pathexpand("./inboundPort.sh")),
     local.kubeconfigFilename
@@ -95,10 +107,11 @@ data "external" "inboundPort" {
 
 # Manager node for inbound.
 resource "linode_nodebalancer_node" "inboundManager" {
-  nodebalancer_id = linode_nodebalancer.inbound.id
-  config_id       = linode_nodebalancer_config.inbound.id
+  count           = (var.settings.cluster.nodes.count > 1 ? 1 : 0)
+  nodebalancer_id = linode_nodebalancer.inbound[0].id
+  config_id       = linode_nodebalancer_config.inbound[0].id
   label           = "inbound-manager"
-  address         = "${linode_instance.clusterManager.private_ip_address}:${data.external.inboundPort.result.port}"
+  address         = "${linode_instance.clusterManager.private_ip_address}:${data.external.inboundPort[0].result.port}"
   weight          = floor(100 / var.settings.cluster.nodes.count)
 
   lifecycle {
@@ -116,10 +129,10 @@ resource "linode_nodebalancer_node" "inboundManager" {
 # Worker nodes for inbound.
 resource "linode_nodebalancer_node" "inboundWorker" {
   count           = var.settings.cluster.nodes.count - 1
-  nodebalancer_id = linode_nodebalancer.inbound.id
-  config_id       = linode_nodebalancer_config.inbound.id
+  nodebalancer_id = linode_nodebalancer.inbound[0].id
+  config_id       = linode_nodebalancer_config.inbound[0].id
   label           = "inbound-worker${count.index}"
-  address         = "${linode_instance.clusterWorker[count.index].private_ip_address}:${data.external.inboundPort.result.port}"
+  address         = "${linode_instance.clusterWorker[count.index].private_ip_address}:${data.external.inboundPort[0].result.port}"
   weight          = floor(100 / var.settings.cluster.nodes.count)
 
   lifecycle {

@@ -8,6 +8,7 @@ resource "random_string" "clusterToken" {
   length = 15
 }
 
+# Setup of the cluster manager.
 resource "null_resource" "clusterManagerSetup" {
   provisioner "remote-exec" {
     connection {
@@ -15,6 +16,7 @@ resource "null_resource" "clusterManagerSetup" {
       private_key = chomp(file(local.sshPrivateKeyFilename))
     }
 
+    # Installs the required software.
     inline = [
       "export DEBIAN_FRONTEND=nointeractive",
       "apt update",
@@ -32,6 +34,7 @@ resource "null_resource" "clusterManagerSetup" {
   ]
 }
 
+# Setup of the cluster worker.
 resource "null_resource" "clusterWorkerSetup" {
   count = (var.settings.cluster.nodes.count - 1)
 
@@ -41,6 +44,7 @@ resource "null_resource" "clusterWorkerSetup" {
       private_key = chomp(file(local.sshPrivateKeyFilename))
     }
 
+    # Installs the required software.
     inline = [
       "export DEBIAN_FRONTEND=nointeractive",
       "apt update",
@@ -61,6 +65,7 @@ resource "null_resource" "clusterWorkerSetup" {
   ]
 }
 
+# Saves the kubeconfig file.
 resource "null_resource" "downloadKubeconfig" {
   triggers = {
     always_run = timestamp()

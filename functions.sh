@@ -35,9 +35,12 @@ function prepareToExecute() {
   export KUBECTL_CMD=$(which kubectl)
 
   # Mandatory environment variables.
-  export BUILD_ENV_FILENAME=./.env
+  export WORK_DIR=$(pwd)
+  export BUILD_ENV_FILENAME=${WORK_DIR}/.env
 
-  source $BUILD_ENV_FILENAME
+  if [ -e "$BUILD_ENV_FILENAME" ]; then
+    source "$BUILD_ENV_FILENAME"
+  fi
 }
 
 prepareToExecute

@@ -1,3 +1,6 @@
+# Define the Akamai Cloud Computing credentials.
+variable "linodeToken" {}
+
 # Defines the stack settings.
 variable "settings" {
   default = {

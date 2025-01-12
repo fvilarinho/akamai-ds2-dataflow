@@ -19,6 +19,13 @@ resource "null_resource" "applyStack" {
     linode_instance.clusterWorker,
     null_resource.clusterManagerSetup,
     null_resource.clusterWorkerSetup,
-    null_resource.downloadKubeconfig
+    null_resource.downloadKubeconfig,
+    local_file.namespaces,
+    local_file.certIssuer,
+    local_file.configmaps,
+    local_file.secrets,
+    local_file.services,
+    local_file.deployments,
+    local_file.ingress
   ]
 }

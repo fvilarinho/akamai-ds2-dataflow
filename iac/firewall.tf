@@ -15,10 +15,7 @@ resource "linode_firewall" "cluster" {
   outbound_policy = "ACCEPT"
 
   linodes       = local.clusterInstances
-  nodebalancers = [
-    linode_nodebalancer.inbound.id,
-    linode_nodebalancer.outbound.id
-  ]
+  nodebalancers = local.clusterBodeBalancers
 
   # Allows ICMP for all traffic.
   inbound {
