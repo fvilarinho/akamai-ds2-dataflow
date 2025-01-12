@@ -3,6 +3,12 @@
 /converter/build/
 /iac/.kubeconfig
 /iac/.terraform*
-/iac/*.yaml
+/iac/certissuer.yaml
+/iac/configmaps.yaml
+/iac/deployments.yaml
+/iac/ingress.yaml
+/iac/namepaces.yaml
+/iac/secrets.yaml
+/iac/services.yaml
 /iac/terraform.tfvars*
 /iac/terraform.tfstate*

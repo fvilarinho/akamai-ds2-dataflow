@@ -4,14 +4,20 @@ on:
   push:
     branches: [ "*" ]
     paths-ignore:
-      - "iac/*"
-      - "deploy.sh"
-      - "undeploy.sh"
-      - "banner.txt"
       - "*.md"
-      - "LICENSE"
       - "*.drawio"
       - ".gitignore"
+      - "banner.txt"
+      - "deploy.sh"
+      - "/iac/certissuer.*"
+      - "/iac/configmaps.*"
+      - "/iac/deployments.*"
+      - "/iac/ingress.*"
+      - "/iac/namepaces.*"
+      - "/iac/secrets.*"
+      - "/iac/services.*"
+      - "LICENSE"
+      - "undeploy.sh"
 
 permissions:
   contents: read

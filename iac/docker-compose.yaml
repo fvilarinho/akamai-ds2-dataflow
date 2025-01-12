@@ -1,0 +1,8 @@
+services:
+  converter:
+    build: ../converter
+    image: ${DOCKER_REGISTRY_URL}/${DOCKER_REGISTRY_ID}/ds2-kafka-converter:${BUILD_VERSION}
+
+  fluentd:
+    build: ../fluentd
+    image: ${DOCKER_REGISTRY_URL}/${DOCKER_REGISTRY_ID}/fluentd:${BUILD_VERSION}

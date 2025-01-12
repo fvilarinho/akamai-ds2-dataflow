@@ -5,6 +5,8 @@ function prepareToExecute() {
   source functions.sh
 
   showBanner
+
+  cd iac || exit 1
 }
 
 # Checks the dependencies of this script.
@@ -18,15 +20,7 @@ function checkDependencies() {
 
 # Builds the container images.
 function package() {
-  cd fluentd || exit 1
-
-  $DOCKER_CMD build -t $DOCKER_REGISTRY_URL/$DOCKER_REGISTRY_ID/fluentd:$BUILD_VERSION . || exit 1
-
-  cd ../converter || exit 1
-
-  $DOCKER_CMD build -t $DOCKER_REGISTRY_URL/$DOCKER_REGISTRY_ID/ds2-kafka-converter:$BUILD_VERSION . || exit 1
-
-  cd ..
+  $DOCKER_CMD compose build
 }
 
 # Clean-up.

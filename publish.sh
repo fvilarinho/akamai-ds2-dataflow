@@ -5,6 +5,8 @@ function prepareToExecute() {
   source functions.sh
 
   showBanner
+
+  cd iac || exit 1
 }
 
 # Checks the dependencies of this script.
@@ -23,8 +25,7 @@ function publish() {
                                                           $DOCKER_REGISTRY_URL \
                                                           --password-stdin || exit 1
 
-  $DOCKER_CMD push $DOCKER_REGISTRY_URL/$DOCKER_REGISTRY_ID/fluentd:$BUILD_VERSION
-  $DOCKER_CMD push $DOCKER_REGISTRY_URL/$DOCKER_REGISTRY_ID/ds2-kafka-converter:$BUILD_VERSION
+  $DOCKER_CMD compose push
 }
 
 # Main function.
