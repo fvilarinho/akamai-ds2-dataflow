@@ -7,7 +7,7 @@ variable "settings" {
     # General attributes.
     general = {
       identifier = "akamai-ds2-dataflow" # Identifier of the stack.
-      tags       = [ "demo" ] # Tags to group the provisioned resources of the stack.
+      tags       = [ "demo", "datastream", "kafka" ] # Tags to group the provisioned resources of the stack.
       email      = "<email>" # Email used in the provisioning of the TLS certificate used by the stack.
     }
 
