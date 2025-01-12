@@ -74,10 +74,6 @@ data:
     sasl.enabled.mechanisms=PLAIN
     sasl.mechanism.inter.broker.protocol=PLAIN
     listener.name.external.sasl.enabled.mechanisms=PLAIN
-    listener.name.sasl_plaintext.plain.sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required \
-      username="${var.settings.dataflow.auth.user}" \
-      password="${var.settings.dataflow.auth.password}" \
-      user_${var.settings.dataflow.auth.user}="${var.settings.dataflow.auth.password}";
 
     zookeeper.connect=queue-broker-manager:2181
     log.dir=/bitnami/kafka/data

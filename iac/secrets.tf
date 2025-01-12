@@ -1,9 +1,9 @@
 # Required local variables.
 locals {
-  htpasswd   = "${var.settings.dataflow.auth.user}:${bcrypt(var.settings.dataflow.auth.password)}"
+  htpasswd   = "${var.settings.dataflow.inbound.auth.user}:${bcrypt(var.settings.dataflow.inbound.auth.password)}"
   serverJaas = <<EOT
     KafkaServer {
-      org.apache.kafka.common.security.plain.PlainLoginModule required username="${var.settings.dataflow.auth.user}" password="${var.settings.dataflow.auth.password}" user_${var.settings.dataflow.auth.user}="${var.settings.dataflow.auth.password}";
+      org.apache.kafka.common.security.plain.PlainLoginModule required username="${var.settings.dataflow.outbound.auth.user}" password="${var.settings.dataflow.outbound.auth.password}" user_${var.settings.dataflow.outbound.auth.user}="${var.settings.dataflow.outbound.auth.password}";
     };
 EOT
 }

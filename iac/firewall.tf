@@ -50,7 +50,8 @@ resource "linode_firewall" "cluster" {
     label    = "allowed-ips-for-ssh"
     protocol = "TCP"
     ports    = "22"
-    ipv4     = concat(var.settings.dataflow.inbound.allowedIps.ipv4, [ "${jsondecode(data.http.myIp.response_body).ip}/32" ])
+    ipv4     = concat(var.settings.cluster.allowedIps.ipv4, [ "${jsondecode(data.http.myIp.response_body).ip}/32" ])
+    ipv6     = var.settings.cluster.allowedIps.ipv6
   }
 
   # Allow Kubernetes control plane access only for the local public IP.
@@ -59,7 +60,8 @@ resource "linode_firewall" "cluster" {
     label    = "allowed-ips-for-controlplane"
     protocol = "TCP"
     ports    = "6443"
-    ipv4     = concat(var.settings.dataflow.inbound.allowedIps.ipv4, [ "${jsondecode(data.http.myIp.response_body).ip}/32" ])
+    ipv4     = concat(var.settings.cluster.allowedIps.ipv4, [ "${jsondecode(data.http.myIp.response_body).ip}/32" ])
+    ipv6     = var.settings.cluster.allowedIps.ipv6
   }
 
   # Allow inbound traffic.

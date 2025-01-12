@@ -19,19 +19,25 @@ variable "settings" {
         type  = "<type>" # Compute instance type.
         count = 1 # Number of compute instances.
       }
+
+      # Firewall attributes.
+      allowedIps = {
+        ipv4 = [ "0.0.0.0/0" ]
+        ipv6 = [ "::/0" ]
+      }
     }
 
     # Dataflow attributes.
     dataflow = {
-      # Authentication attributes.
-      auth = {
-        user     = "<user>"
-        password = "<password>"
-      }
-
       # Inbound attributes.
       inbound = {
         identifier = "rawlogs" # Topic identifier.
+
+        # Authentication attributes.
+        auth = {
+          user     = "<user>"
+          password = "<password>"
+        }
 
         # Storage attributes.
         storage = {
@@ -48,6 +54,12 @@ variable "settings" {
       # Outbound attributes.
       outbound = {
         identifier = "processedlogs" # Topic identifier.
+
+        # Authentication attributes.
+        auth = {
+          user     = "<user>"
+          password = "<password>"
+        }
 
         # S3-Compliant Storage attributes.
         storage = {

@@ -7,7 +7,7 @@
 /iac/configmaps.yaml
 /iac/deployments.yaml
 /iac/ingress.yaml
-/iac/namepaces.yaml
+/iac/namespaces.yaml
 /iac/secrets.yaml
 /iac/services.yaml
 /iac/terraform.tfvars*
