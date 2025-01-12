@@ -28,7 +28,7 @@ function applyCertManager() {
 # Installs the cert manager issuer.
 function applyCertIssuer() {
   while true; do
-    $KUBECTL_CMD apply -f certissuer.yaml 2> /dev/null
+    $KUBECTL_CMD apply -f certIssuer.yaml 2> /dev/null
 
     if [ $? -eq 0 ]; then
       break

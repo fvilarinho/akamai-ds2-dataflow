@@ -1,6 +1,6 @@
 # Defines the issuer (LetsEncrypt) for the TLS certificate.
 resource "local_file" "certIssuer" {
-  filename = abspath(pathexpand("./certissuer.yaml"))
+  filename = abspath(pathexpand("./certIssuer.yaml"))
   content = <<EOT
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer

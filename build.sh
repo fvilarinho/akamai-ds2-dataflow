@@ -20,7 +20,7 @@ function checkDependencies() {
 function build() {
   echo Building converter...
 
-  ./gradlew clean build --warning-mode all
+  ./gradlew clean build
 }
 
 # Main function.
