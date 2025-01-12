@@ -11,7 +11,7 @@ resource "null_resource" "applyStack" {
     }
 
     quiet   = true
-    command = "./applyStack.sh"
+    command = abspath(pathexpand("./applyStack.sh"))
   }
 
   depends_on = [

@@ -79,7 +79,7 @@ resource "null_resource" "downloadKubeconfig" {
     }
 
     quiet   = true
-    command = "./downloadKubeconfig.sh"
+    command = abspath(pathexpand("./downloadKubeconfig.sh"))
   }
 
   depends_on = [
