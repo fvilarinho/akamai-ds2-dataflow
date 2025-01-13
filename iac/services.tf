@@ -18,11 +18,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: queue-broker-manager
+  name: queue-broker-controller
   namespace: ${var.settings.general.identifier}
 spec:
   selector:
-    app: queue-broker-manager
+    app: queue-broker-controller
   ports:
     - name: backend
       port: 2181

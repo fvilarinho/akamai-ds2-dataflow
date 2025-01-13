@@ -1,3 +1,54 @@
+locals {
+  intermalQueueBrokersEndpoints = [ for index in range(0, var.settings.cluster.nodes.count) : "queue-broker-${index}.queue-broker.${var.settings.general.identifier}.svc.cluster.local:9092" ]
+
+  internalQueueBrokersList = [
+    for item in local.intermalQueueBrokersEndpoints : "           \"${item}\""
+  ]
+
+
+  queueBrokerManagerSettings = [ <<EOT
+  queue-broker-0.properties: |
+    listeners=INTERNAL://:9092,EXTERNAL://:9093
+    listener.security.protocol.map=INTERNAL:PLAINTEXT,EXTERNAL:SASL_PLAINTEXT
+    listener.name.external.sasl.enabled.mechanisms=PLAIN
+    inter.broker.listener.name=INTERNAL
+    sasl.enabled.mechanisms=PLAIN
+    sasl.mechanism.inter.broker.protocol=PLAIN
+    advertised.listeners=INTERNAL://queue-broker-0.queue-broker.${var.settings.general.identifier}:9092,EXTERNAL://${linode_instance.clusterManager.ip_address}:30093
+
+    zookeeper.connect=queue-broker-controller:2181
+    log.dir=/home/kafka-broker/data
+    log.retention.minutes=10
+    message.max.bytes=16777216
+    replica.fetch.max.bytes=16777216
+    default.replication.factor=${var.settings.cluster.nodes.count}
+    offsets.topic.replication.factor=${var.settings.cluster.nodes.count}
+    transaction.state.log.replication.factor=${var.settings.cluster.nodes.count}
+EOT
+  ]
+
+  queueBrokerWorkerSettings = [ for index in range(1, var.settings.cluster.nodes.count) : <<EOT
+  queue-broker-${index}.properties: |
+    listeners=INTERNAL://:9092,EXTERNAL://:9093
+    listener.security.protocol.map=INTERNAL:PLAINTEXT,EXTERNAL:SASL_PLAINTEXT
+    listener.name.external.sasl.enabled.mechanisms=PLAIN
+    inter.broker.listener.name=INTERNAL
+    sasl.enabled.mechanisms=PLAIN
+    sasl.mechanism.inter.broker.protocol=PLAIN
+    advertised.listeners=INTERNAL://queue-broker-${index}.queue-broker.${var.settings.general.identifier}:9092,EXTERNAL://${linode_instance.clusterWorker[index - 1].ip_address}:30093
+
+    zookeeper.connect=queue-broker-controller:2181
+    log.dir=/home/kafka-broker/data
+    log.retention.minutes=10
+    message.max.bytes=16777216
+    replica.fetch.max.bytes=16777216
+    default.replication.factor=${var.settings.cluster.nodes.count}
+    offsets.topic.replication.factor=${var.settings.cluster.nodes.count}
+    transaction.state.log.replication.factor=${var.settings.cluster.nodes.count}
+EOT
+  ]
+}
+
 # Defines the settings for the stack.
 resource "local_file" "configmaps" {
   filename = abspath(pathexpand("./configmaps.yaml"))
@@ -20,7 +71,7 @@ data:
 
     <match ingest>
       @type kafka
-      brokers queue-broker:9092
+      brokers ${join(",", local.intermalQueueBrokersEndpoints)}
       default_topic ${var.settings.dataflow.inbound.identifier}
     </match>
 ---
@@ -33,7 +84,7 @@ data:
   fluentd.conf: |
     <source>
       @type kafka_group
-      brokers queue-broker:9092
+      brokers ${join(",", local.intermalQueueBrokersEndpoints)}
       topics ${var.settings.dataflow.outbound.identifier}
       consumer_group outbound
     </source>
@@ -67,23 +118,8 @@ metadata:
   name: queue-broker-settings
   namespace: ${var.settings.general.identifier}
 data:
-  server.properties: |
-    listeners=INTERNAL://:9092,EXTERNAL://:9093
-    listener.security.protocol.map=INTERNAL:PLAINTEXT,EXTERNAL:SASL_PLAINTEXT
-    listener.name.external.sasl.enabled.mechanisms=PLAIN
-    inter.broker.listener.name=INTERNAL
-    sasl.enabled.mechanisms=PLAIN
-    sasl.mechanism.inter.broker.protocol=PLAIN
-    advertised.listeners=INTERNAL://queue-broker:9092,EXTERNAL://${linode_nodebalancer.outbound.ipv4}:9092
-
-    zookeeper.connect=queue-broker-manager:2181
-    log.dir=/bitnami/kafka/data
-    log.retention.minutes=10
-    message.max.bytes=16777216
-    replica.fetch.max.bytes=16777216
-    default.replication.factor=${var.settings.cluster.nodes.count}
-    offsets.topic.replication.factor=${var.settings.cluster.nodes.count}
-    transaction.state.log.replication.factor=${var.settings.cluster.nodes.count}
+${join("\n", local.queueBrokerManagerSettings)}
+${join("\n", local.queueBrokerWorkerSettings)}
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -142,8 +178,8 @@ data:
   settings.json: |
     {
       "kafka": {
-        "brokers": [
-          "queue-broker:9092"
+         "brokers": [
+${join(",\n", local.internalQueueBrokersList)}
         ],
         "inboundTopic": "${var.settings.dataflow.inbound.identifier}",
         "outboundTopic": "${var.settings.dataflow.outbound.identifier}"

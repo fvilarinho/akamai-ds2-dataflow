@@ -59,21 +59,21 @@ spec:
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: queue-broker-manager
+  name: queue-broker-controller
   namespace: ${var.settings.general.identifier}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: queue-broker-manager
+      app: queue-broker-controller
   template:
     metadata:
       labels:
-        app: queue-broker-manager
+        app: queue-broker-controller
     spec:
       restartPolicy: Always
       containers:
-        - name: queue-broker-manager
+        - name: queue-broker-controller
           image: bitnami/zookeeper:3.8.4
           imagePullPolicy: Always
           env:
@@ -82,11 +82,11 @@ spec:
           ports:
             - containerPort: 2181
           volumeMounts:
-            - name: queue-broker-manager-data
+            - name: queue-broker-controller-data
               mountPath: /bitnami/zookeeper/data
   volumeClaimTemplates:
     - metadata:
-        name: queue-broker-manager-data
+        name: queue-broker-controller-data
       spec:
         accessModes: [ "ReadWriteOnce" ]
         resources:
@@ -100,7 +100,7 @@ metadata:
   namespace: ${var.settings.general.identifier}
 spec:
   serviceName: queue-broker
-  replicas: 1
+  replicas: ${var.settings.cluster.nodes.count}
   selector:
     matchLabels:
       app: queue-broker
@@ -112,7 +112,7 @@ spec:
       restartPolicy: Always
       containers:
         - name: queue-broker
-          image: bitnami/kafka:3.9.0
+          image: $DOCKER_REGISTRY_URL/$DOCKER_REGISTRY_ID/kafka-broker:$BUILD_VERSION
           imagePullPolicy: Always
           env:
             - name: BROKER_NAME
@@ -120,20 +120,19 @@ spec:
                 fieldRef:
                   fieldPath: metadata.name
             - name: KAFKA_OPTS
-              value: "-Djava.security.auth.login.config=/opt/bitnami/kafka/config/server_jaas.conf"
+              value: "-Djava.security.auth.login.config=/home/kafka-broker/security/server_jaas.conf"
           ports:
             - containerPort: 9092
             - containerPort: 9093
           volumeMounts:
             - name: queue-broker-settings
-              mountPath: /bitnami/kafka/config/server.properties
-              subPath: server.properties
+              mountPath: /home/kafka-broker/etc
             - name: queue-broker-auth
-              mountPath: /opt/bitnami/kafka/config/server_jaas.conf
+              mountPath: /home/kafka-broker/security/server_jaas.conf
               subPath: server_jaas.conf
               readOnly: true
             - name: queue-broker-data
-              mountPath: /bitnami/kafka/data
+              mountPath: /home/kafka-broker/data
       volumes:
         - name: queue-broker-settings
           configMap:
@@ -178,7 +177,7 @@ spec:
             - name: KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS
               value: "queue-broker:9092"
             - name: "KAFKA_CLUSTERS_0_ZOOKEEPER"
-              value: "zookeeper:2181"
+              value: "queue-broker-controller:2181"
             - name: SERVER_SERVLET_CONTEXT_PATH
               value: "/panel"
           ports:

@@ -6,3 +6,7 @@ services:
   fluentd:
     build: ../fluentd
     image: ${DOCKER_REGISTRY_URL}/${DOCKER_REGISTRY_ID}/fluentd:${BUILD_VERSION}
+
+  kafka-broker:
+    build: ../kafka-broker
+    image: ${DOCKER_REGISTRY_URL}/${DOCKER_REGISTRY_ID}/kafka-broker:${BUILD_VERSION}
