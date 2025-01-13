@@ -173,9 +173,9 @@ spec:
           imagePullPolicy: Always
           env:
             - name: KAFKA_CLUSTERS_0_NAME
-              value: "queue-cluster"
+              value: "queue-broker-cluster"
             - name: KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS
-              value: "queue-broker:9092"
+              value: "${join(",", local.intermalQueueBrokersEndpoints)}"
             - name: "KAFKA_CLUSTERS_0_ZOOKEEPER"
               value: "queue-broker-controller:2181"
             - name: SERVER_SERVLET_CONTEXT_PATH
