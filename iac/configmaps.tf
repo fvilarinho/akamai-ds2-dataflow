@@ -194,4 +194,9 @@ ${join(",\n", local.internalQueueBrokersList)}
       "workers": 100
     }
 EOT
+
+  depends_on = [
+    linode_instance.clusterManager,
+    linode_instance.clusterWorker
+  ]
 }

@@ -14,8 +14,7 @@ resource "linode_firewall" "cluster" {
   inbound_policy  = "DROP"
   outbound_policy = "ACCEPT"
 
-  linodes       = local.clusterInstances
-  nodebalancers = local.clusterBodeBalancers
+  linodes = local.clusterInstances
 
   # Allows ICMP for all traffic.
   inbound {
@@ -79,7 +78,7 @@ resource "linode_firewall" "cluster" {
     action   = "ACCEPT"
     label    = "allowed-ips-for-outbound"
     protocol = "TCP"
-    ports    = "9092,30093"
+    ports    = "30093"
     ipv4     = concat(var.settings.dataflow.outbound.allowedIps.ipv4, [ "${jsondecode(data.http.myIp.response_body).ip}/32" ])
     ipv6     = var.settings.dataflow.outbound.allowedIps.ipv6
   }
@@ -109,8 +108,6 @@ resource "linode_firewall" "cluster" {
     null_resource.clusterManagerSetup,
     null_resource.clusterWorkerSetup,
     null_resource.downloadKubeconfig,
-    null_resource.applyStack,
-    linode_nodebalancer.inbound,
-    linode_nodebalancer.outbound
+    null_resource.applyStack
   ]
 }

@@ -96,7 +96,7 @@ It operates using [FluentD](https://www.fluentd.org/).
 - `Outbound`: Transfers processed logs by the `Converter` to an external storage, including S3-compatible solutions. It 
 operates using`FluentD`.
 - `Queue Broker`: A cluster built on `Apache Kafka` for temporary log storage.
-- `Queue Broker Manager`: Responsible to manage the state of the `Queue Broker`. It operates using [Zookeeper](https://zookeeper.apache.org/).
+- `Queue Broker Controller`: Responsible to manage the state of the `Queue Broker`. It operates using [Zookeeper](https://zookeeper.apache.org/).
 - `Queue Broker UI`: UI for `Queue Broker`. It operates using [Provectus](https://docs.kafka-ui.provectus.io/).
 - `Proxy`: Routes incoming traffic to the appropriate component based on the specified path (e.g., `/ingest` routes to 
 `Inbound`, and `/panel` routes to the `Queue Manager UI`). It operates using [NGINX](https://nginx.org/).
@@ -111,7 +111,6 @@ Here are the IaaS components provisioned in `Akamai Connected Cloud` and used by
 - `Linodes`: Compute instances (also known as Virtual Private Servers) used to run the software described above.
 - `Volumes`: Offers scalable, high-performance block storage volumes attachable to compute instances.
 - `Object Storage`: Specifies the S3-compliant storage for long-term log retention.
-- `Node Balancers`: Manages load balancing of external traffic to compute instances.
 - `Cloud Firewall`: Specifies the firewall rules to manage the traffic to and from the stack.
 
 ### Settings and Provisioning
@@ -193,9 +192,8 @@ After provisioning, execute the following commands:
 
 3. View stack pods details and state:
    ```bash
-   kubectl get pods -n <identifier> -o wide
+   kubectl get pods -A -o wide
    ```  
-   Please replace the `<identifier>` placeholder with the value defined in the variables file.
 
 
 4. Access the stack UI:  
@@ -206,15 +204,7 @@ After provisioning, execute the following commands:
    Depending on the number of compute instances provisioned in the Kubernetes cluster, it will show multiple IPs.
 
 
-5. You can also retrieve the inbound node balancer IP address:
-   ```bash
-   linode-cli nodebalancers list | grep inbound | awk -F' ' '{print $10}'
-   ```  
-   Please make sure that you have the [linode-cli](https://github.com/linode/linode-cli) installed and authenticated in
-   your environment.
-
-
-6. Open your browser and navigate to:
+5. Open your browser and navigate to:
    ```text
    https://<ip>/panel
    ```  
@@ -223,7 +213,7 @@ After provisioning, execute the following commands:
    A login prompt will appear. Enter the credentials defined in the variables file.
 
 
-7. Configure Akamai Datastream 2 in ACC:  
+6. Configure Akamai Datastream 2 in ACC:  
    In the destination section, use the following settings:
    ```text
    Destination Type: Custom HTTPs

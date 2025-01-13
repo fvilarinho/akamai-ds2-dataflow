@@ -57,6 +57,35 @@ spec:
             name: outbound-settings
 ---
 apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: converter
+  namespace: ${var.settings.general.identifier}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: converter
+  template:
+    metadata:
+      labels:
+        app: converter
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: converter
+          image: $DOCKER_REGISTRY_URL/$DOCKER_REGISTRY_ID/ds2-kafka-converter:$BUILD_VERSION
+          imagePullPolicy: Always
+          volumeMounts:
+            - name: converter-settings
+              mountPath: /home/converter/etc/settings.json
+              subPath: settings.json
+      volumes:
+        - name: converter-settings
+          configMap:
+            name: converter-settings
+---
+apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: queue-broker-controller
@@ -218,39 +247,5 @@ spec:
         - name: proxy-auth
           secret:
             secretName: proxy-auth
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: converter
-  namespace: ${var.settings.general.identifier}
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: converter
-  template:
-    metadata:
-      labels:
-        app: converter
-    spec:
-      restartPolicy: Always
-      containers:
-        - name: converter
-          image: $DOCKER_REGISTRY_URL/$DOCKER_REGISTRY_ID/ds2-kafka-converter:$BUILD_VERSION
-          imagePullPolicy: Always
-          volumeMounts:
-            - name: converter-settings
-              mountPath: /home/converter/etc/settings.json
-              subPath: settings.json
-      volumes:
-        - name: converter-settings
-          configMap:
-            name: converter-settings
 EOT
-
-  depends_on = [
-    linode_instance.clusterManager,
-    linode_nodebalancer.outbound
-  ]
 }
