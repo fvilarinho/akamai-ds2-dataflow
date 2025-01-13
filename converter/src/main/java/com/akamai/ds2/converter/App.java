@@ -4,7 +4,6 @@ import com.akamai.ds2.converter.constants.Constants;
 import com.akamai.ds2.converter.constants.ConverterConstants;
 import com.akamai.ds2.converter.util.SettingsUtil;
 import com.akamai.ds2.converter.util.helpers.ConverterWorker;
-import com.fasterxml.jackson.databind.JsonSerializer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
