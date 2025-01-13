@@ -70,10 +70,11 @@ data:
   server.properties: |
     listeners=INTERNAL://:9092,EXTERNAL://:9093
     listener.security.protocol.map=INTERNAL:PLAINTEXT,EXTERNAL:SASL_PLAINTEXT
+    listener.name.external.sasl.enabled.mechanisms=PLAIN
     inter.broker.listener.name=INTERNAL
     sasl.enabled.mechanisms=PLAIN
     sasl.mechanism.inter.broker.protocol=PLAIN
-    listener.name.external.sasl.enabled.mechanisms=PLAIN
+    advertised.listeners=INTERNAL://queue-broker:9092,EXTERNAL://${linode_nodebalancer.outbound.ipv4}:9092
 
     zookeeper.connect=queue-broker-manager:2181
     log.dir=/bitnami/kafka/data
