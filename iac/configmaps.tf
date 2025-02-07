@@ -1,20 +1,24 @@
 locals {
-  intermalQueueBrokersEndpoints = [ for index in range(0, var.settings.cluster.nodes.count) : "queue-broker-${index}.queue-broker.${var.settings.general.identifier}.svc.cluster.local:9092" ]
-
-  internalQueueBrokersList = [
-    for item in local.intermalQueueBrokersEndpoints : "           \"${item}\""
+  internalQueueBrokersEndpoints = [
+    for index in range(0, var.settings.cluster.nodes.count) : "queue-broker-${index}.queue-broker.${var.settings.general.identifier}.svc.cluster.local:9092"
   ]
 
+  internalQueueBrokersListTabulation = join("", tolist([for index in range(10) : " "]))
+
+  internalQueueBrokersList = [
+    for item in local.internalQueueBrokersEndpoints : "${local.internalQueueBrokersListTabulation}\"${item}\""
+  ]
 
   queueBrokerManagerSettings = [ <<EOT
   queue-broker-0.properties: |
+    broker.id=0
     listeners=INTERNAL://:9092,EXTERNAL://:9093
     listener.security.protocol.map=INTERNAL:PLAINTEXT,EXTERNAL:SASL_PLAINTEXT
     listener.name.external.sasl.enabled.mechanisms=PLAIN
     inter.broker.listener.name=INTERNAL
     sasl.enabled.mechanisms=PLAIN
     sasl.mechanism.inter.broker.protocol=PLAIN
-    advertised.listeners=INTERNAL://queue-broker-0.queue-broker.${var.settings.general.identifier}:9092,EXTERNAL://${linode_instance.clusterManager.ip_address}:30093
+    advertised.listeners=INTERNAL://queue-broker-0.queue-broker.${var.settings.general.identifier}.svc.cluster.local:9092,EXTERNAL://${linode_instance.clusterManager.ip_address}:30093
 
     zookeeper.connect=queue-broker-controller:2181
     log.dir=/home/kafka-broker/data
@@ -29,13 +33,14 @@ EOT
 
   queueBrokerWorkerSettings = [ for index in range(1, var.settings.cluster.nodes.count) : <<EOT
   queue-broker-${index}.properties: |
+    broker.id=${index}
     listeners=INTERNAL://:9092,EXTERNAL://:9093
     listener.security.protocol.map=INTERNAL:PLAINTEXT,EXTERNAL:SASL_PLAINTEXT
     listener.name.external.sasl.enabled.mechanisms=PLAIN
     inter.broker.listener.name=INTERNAL
     sasl.enabled.mechanisms=PLAIN
     sasl.mechanism.inter.broker.protocol=PLAIN
-    advertised.listeners=INTERNAL://queue-broker-${index}.queue-broker.${var.settings.general.identifier}:9092,EXTERNAL://${linode_instance.clusterWorker[index - 1].ip_address}:30093
+    advertised.listeners=INTERNAL://queue-broker-${index}.queue-broker.${var.settings.general.identifier}.svc.cluster.local:9092,EXTERNAL://${linode_instance.clusterWorker[index - 1].ip_address}:30093
 
     zookeeper.connect=queue-broker-controller:2181
     log.dir=/home/kafka-broker/data
@@ -71,7 +76,7 @@ data:
 
     <match ingest>
       @type kafka
-      brokers ${join(",", local.intermalQueueBrokersEndpoints)}
+      brokers ${join(",", local.internalQueueBrokersEndpoints)}
       default_topic ${var.settings.dataflow.inbound.identifier}
     </match>
 ---
@@ -84,7 +89,7 @@ data:
   fluentd.conf: |
     <source>
       @type kafka_group
-      brokers ${join(",", local.intermalQueueBrokersEndpoints)}
+      brokers ${join(",", local.internalQueueBrokersEndpoints)}
       topics ${var.settings.dataflow.outbound.identifier}
       consumer_group outbound
     </source>
@@ -178,7 +183,7 @@ data:
   settings.json: |
     {
       "kafka": {
-         "brokers": [
+        "brokers": [
 ${join(",\n", local.internalQueueBrokersList)}
         ],
         "inboundTopic": "${var.settings.dataflow.inbound.identifier}",

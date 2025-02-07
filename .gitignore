@@ -13,3 +13,4 @@
 /iac/services.yaml
 /iac/terraform.tfvars*
 /iac/terraform.tfstate*
+/test.sh

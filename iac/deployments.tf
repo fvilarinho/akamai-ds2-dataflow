@@ -198,14 +198,14 @@ spec:
       restartPolicy: Always
       containers:
         - name: queue-broker-ui
-          image: provectuslabs/kafka-ui:master
+          image: provectuslabs/kafka-ui:v0.7.2
           imagePullPolicy: Always
           env:
             - name: KAFKA_CLUSTERS_0_NAME
               value: "queue-broker-cluster"
             - name: KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS
-              value: "${join(",", local.intermalQueueBrokersEndpoints)}"
-            - name: "KAFKA_CLUSTERS_0_ZOOKEEPER"
+              value: "${join(",", local.internalQueueBrokersEndpoints)}"
+            - name: KAFKA_CLUSTERS_0_ZOOKEEPER
               value: "queue-broker-controller:2181"
             - name: SERVER_SERVLET_CONTEXT_PATH
               value: "/panel"
