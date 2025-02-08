@@ -1,11 +1,11 @@
-<mxfile host="drawio-plugin" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36" modified="2025-01-13T22:57:18.147Z" version="22.1.22" etag="3fdDvrv9zdM9b2hp3fpD" type="embed">
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (X11; Linux x86_64; rv:135.0) Gecko/20100101 Firefox/135.0" version="26.0.11">
   <diagram name="Page-1" id="92RJ4OFCEY1Zh97tm0ry">
-    <mxGraphModel dx="1352" dy="1516" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+    <mxGraphModel dx="819" dy="1296" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
         <mxCell id="86" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;" parent="1" vertex="1">
-          <mxGeometry x="190" y="-680" width="800" height="913" as="geometry" />
+          <mxGeometry x="190" y="-670" width="800" height="903" as="geometry" />
         </mxCell>
         <mxCell id="78" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;" parent="1" vertex="1">
           <mxGeometry x="370" y="253" width="470" height="140" as="geometry" />
@@ -37,7 +37,7 @@
         <mxCell id="Ff-utBMH50buQREXnOfn-3" value="Inbound&lt;div&gt;(FluentD)&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="460" y="-177" width="120" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="57" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;strokeColor=#00FF00;" parent="1" source="Ff-utBMH50buQREXnOfn-4" target="Ff-utBMH50buQREXnOfn-5" edge="1">
+        <mxCell id="57" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;strokeColor=light-dark(#00cc66, #008f00);" parent="1" source="Ff-utBMH50buQREXnOfn-4" target="Ff-utBMH50buQREXnOfn-5" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="Ff-utBMH50buQREXnOfn-4" value="Queue Broker&lt;div&gt;(Apache Kafka)&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
@@ -66,25 +66,26 @@
             <mxPoint x="520" y="243" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="62" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#6666FF;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" parent="1" source="25" target="66" edge="1">
+        <mxCell id="62" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.25;entryY=0;entryDx=0;entryDy=0;strokeColor=#6666FF;" parent="1" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="160" y="303" />
-              <mxPoint x="160" y="-547" />
-              <mxPoint x="490" y="-547" />
+              <mxPoint x="159" y="303" />
+              <mxPoint x="159" y="-550" />
+              <mxPoint x="488" y="-550" />
+              <mxPoint x="488" y="-400" />
+              <mxPoint x="489" y="-400" />
             </Array>
-            <mxPoint x="460" y="-547" as="targetPoint" />
+            <mxPoint x="504" y="303.02857142857147" as="sourcePoint" />
+            <mxPoint x="489" y="-387" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="76" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#EA6B66;entryX=0.75;entryY=0;entryDx=0;entryDy=0;" parent="1" source="25" target="Ff-utBMH50buQREXnOfn-4" edge="1">
+        <mxCell id="76" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#EA6B66;endArrow=none;startFill=0;" parent="1" source="25" edge="1">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="740" y="-527" as="targetPoint" />
+            <mxPoint x="740" y="-550" as="targetPoint" />
             <Array as="points">
               <mxPoint x="1020" y="303" />
-              <mxPoint x="1020" y="-562" />
-              <mxPoint x="770" y="-562" />
-              <mxPoint x="770" y="-80" />
-              <mxPoint x="550" y="-80" />
+              <mxPoint x="1020" y="-550" />
+              <mxPoint x="739" y="-550" />
             </Array>
           </mxGeometry>
         </mxCell>
@@ -113,7 +114,7 @@
           <mxGeometry x="460" y="44" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="51" value="- Push All Akamai raw logs" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#FF8000;" parent="1" vertex="1">
-          <mxGeometry x="535" y="-570" width="160" height="30" as="geometry" />
+          <mxGeometry x="525" y="-590" width="160" height="30" as="geometry" />
         </mxCell>
         <mxCell id="55" value="- Fetch the filtered logs" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#FF8000;" parent="1" vertex="1">
           <mxGeometry x="518" y="10" width="150" height="30" as="geometry" />
@@ -133,6 +134,17 @@
         <mxCell id="66" value="Ingress&lt;div&gt;(Traefik)&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="460" y="-387" width="120" height="60" as="geometry" />
         </mxCell>
+        <mxCell id="84" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.75;entryY=0;entryDx=0;entryDy=0;strokeColor=#EA6B66;" parent="1" target="Ff-utBMH50buQREXnOfn-4" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="740" y="-550" />
+              <mxPoint x="740" y="-80" />
+              <mxPoint x="550" y="-80" />
+            </Array>
+            <mxPoint x="739" y="-550" as="sourcePoint" />
+            <mxPoint x="550" y="-60" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
         <mxCell id="77" value="- Fetch the filtered logs with a Apache Kafka CLI" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#EA6B66;" parent="1" vertex="1">
           <mxGeometry x="540" y="303" width="280" height="30" as="geometry" />
         </mxCell>
@@ -140,7 +152,7 @@
           <mxGeometry x="640" y="363" width="240" height="30" as="geometry" />
         </mxCell>
         <mxCell id="83" value="Cloud Firewall" style="rounded=1;whiteSpace=wrap;html=1;fontStyle=1" parent="1" vertex="1">
-          <mxGeometry x="220" y="-510" width="740" height="70" as="geometry" />
+          <mxGeometry x="220" y="-497" width="740" height="70" as="geometry" />
         </mxCell>
         <mxCell id="85" value="Kubernetes cluster" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1" parent="1" vertex="1">
           <mxGeometry x="710" y="93" width="240" height="30" as="geometry" />
@@ -149,7 +161,7 @@
           <mxGeometry x="688" y="203" width="240" height="30" as="geometry" />
         </mxCell>
         <mxCell id="89" value="Akamai Datastream 2 Dataflow" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=25;fontStyle=1" parent="1" vertex="1">
-          <mxGeometry x="389" y="-740" width="390" height="40" as="geometry" />
+          <mxGeometry x="395" y="-720" width="390" height="40" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
