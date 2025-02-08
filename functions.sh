@@ -39,7 +39,7 @@ function prepareToExecute() {
 
   # Mandatory environment variables.
   export WORK_DIR="$(pwd)/iac"
-  export BUILD_ENV_FILENAME=${WORK_DIR}/.env
+  export BUILD_ENV_FILENAME=$WORK_DIR/.env
 
   if [ -e "$BUILD_ENV_FILENAME" ]; then
     source "$BUILD_ENV_FILENAME"
