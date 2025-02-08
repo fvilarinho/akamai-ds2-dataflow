@@ -1,6 +1,10 @@
 # Required local variables.
 locals {
-  clusterHostnames = [ for clusterInstance in data.linode_instances.clusterInstances.instances : "        - ${replace(clusterInstance.ip_address, ".", "-")}.ip.linodeusercontent.com" ]
+  # Creates a indented list with all cluster instances hostnames.
+  clusterHostnamesTabulation = join("", tolist([for index in range(7) : " "]))
+  clusterHostnamesList = [
+    for clusterInstance in data.linode_instances.clusterInstances.instances : "${local.clusterHostnamesTabulation} - ${replace(clusterInstance.ip_address, ".", "-")}.ip.linodeusercontent.com"
+  ]
 }
 
 # Defines the rules for the ingress traffic in the stack.
@@ -18,7 +22,7 @@ spec:
   ingressClassName: traefik
   tls:
     - hosts:
-${join("\n", local.clusterHostnames)}
+${join("\n", local.clusterHostnamesList)}
       secretName: ingress-tls
   rules:
     - http:

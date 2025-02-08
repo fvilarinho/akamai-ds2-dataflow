@@ -12,6 +12,8 @@ function showLabel() {
     echo "*** UNDEPLOY ***"
   elif [[ "$0" == *"deploy.sh"* ]]; then
     echo "*** DEPLOY ***"
+  elif [[ "$0" == *"test.sh"* ]]; then
+    echo "*** TEST ***"
   fi
 
   echo

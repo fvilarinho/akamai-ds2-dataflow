@@ -1,5 +1,6 @@
 # Required local variables.
 locals {
+  # List containing the cluster instances IPs.
   clusterInstancesIps = flatten([ for clusterInstance in data.linode_instances.clusterInstances.instances : [ "${clusterInstance.ip_address}/32", "${clusterInstance.private_ip_address}/32" ]])
 }
 

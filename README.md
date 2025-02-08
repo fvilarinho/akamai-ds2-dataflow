@@ -109,7 +109,6 @@ operates using [K3S](https://k3s.io/).
 Here are the IaaS components provisioned in `Akamai Connected Cloud` and used by the stack.
 
 - `Linodes`: Compute instances (also known as Virtual Private Servers) used to run the software described above.
-- `Volumes`: Offers scalable, high-performance block storage volumes attachable to compute instances.
 - `Object Storage`: Specifies the S3-compliant storage for long-term log retention.
 - `Cloud Firewall`: Specifies the firewall rules to manage the traffic to and from the stack.
 
@@ -119,11 +118,12 @@ If you want to customize the stack and its provisioning by yourself, just edit t
 directory:
 
 - `variables.tf`: Defines the provisioning variables. You can also use `terraform.tfvars`.
-- `main.tf`: Defines the provisioning providers. You need to create an API Token in advance and add a section called 
-`akamai` in the file `~/.aws/credentials`. To create the API Token, please refer the documentation [here](#6-other-resources). 
+- `main.tf`: Defines the provisioning providers. You need to create an API Token in advance. Follow how to create the 
+API Token [here](#6-other-resources). 
 - `compute.tf`: Defines the provisioning of the compute instances.
 - `firewall.tf`: Defines the provisioning of the firewall rules.
 - `kubernetes.tf`: Defines the provisioning of Kubernetes.
+- `test.tf`: Defines the test script for the provisioned environment. 
 - `certissues.yaml`: Defines the provisioning of the stack TLS certificate.
 - `namespaces.yaml`: Defines the provisioning of the stack namespaces.
 - `configmaps.yaml`: Defines the provisioning of the stack settings.
@@ -204,7 +204,13 @@ After provisioning, execute the following commands:
    Depending on the number of compute instances provisioned in the Kubernetes cluster, it will show multiple IPs.
 
 
-5. Open your browser and navigate to:
+5. To test the provisioned environment, execute the following in the project directory:
+   ```bash
+   ./test.sh
+   ```  
+
+
+6. Open your browser and navigate to:
    ```text
    https://<ip>/panel
    ```  
@@ -213,7 +219,7 @@ After provisioning, execute the following commands:
    A login prompt will appear. Enter the credentials defined in the variables file.
 
 
-6. Configure Akamai Datastream 2 in ACC:  
+7. Configure Akamai Datastream 2 in ACC:  
    In the destination section, use the following settings:
    ```text
    Destination Type: Custom HTTPs

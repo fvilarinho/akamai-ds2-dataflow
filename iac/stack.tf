@@ -1,5 +1,6 @@
 # Applies the stack in the cluster.
 resource "null_resource" "applyStack" {
+  # Always execute.
   triggers = {
     always_run = timestamp()
   }

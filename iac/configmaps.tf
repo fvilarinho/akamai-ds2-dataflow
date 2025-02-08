@@ -1,14 +1,21 @@
 locals {
+  # Creates all queue brokers endpoints. It is used in the config maps and deployments.
   internalQueueBrokersEndpoints = [
     for index in range(0, var.settings.cluster.nodes.count) : "queue-broker-${index}.queue-broker.${var.settings.general.identifier}.svc.cluster.local:9092"
   ]
 
+  # Creates a indented list with all queue brokers endpoints. It is used in the config maps.
   internalQueueBrokersListTabulation = join("", tolist([for index in range(10) : " "]))
-
   internalQueueBrokersList = [
     for item in local.internalQueueBrokersEndpoints : "${local.internalQueueBrokersListTabulation}\"${item}\""
   ]
 
+  # Defines the credentials and endpoint of the outbound storage.
+  outboundStorageAccessKey = (length(var.settings.dataflow.outbound.storage.accessKey) > 0 ? var.settings.dataflow.outbound.storage.accessKey : linode_object_storage_key.outbound[0].access_key)
+  outboundStorageSecretKey = (length(var.settings.dataflow.outbound.storage.secretKey) > 0 ? var.settings.dataflow.outbound.storage.secretKey : linode_object_storage_key.outbound[0].secret_key)
+  outboundStorageEndpoint = (length(var.settings.dataflow.outbound.storage.endpoint) > 0 ? var.settings.dataflow.outbound.storage.endpoint : "https://${var.settings.dataflow.outbound.storage.region}-1.linodeobjects.com")
+
+  # Defines the queue broker manager settings.
   queueBrokerManagerSettings = [ <<EOT
   queue-broker-0.properties: |
     broker.id=0
@@ -31,6 +38,7 @@ locals {
 EOT
   ]
 
+  # Defines the queue broker worker settings.
   queueBrokerWorkerSettings = [ for index in range(1, var.settings.cluster.nodes.count) : <<EOT
   queue-broker-${index}.properties: |
     broker.id=${index}
@@ -96,11 +104,10 @@ data:
 
     <match ${var.settings.dataflow.outbound.identifier}>
       @type s3
-      aws_key_id ${var.settings.dataflow.outbound.storage.accessKey}
-      aws_sec_key ${var.settings.dataflow.outbound.storage.secretKey}
+      aws_key_id ${local.outboundStorageAccessKey}
+      aws_sec_key ${local.outboundStorageSecretKey}
+      s3_endpoint ${local.outboundStorageEndpoint}
       s3_bucket ${var.settings.dataflow.outbound.storage.bucket}
-      s3_endpoint ${var.settings.dataflow.outbound.storage.endpoint}
-      s3_region us-east-1
       path ${var.settings.dataflow.outbound.storage.path}
       time_slice_format %Y%m%d%H%M
       store_as ${var.settings.dataflow.outbound.storage.format}
@@ -189,19 +196,15 @@ ${join(",\n", local.internalQueueBrokersList)}
         "inboundTopic": "${var.settings.dataflow.inbound.identifier}",
         "outboundTopic": "${var.settings.dataflow.outbound.identifier}"
       },
-      "filters": [
-        {
-          "fieldName": "UA",
-          "regex": "Googlebot|AdsBot-Google|Google-Structured-Data-Testing-Tool",
-          "include": false
-        }
-      ],
+      "filters": ${jsonencode(var.settings.dataflow.filters)},
       "workers": 100
     }
 EOT
 
   depends_on = [
     linode_instance.clusterManager,
-    linode_instance.clusterWorker
+    linode_instance.clusterWorker,
+    linode_object_storage_bucket.outbound,
+    linode_object_storage_key.outbound
   ]
 }

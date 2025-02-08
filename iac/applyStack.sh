@@ -17,16 +17,27 @@ function checkDependencies() {
 
 # Creates the required namespaces.
 function applyNamespaces() {
+  echo
+  echo "Applying namespaces..."
+
   $KUBECTL_CMD apply -f namespaces.yaml
+
+  echo
 }
 
 # Installs cert manager responsible to create the TLS certificate.
 function applyCertManager() {
+  echo "Applying cert manager..."
+
   $KUBECTL_CMD apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.16.2/cert-manager.yaml
+
+  echo
 }
 
 # Installs the cert manager issuer.
 function applyCertIssuer() {
+  echo "Applying cert issuer..."
+
   while true; do
     $KUBECTL_CMD apply -f certIssuer.yaml 2> /dev/null
 
@@ -36,51 +47,77 @@ function applyCertIssuer() {
 
     sleep 1
   done
+
+  echo
 }
 
 # Credentials.
 function applySecrets() {
+  echo "Applying secrets..."
+
   $KUBECTL_CMD apply -f secrets.yaml
+
+  echo
 }
 
  # Settings.
 function applyConfigMaps() {
+  echo "Applying config maps..."
+
   $KUBECTL_CMD apply -f configmaps.yaml
+
+  echo
 }
 
 # Containers.
 function applyDeployments() {
-  manifestFilename=deployments.yaml
+  echo "Applying deployments..."
 
-  cp -f $manifestFilename $manifestFilename.tmp
-  sed -i -e 's|$DOCKER_REGISTRY_URL|'"$DOCKER_REGISTRY_URL"'|g' $manifestFilename.tmp
-  sed -i -e 's|$DOCKER_REGISTRY_ID|'"$DOCKER_REGISTRY_ID"'|g' $manifestFilename.tmp
-  sed -i -e 's|$BUILD_VERSION|'"$BUILD_VERSION"'|g' $manifestFilename.tmp
+  MANIFEST_FILENAME=deployments.yaml
 
-  $KUBECTL_CMD apply -f $manifestFilename.tmp
+  cp -f $MANIFEST_FILENAME $MANIFEST_FILENAME.tmp
+  sed -i -e 's|$DOCKER_REGISTRY_URL|'"$DOCKER_REGISTRY_URL"'|g' $MANIFEST_FILENAME.tmp
+  sed -i -e 's|$DOCKER_REGISTRY_ID|'"$DOCKER_REGISTRY_ID"'|g' $MANIFEST_FILENAME.tmp
+  sed -i -e 's|$BUILD_VERSION|'"$BUILD_VERSION"'|g' $MANIFEST_FILENAME.tmp
 
-  rm -f $manifestFilename.tmp*
+  $KUBECTL_CMD apply -f $MANIFEST_FILENAME.tmp
+
+  rm -f $MANIFEST_FILENAME.tmp*
+
+  echo
 }
 
 # Exposed ports for communication between containers.
 function applyServices() {
+  echo "Applying services..."
+
   $KUBECTL_CMD apply -f services.yaml
+
+  echo
 }
 
 # Ingress.
 function applyIngress() {
+  echo "Applying ingress..."
+
   $KUBECTL_CMD apply -f ingress.yaml
+
+  echo "Waiting until certificates get issued..."
 
   while true; do
     CERTIFICATE_ISSUED=$($KUBECTL_CMD get certificate \
                                       -n "$NAMESPACE" | grep ingress-tls | grep True)
 
     if [ -n "$CERTIFICATE_ISSUED" ]; then
+      echo "Certificate was issued!"
+
       break
     fi
 
     sleep 1
   done
+
+  echo
 }
 
 # Main function.

@@ -1,8 +1,12 @@
 # Required local variables.
 locals {
+  # Credentials to access the cluster instances via SSH.
   sshPrivateKeyFilename = abspath(pathexpand("~/.ssh/id_rsa"))
   sshPublicKeyFilename  = abspath(pathexpand("~/.ssh/id_rsa.pub"))
-  clusterInstances      = concat([ linode_instance.clusterManager.id ], [ for clusterWorker in linode_instance.clusterWorker : clusterWorker.id ])
+
+  # List containing the cluster instances identifiers.
+  clusterInstances = concat([ linode_instance.clusterManager.id ],
+                            [ for clusterWorker in linode_instance.clusterWorker : clusterWorker.id ])
 }
 
 # Fetches the metadata of the cluster instances.

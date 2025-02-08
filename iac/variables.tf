@@ -51,6 +51,14 @@ variable "settings" {
         }
       }
 
+      filters = [
+        {
+          fieldName = "<fieldName>"
+          regex = "<regex>"
+          include = false
+        }
+      ]
+
       # Outbound attributes.
       outbound = {
         identifier = "processedlogs" # Topic identifier.
@@ -63,10 +71,11 @@ variable "settings" {
 
         # S3-Compliant Storage attributes.
         storage = {
-          accessKey         = "<accessKey>"
-          secretKey         = "<secretKey>"
+          accessKey         = "<accessKey>" # Leave empty if you want new credentials.
+          secretKey         = "<secretKey>" # Leave empty if you want new credentials.
+          endpoint          = "<endpoint>" # Leave empty if you want to create a new bucket.
           bucket            = "<bucket>"
-          endpoint          = "<endpoint>"
+          region            = "<region>"
           path              = "logs/"
           format            = "<gzip|json>"
           aggregationPeriod = "1m"
