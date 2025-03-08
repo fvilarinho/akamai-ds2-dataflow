@@ -16,11 +16,12 @@ public abstract class ConverterUtil {
     private static final ObjectMapper mapper = new ObjectMapper();
 
     public static boolean filter(String value) throws IOException {
-        Map<String, Object> object = mapper.readValue(value, new TypeReference<>(){});
         List<Filter> filters = SettingsUtil.getFilters();
         boolean matches = true;
 
         if(filters != null && !filters.isEmpty()) {
+            Map<String, Object> object = mapper.readValue(value, new TypeReference<>(){});
+
             for (Filter filter : filters) {
                 Object fieldValue = JsonUtil.getAttribute(object, filter.getFieldName());
 
