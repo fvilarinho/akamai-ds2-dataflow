@@ -102,6 +102,7 @@ function applyIngress() {
 
   $KUBECTL_CMD apply -f ingress.yaml
 
+  echo
   echo "Waiting until certificates get issued..."
 
   while true; do

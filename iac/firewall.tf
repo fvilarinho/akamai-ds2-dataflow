@@ -10,7 +10,7 @@ data "http" "myIp" {
 }
 
 # Definition of the firewall rules.
-resource "linode_firewall" "cluster" {
+resource "linode_firewall" "clusterNodes" {
   label           = "${var.settings.general.identifier}-cn-fw"
   inbound_policy  = "DROP"
   outbound_policy = "ACCEPT"
@@ -26,6 +26,23 @@ resource "linode_firewall" "cluster" {
     ipv6     = [ "::/0" ]
   }
 
+  # Allow node balancers traffic.
+  inbound {
+    action   = "ACCEPT"
+    label    = "allow-tcp-for-nodebalancers"
+    protocol = "TCP"
+    ports    = "30000-32767"
+    ipv4     = [ "192.168.255.0/24" ]
+  }
+
+  inbound {
+    action   = "ACCEPT"
+    label    = "allow-udp-for-nodebalancers"
+    protocol = "UDP"
+    ports    = "30000-32767"
+    ipv4     = [ "192.168.255.0/24" ]
+  }
+
   # Allow SSH only for the local public IP.
   inbound {
     action   = "ACCEPT"
@@ -33,7 +50,7 @@ resource "linode_firewall" "cluster" {
     protocol = "TCP"
     ports    = "22"
     ipv4     = concat(var.settings.cluster.allowedIps.ipv4, [ "${jsondecode(data.http.myIp.response_body).ip}/32" ])
-    ipv6     = concat(var.settings.dataflow.outbound.allowedIps.ipv6, [ "::1/128" ])
+    ipv6     = concat(var.settings.cluster.allowedIps.ipv6, [ "::1/128" ])
   }
 
   # Allow Kubernetes control plane access only for the local public IP.
@@ -43,7 +60,7 @@ resource "linode_firewall" "cluster" {
     protocol = "TCP"
     ports    = "6443"
     ipv4     = concat(var.settings.cluster.allowedIps.ipv4, [ "${jsondecode(data.http.myIp.response_body).ip}/32" ])
-    ipv6     = concat(var.settings.dataflow.outbound.allowedIps.ipv6, [ "::1/128" ])
+    ipv6     = concat(var.settings.cluster.allowedIps.ipv6, [ "::1/128" ])
   }
 
   # Allow inbound traffic.
@@ -53,7 +70,7 @@ resource "linode_firewall" "cluster" {
     protocol = "TCP"
     ports    = "443"
     ipv4     = concat(var.settings.dataflow.inbound.allowedIps.ipv4, [ "${jsondecode(data.http.myIp.response_body).ip}/32" ])
-    ipv6     = concat(var.settings.dataflow.outbound.allowedIps.ipv6, [ "::1/128" ])
+    ipv6     = concat(var.settings.dataflow.inbound.allowedIps.ipv6, [ "::1/128" ])
   }
 
   # Allow outbound traffic.
@@ -84,6 +101,7 @@ resource "linode_firewall" "cluster" {
     ipv4     = local.clusterInstancesIps
   }
 
+  # Akamai firewall compliance.
   inbound {
     action   = "ACCEPT"
     label    = "allow-akamai-ips"
@@ -118,4 +136,22 @@ resource "linode_firewall" "cluster" {
     null_resource.downloadKubeconfig,
     null_resource.applyStack
   ]
+}
+
+resource "linode_firewall" "clusterNodeBalancers" {
+  label           = "${var.settings.general.identifier}-cnb-fw"
+  inbound_policy  = "DROP"
+  outbound_policy = "ACCEPT"
+
+  nodebalancers = [ linode_nodebalancer.inbound.id ]
+
+  # Allow inbound traffic.
+  inbound {
+    action   = "ACCEPT"
+    label    = "allowed-ips-for-inbound"
+    protocol = "TCP"
+    ports    = "443"
+    ipv4     = concat(var.settings.dataflow.inbound.allowedIps.ipv4, [ "${jsondecode(data.http.myIp.response_body).ip}/32" ])
+    ipv6     = concat(var.settings.dataflow.inbound.allowedIps.ipv6, [ "::1/128" ])
+  }
 }
