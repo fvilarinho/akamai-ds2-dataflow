@@ -112,7 +112,7 @@ public abstract class SettingsUtil {
     }
 
     public static Integer getCount() throws IOException {
-        Integer count = JsonUtil.getAttribute(get(), SettingsConstants.WORKERS_ATTRIBUTE_ID);
+        Integer count = JsonUtil.getAttribute(get(), SettingsConstants.COUNT_ATTRIBUTE_ID);
 
         if (count == null)
             count = SettingsConstants.DEFAULT_COUNT;

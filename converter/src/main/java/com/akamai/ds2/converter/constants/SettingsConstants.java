@@ -10,7 +10,7 @@ public class SettingsConstants {
     public static final String  DEFAULT_KAFKA_BROKERS = "kafka-broker:9092";
     public static final Integer DEFAULT_WORKERS = 10;
 
-    public static final Integer COUNT_ATTRIBUTE_ID = 1;
+    public static final String COUNT_ATTRIBUTE_ID = "count";
     public static final String  FILEPATH = "${ETC_DIR}/".concat(DEFAULT_FILENAME);
     public static final String  FILTERS_ATTRIBUTE_ID = "filters";
     public static final String  KAFKA_BROKERS_ATTRIBUTE_ID = "kafka.brokers";
