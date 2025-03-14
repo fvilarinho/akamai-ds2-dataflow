@@ -15,8 +15,6 @@ function showLabel() {
   elif [[ "$0" == *"test.sh"* ]]; then
     echo "*** TEST ***"
   fi
-
-  echo
 }
 
 # Shows the banner.

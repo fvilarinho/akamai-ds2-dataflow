@@ -334,7 +334,7 @@ spec:
       restartPolicy: Always
       containers:
         - name: proxy
-          image: nginx:alpine3.20
+          image: nginx:alpine3.21
           imagePullPolicy: Always
           ports:
             - containerPort: 80
