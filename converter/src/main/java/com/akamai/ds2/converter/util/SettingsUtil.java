@@ -65,6 +65,15 @@ public abstract class SettingsUtil {
             load(new FileInputStream(settingsFilepath));
     }
 
+    public static Short getReplicationFactor() throws IOException {
+        List<?> brokersList = JsonUtil.getAttribute(get(), SettingsConstants.KAFKA_BROKERS_ATTRIBUTE_ID);
+
+        if (brokersList == null || brokersList.isEmpty())
+            return 1;
+
+        return Short.valueOf(String.valueOf(brokersList.size()));
+    }
+
     public static String getKafkaBrokers() throws IOException {
         List<?> brokersList = JsonUtil.getAttribute(get(), SettingsConstants.KAFKA_BROKERS_ATTRIBUTE_ID);
 
@@ -100,6 +109,15 @@ public abstract class SettingsUtil {
             outboundTopic = SettingsConstants.DEFAULT_KAFKA_OUTBOUND_TOPIC;
 
         return outboundTopic;
+    }
+
+    public static Integer getCount() throws IOException {
+        Integer count = JsonUtil.getAttribute(get(), SettingsConstants.WORKERS_ATTRIBUTE_ID);
+
+        if (count == null)
+            count = SettingsConstants.DEFAULT_COUNT;
+
+        return count;
     }
 
     public static Integer getWorkers() throws IOException {

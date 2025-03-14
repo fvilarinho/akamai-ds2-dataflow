@@ -162,6 +162,7 @@ ${join(",\n", local.internalQueueBrokersList)}
         "inboundTopic": "${var.settings.dataflow.inbound.identifier}",
         "outboundTopic": "${var.settings.dataflow.outbound.identifier}"
       },
+      "count": ${var.settings.dataflow.converter.count},
       "filters": ${jsonencode(var.settings.dataflow.converter.filters)},
       "workers": ${var.settings.dataflow.converter.workers}
     }

@@ -6,6 +6,7 @@
     "inboundTopic": "rawlogs",
     "outboundTopic": "processedlogs"
   },
+  "count": 1,
   "filters": [],
-  "workers": 100
+  "workers": 10
 }

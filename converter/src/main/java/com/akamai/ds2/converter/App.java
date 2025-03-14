@@ -4,6 +4,7 @@ import com.akamai.ds2.converter.constants.Constants;
 import com.akamai.ds2.converter.constants.ConverterConstants;
 import com.akamai.ds2.converter.util.SettingsUtil;
 import com.akamai.ds2.converter.util.helpers.ConverterWorker;
+import org.apache.kafka.clients.admin.*;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
@@ -17,9 +18,8 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.time.Duration;
-import java.util.Collections;
-import java.util.Properties;
-import java.util.Scanner;
+import java.util.*;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -65,22 +65,95 @@ public class App implements Runnable {
         return properties;
     }
 
+    private static Map<String, Object> prepareKafkaAdminParameters() throws IOException {
+        Map<String, Object> properties = new HashMap<>();
+
+        properties.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, SettingsUtil.getKafkaBrokers());
+
+        return properties;
+    }
+
+    private void loadSettings() throws IOException {
+        logger.info("Loading settings...");
+
+        SettingsUtil.load();
+
+        logger.info("Settings loaded!");
+    }
+
+    private void createTopics() throws IOException, ExecutionException, InterruptedException {
+        AdminClient admin = null;
+
+        try {
+            final String inboundTopic = SettingsUtil.getKafkaInboundTopic();
+            final String outboundTopic = SettingsUtil.getKafkaOutboundTopic();
+            final int partitionNumber = SettingsUtil.getCount();
+            final short replicationFactor = SettingsUtil.getReplicationFactor();
+
+            admin = AdminClient.create(prepareKafkaAdminParameters());
+
+            ListTopicsResult result = admin.listTopics();
+            Set<String> topicsList = result.names().get();
+            List<NewTopic> newTopicsList = null;
+            Map<String, NewPartitions> topicsPartitions = null;
+
+            if (topicsList == null || topicsList.isEmpty() || !topicsList.contains(inboundTopic)) {
+                newTopicsList = new ArrayList<>();
+                newTopicsList.add(new NewTopic(inboundTopic, partitionNumber, replicationFactor));
+            } else {
+                topicsPartitions = new HashMap<>();
+                topicsPartitions.put(inboundTopic, NewPartitions.increaseTo(partitionNumber));
+            }
+
+            if (topicsList == null || topicsList.isEmpty() || !topicsList.contains(outboundTopic)) {
+                if (newTopicsList == null)
+                    newTopicsList = new ArrayList<>();
+
+                newTopicsList.add(new NewTopic(outboundTopic, partitionNumber, replicationFactor));
+            } else {
+                if (topicsPartitions == null)
+                    topicsPartitions = new HashMap<>();
+
+                topicsPartitions.put(outboundTopic, NewPartitions.increaseTo(partitionNumber));
+            }
+
+            if (newTopicsList != null) {
+                logger.info("Creating queues...");
+
+                admin.createTopics(newTopicsList);
+
+                logger.info("Queues created!");
+            }
+
+            if (topicsPartitions != null) {
+                logger.info("Updating queues...");
+
+                admin.createPartitions(topicsPartitions);
+
+                logger.info("Queues updated!");
+            }
+        }
+        finally {
+            if (admin != null)
+                admin.close();
+        }
+    }
+
     public void run(){
         KafkaConsumer<String, String> inbound = null;
         KafkaProducer<String, String> outbound = null;
 
         try {
-            logger.info("Loading settings...");
+            loadSettings();
+            createTopics();
 
             final String inboundTopic = SettingsUtil.getKafkaInboundTopic();
             final String outboundTopic = SettingsUtil.getKafkaOutboundTopic();
 
-            logger.info("Settings loaded!");
+            logger.info("Subscribing to the queue {}...", inboundTopic);
 
             outbound = new KafkaProducer<>(prepareKafkaProducerParameters());
             inbound = new KafkaConsumer<>(prepareKafkaConsumerParameters());
-
-            logger.info("Subscribing to the queue {}...", inboundTopic);
 
             inbound.subscribe(Collections.singletonList(inboundTopic));
 
@@ -115,7 +188,7 @@ public class App implements Runnable {
             catch(Throwable ignored){
             }
         }
-        catch(Throwable e){
+        catch(IOException | ExecutionException | InterruptedException e){
             logger.error(e);
         }
         finally {
