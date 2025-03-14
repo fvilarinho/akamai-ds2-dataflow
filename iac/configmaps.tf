@@ -136,50 +136,16 @@ ${join("\n", local.queueBrokerWorkerSettings)}
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: proxy-settings
+  name: prometheus-settings
   namespace: ${var.settings.general.identifier}
 data:
-  default.conf: |
-    server {
-      listen 80;
-
-      auth_basic "Restricted Area";
-      auth_basic_user_file /etc/nginx/.htpasswd;
-
-      location / {
-        return 403;
-      }
-
-      location = /ingest {
-        limit_except POST {
-          deny all;
-        }
-
-        client_max_body_size 10M;
-
-        proxy_pass http://inbound:9880/ingest;
-        proxy_set_header X-Forwarded-For $remote_addr;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "upgrade";
-      }
-
-      location ^~ /panel {
-        proxy_pass http://queue-broker-ui:8080/panel;
-        proxy_set_header X-Forwarded-For $remote_addr;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "upgrade";
-      }
-
-      location = /404.html {
-        internal;
-      }
-    }
+  prometheus.yml: |
+    global:
+      scrape_interval: 15s
+    scrape_configs:
+    - job_name: 'queue-broker-monitoring'
+      static_configs:
+      - targets: ['queue-broker-monitoring-agent:9308']
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -198,6 +164,80 @@ ${join(",\n", local.internalQueueBrokersList)}
       },
       "filters": ${jsonencode(var.settings.dataflow.filters)},
       "workers": 100
+    }
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: proxy-settings
+  namespace: ${var.settings.general.identifier}
+data:
+  default.conf: |
+    server {
+      listen 80;
+
+      location / {
+        return 403;
+      }
+
+      location = /ingest {
+        auth_basic "Restricted Area";
+        auth_basic_user_file /etc/nginx/.htpasswd;
+
+        limit_except POST {
+          deny all;
+        }
+
+        client_max_body_size 10M;
+
+        proxy_pass http://inbound:9880/ingest;
+        proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+      }
+
+      location ^~ /panel {
+        auth_basic "Restricted Area";
+        auth_basic_user_file /etc/nginx/.htpasswd;
+
+        proxy_pass http://queue-broker-ui:8080/panel;
+        proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+      }
+
+      location ^~ /monitoring {
+        auth_basic "Restricted Area";
+        auth_basic_user_file /etc/nginx/.htpasswd;
+
+        proxy_pass http://prometheus:9090/monitoring;
+        proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+      }
+
+      location ^~ /dashboards {
+        proxy_pass http://grafana:3000/dashboards;
+        proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+      }
+
+      location = /404.html {
+        internal;
+      }
     }
 EOT
 

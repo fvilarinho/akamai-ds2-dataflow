@@ -1,3 +1,10 @@
+locals {
+  monitoredQUeueBrokersListTabulation = join("", tolist([for index in range(10) : " "]))
+  monitoredQUeueBrokersList = [
+    for item in local.internalQueueBrokersEndpoints : "${local.monitoredQUeueBrokersListTabulation}- \"--kafka.server=${item}\""
+  ]
+}
+
 # Defines the containers of the stack.
 resource "local_file" "deployments" {
   filename = abspath(pathexpand("./deployments.yaml"))
@@ -181,6 +188,33 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  name: queue-broker-monitoring-agent
+  namespace: ${var.settings.general.identifier}
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: queue-broker-monitoring-agent
+  template:
+    metadata:
+      labels:
+        app: queue-broker-monitoring-agent
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: queue-broker-monitoring-agent
+          image: danielqsj/kafka-exporter:v1.9.0
+          imagePullPolicy: Always
+          args:
+${join("\n", local.monitoredQUeueBrokersList)}
+          ports:
+            - containerPort: 9308
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
   name: queue-broker-ui
   namespace: ${var.settings.general.identifier}
 spec:
@@ -211,6 +245,77 @@ spec:
               value: "/panel"
           ports:
             - containerPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus
+  namespace: ${var.settings.general.identifier}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prometheus
+  template:
+    metadata:
+      labels:
+        app: prometheus
+    spec:
+      containers:
+      - name: prometheus
+        image: prom/prometheus:v3.2.1
+        args:
+          - "--web.external-url=/monitoring"
+          - "--web.route-prefix=/monitoring"
+          - "--storage.tsdb.path=/prometheus"
+          - "--config.file=/etc/prometheus/prometheus.yml"
+        ports:
+          - containerPort: 9090
+        volumeMounts:
+          - name: prometheus-settings
+            mountPath: /etc/prometheus
+      volumes:
+        - name: prometheus-settings
+          configMap:
+            name: prometheus-settings
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana
+  namespace: ${var.settings.general.identifier}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grafana
+  template:
+    metadata:
+      labels:
+        app: grafana
+    spec:
+      containers:
+      - name: grafana
+        image: grafana/grafana:11.5.2
+        env:
+          - name: GF_SECURITY_ADMIN_USER
+            valueFrom:
+              secretKeyRef:
+                name: grafana-auth
+                key: username
+          - name: GF_SECURITY_ADMIN_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: grafana-auth
+                key: password
+          - name: GF_SERVER_ROOT_URL
+            value: /dashboards
+          - name: GF_SERVER_SERVE_FROM_SUB_PATH
+            value: "true"
+          - name: GF_USERS_HOME_PAGE
+            value: /dashboards
+        ports:
+          - containerPort: 3000
 ---
 apiVersion: apps/v1
 kind: DaemonSet

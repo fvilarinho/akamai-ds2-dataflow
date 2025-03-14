@@ -15,17 +15,27 @@ resource "local_file" "secrets" {
 apiVersion: v1
 kind: Secret
 metadata:
-  name: proxy-auth
-  namespace: ${var.settings.general.identifier}
-data:
-  .htpasswd: ${base64encode(local.inboundCredentials)}
----
-apiVersion: v1
-kind: Secret
-metadata:
   name: queue-broker-auth
   namespace: ${var.settings.general.identifier}
 data:
   server_jaas.conf: ${base64encode(local.outboundCredentials)}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: grafana-auth
+  namespace: ${var.settings.general.identifier}
+data:
+  username: ${base64encode(var.settings.dataflow.inbound.auth.user)}
+  password: ${base64encode(var.settings.dataflow.inbound.auth.password)}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: proxy-auth
+  namespace: ${var.settings.general.identifier}
+data:
+  .htpasswd: ${base64encode(local.inboundCredentials)}
+
 EOT
 }
