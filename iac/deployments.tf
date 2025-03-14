@@ -69,7 +69,7 @@ metadata:
   name: converter
   namespace: ${var.settings.general.identifier}
 spec:
-  replicas: ${var.settings.cluster.nodes.count}
+  replicas: ${var.settings.dataflow.converter.count}
   selector:
     matchLabels:
       app: converter

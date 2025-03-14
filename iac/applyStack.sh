@@ -18,7 +18,7 @@ function checkDependencies() {
 # Creates the required namespaces.
 function applyNamespaces() {
   echo
-  echo "Applying namespaces..."
+  echo "APPLYING NAMESPACES..."
 
   $KUBECTL_CMD apply -f namespaces.yaml
 
@@ -27,7 +27,7 @@ function applyNamespaces() {
 
 # Installs cert manager responsible to create the TLS certificate.
 function applyCertManager() {
-  echo "Applying cert manager..."
+  echo "APPLYING CERT MANAGER..."
 
   $KUBECTL_CMD apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.16.2/cert-manager.yaml
 
@@ -36,7 +36,7 @@ function applyCertManager() {
 
 # Installs the cert manager issuer.
 function applyCertIssuer() {
-  echo "Applying cert issuer..."
+  echo "APPLYING CERT ISSUER..."
 
   while true; do
     $KUBECTL_CMD apply -f certIssuer.yaml 2> /dev/null
@@ -53,7 +53,7 @@ function applyCertIssuer() {
 
 # Credentials.
 function applySecrets() {
-  echo "Applying secrets..."
+  echo "APPLYING SECRETS..."
 
   $KUBECTL_CMD apply -f secrets.yaml
 
@@ -62,7 +62,7 @@ function applySecrets() {
 
  # Settings.
 function applyConfigMaps() {
-  echo "Applying config maps..."
+  echo "APPLYING CONFIG MAPS..."
 
   $KUBECTL_CMD apply -f configmaps.yaml
 
@@ -71,7 +71,7 @@ function applyConfigMaps() {
 
 # Containers.
 function applyDeployments() {
-  echo "Applying deployments..."
+  echo "APPLYING DEPLOYMENTS..."
 
   MANIFEST_FILENAME=deployments.yaml
 
@@ -89,7 +89,7 @@ function applyDeployments() {
 
 # Exposed ports for communication between containers.
 function applyServices() {
-  echo "Applying services..."
+  echo "APPLY SERVICES..."
 
   $KUBECTL_CMD apply -f services.yaml
 
@@ -98,7 +98,7 @@ function applyServices() {
 
 # Ingress.
 function applyIngress() {
-  echo "Applying ingress..."
+  echo "APPLYING INGRESS..."
 
   $KUBECTL_CMD apply -f ingress.yaml
 

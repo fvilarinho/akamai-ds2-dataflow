@@ -51,13 +51,17 @@ variable "settings" {
         }
       }
 
-      filters = [
-        {
-          fieldName = "<fieldName>"
-          regex = "<regex>"
-          include = false
-        }
-      ]
+      converter = {
+        count = 10
+        filters = [
+          {
+            fieldName = "<fieldName>"
+            regex     = "<regex>"
+            include   = false
+          }
+        ],
+        workers = 100
+      }
 
       # Outbound attributes.
       outbound = {
