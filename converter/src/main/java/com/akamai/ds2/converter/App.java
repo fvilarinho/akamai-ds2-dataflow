@@ -4,6 +4,7 @@ import com.akamai.ds2.converter.constants.Constants;
 import com.akamai.ds2.converter.constants.ConverterConstants;
 import com.akamai.ds2.converter.util.SettingsUtil;
 import com.akamai.ds2.converter.util.helpers.ConverterWorker;
+
 import org.apache.kafka.clients.admin.*;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -11,14 +12,19 @@ import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
+
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+
 import java.time.Duration;
+
 import java.util.*;
+
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -27,7 +33,7 @@ import java.util.concurrent.TimeUnit;
 public class App implements Runnable {
     private static final Logger logger = LogManager.getLogger(Constants.DEFAULT_APP_NAME);
 
-    public static String getId() throws IOException {
+    private static String getId() throws IOException {
         try (Scanner s = new Scanner(Runtime.getRuntime().exec(new String[]{"hostname"}).getInputStream()).useDelimiter("\\A")) {
             return s.hasNext() ? s.next() : "";
         }
@@ -81,7 +87,7 @@ public class App implements Runnable {
         logger.info("Settings loaded!");
     }
 
-    private void createTopics() throws IOException, ExecutionException, InterruptedException {
+    private void createAndUpdateTopics() throws IOException, ExecutionException, InterruptedException {
         AdminClient admin = null;
 
         try {
@@ -100,7 +106,8 @@ public class App implements Runnable {
             if (topicsList == null || topicsList.isEmpty() || !topicsList.contains(inboundTopic)) {
                 newTopicsList = new ArrayList<>();
                 newTopicsList.add(new NewTopic(inboundTopic, partitionNumber, replicationFactor));
-            } else {
+            }
+            else {
                 topicsPartitions = new HashMap<>();
                 topicsPartitions.put(inboundTopic, NewPartitions.increaseTo(partitionNumber));
             }
@@ -110,7 +117,8 @@ public class App implements Runnable {
                     newTopicsList = new ArrayList<>();
 
                 newTopicsList.add(new NewTopic(outboundTopic, partitionNumber, replicationFactor));
-            } else {
+            }
+            else {
                 if (topicsPartitions == null)
                     topicsPartitions = new HashMap<>();
 
@@ -139,14 +147,11 @@ public class App implements Runnable {
         }
     }
 
-    public void run(){
+    private void consumeMessages() throws IOException {
         KafkaConsumer<String, String> inbound = null;
         KafkaProducer<String, String> outbound = null;
 
         try {
-            loadSettings();
-            createTopics();
-
             final String inboundTopic = SettingsUtil.getKafkaInboundTopic();
             final String outboundTopic = SettingsUtil.getKafkaOutboundTopic();
 
@@ -168,7 +173,7 @@ public class App implements Runnable {
                             workersManager.submit(new ConverterWorker(inboundMessage, outbound, outboundTopic));
                     }
                 }
-                catch(Throwable e) {
+                catch (Throwable e) {
                     logger.error(e);
 
                     break;
@@ -180,23 +185,31 @@ public class App implements Runnable {
             try {
                 workersManager.shutdown();
 
-                if(workersManager.awaitTermination(ConverterConstants.DEFAULT_WORKERS_TIMEOUT, TimeUnit.SECONDS))
+                if (workersManager.awaitTermination(ConverterConstants.DEFAULT_WORKERS_TIMEOUT, TimeUnit.SECONDS))
                     logger.info("Conversion workers terminated!");
                 else
                     logger.info("Termination timeout reached!");
             }
-            catch(Throwable ignored){
+            catch (Throwable ignored){
             }
         }
-        catch(IOException | ExecutionException | InterruptedException e){
-            logger.error(e);
-        }
         finally {
-            if(inbound != null)
+            if (inbound != null)
                 inbound.close();
 
-            if(outbound != null)
+            if (outbound != null)
                 outbound.close();
+        }
+    }
+
+    public void run(){
+        try {
+            loadSettings();
+            createAndUpdateTopics();
+            consumeMessages();
+        }
+        catch (IOException | ExecutionException | InterruptedException e){
+            logger.error(e);
         }
     }
 
