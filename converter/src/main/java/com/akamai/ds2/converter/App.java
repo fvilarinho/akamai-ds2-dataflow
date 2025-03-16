@@ -162,7 +162,7 @@ public class App {
                     ConsumerRecords<String, String> inboundMessages = inbound.poll(Duration.ofMillis(100));
 
                     if (!inboundMessages.isEmpty()) {
-                        monitoringAgent.setRawMessagesCount(inboundMessages.count());
+                        monitoringAgent.setRawMessagesCount(System.currentTimeMillis(), inboundMessages.count());
 
                         for (ConsumerRecord<String, String> inboundMessage : inboundMessages)
                             workersManager.submit(new Worker(inboundMessage, outbound, outboundTopic));

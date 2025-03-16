@@ -61,7 +61,7 @@ public class Worker implements Runnable {
         }
         finally {
             if(monitoringAgent != null)
-                monitoringAgent.setProcessedMessagesCount(count);
+                monitoringAgent.setProcessedMessagesCount(this.inboundMessage.timestamp(), count);
         }
     }
 }

@@ -47,11 +47,11 @@ public class MonitoringAgent {
         return instance;
     }
 
-    public void setRawMessagesCount(long count) {
+    public void setRawMessagesCount(long timestamp, long count) {
         if(this.connected) {
             try {
                 this.client.write(Point.measurement("rawMessages")
-                           .time(System.currentTimeMillis(), TimeUnit.MILLISECONDS)
+                           .time(timestamp, TimeUnit.MILLISECONDS)
                            .addField("count", count)
                            .addField("source", ConverterUtil.getId()).build());
             }
@@ -60,11 +60,11 @@ public class MonitoringAgent {
         }
     }
 
-    public void setProcessedMessagesCount(long count) {
+    public void setProcessedMessagesCount(long timestamp, long count) {
         if(this.connected) {
             try {
                 this.client.write(Point.measurement("processedMessages")
-                           .time(System.currentTimeMillis(), TimeUnit.MILLISECONDS)
+                           .time(timestamp, TimeUnit.MILLISECONDS)
                            .addField("count", count)
                            .addField("source", ConverterUtil.getId()).build());
             }
