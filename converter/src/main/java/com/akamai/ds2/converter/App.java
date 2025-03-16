@@ -2,9 +2,10 @@ package com.akamai.ds2.converter;
 
 import com.akamai.ds2.converter.constants.Constants;
 import com.akamai.ds2.converter.constants.ConverterConstants;
+import com.akamai.ds2.converter.monitoring.MetricsAgent;
 import com.akamai.ds2.converter.util.SettingsUtil;
 import com.akamai.ds2.converter.util.helpers.ConverterWorker;
-
+import org.apache.commons.lang3.StringUtils;
 import org.apache.kafka.clients.admin.*;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -12,19 +13,14 @@ import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
-
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
-
 import java.time.Duration;
-
 import java.util.*;
-
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -33,10 +29,21 @@ import java.util.concurrent.TimeUnit;
 public class App implements Runnable {
     private static final Logger logger = LogManager.getLogger(Constants.DEFAULT_APP_NAME);
 
-    private static String getId() throws IOException {
-        try (Scanner s = new Scanner(Runtime.getRuntime().exec(new String[]{"hostname"}).getInputStream()).useDelimiter("\\A")) {
-            return s.hasNext() ? s.next() : "";
+    private static String id;
+
+    public static String getId() {
+        if(id == null) {
+            try {
+                try (Scanner s = new Scanner(Runtime.getRuntime().exec(new String[]{"hostname"}).getInputStream()).useDelimiter("\\A")) {
+                    return s.hasNext() ? StringUtils.trim(s.next()) : "";
+                }
+            }
+            catch(Throwable e){
+                return Constants.DEFAULT_APP_NAME;
+            }
         }
+
+        return id;
     }
 
     private static Properties prepareKafkaConsumerParameters() throws IOException{
@@ -169,6 +176,9 @@ public class App implements Runnable {
                     ConsumerRecords<String, String> inboundMessages = inbound.poll(Duration.ofMillis(100));
 
                     if (!inboundMessages.isEmpty()) {
+                        MetricsAgent.getInstance(App.getId()).updateRawMessagesCount(inboundMessages.count());
+                        MetricsAgent.getInstance(App.getId()).updateRawMessagesActual(inboundMessages.count());
+
                         for (ConsumerRecord<String, String> inboundMessage : inboundMessages)
                             workersManager.submit(new ConverterWorker(inboundMessage, outbound, outboundTopic));
                     }
@@ -213,7 +223,12 @@ public class App implements Runnable {
         }
     }
 
-    public static void main(String[] args){
-        new App().run();
+    public static void main(String[] args) throws Throwable {
+        try {
+            new App().run();
+       }
+        catch(Throwable e){
+            e.printStackTrace(System.out);
+        }
     }
 }

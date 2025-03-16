@@ -1,6 +1,8 @@
 package com.akamai.ds2.converter.util.helpers;
 
+import com.akamai.ds2.converter.App;
 import com.akamai.ds2.converter.constants.Constants;
+import com.akamai.ds2.converter.monitoring.MetricsAgent;
 import com.akamai.ds2.converter.util.ConverterUtil;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.producer.KafkaProducer;
@@ -31,9 +33,9 @@ public class ConverterWorker implements Runnable {
         if (value != null && !value.isEmpty()) {
             try {
                 List<String> messages = ConverterUtil.process(value);
+                int count = 0;
 
                 if (messages != null && !messages.isEmpty()) {
-                    int cont = 0;
 
                     for (String message : messages) {
                         if(ConverterUtil.filter(message)) {
@@ -41,17 +43,20 @@ public class ConverterWorker implements Runnable {
 
                             this.outbound.flush();
 
-                            cont++;
+                            count++;
                         }
                     }
 
-                    if(cont > 0) {
-                        if (cont > 1)
-                            logger.info("{} messages processed...", cont);
+                    if(count > 0) {
+                        if (count > 1)
+                            logger.info("{} messages processed...", count);
                         else
-                            logger.info("{} message processed...", cont);
+                            logger.info("{} message processed...", count);
                     }
                 }
+
+                MetricsAgent.getInstance(App.getId()).updateProcessedMessagesCount(count);
+                MetricsAgent.getInstance(App.getId()).updateProcessedMessagesActual(count);
             }
             catch (Throwable e) {
                 logger.error(e);
