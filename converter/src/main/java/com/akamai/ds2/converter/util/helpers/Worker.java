@@ -10,14 +10,14 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
-public class ConverterWorker implements Runnable {
+public class Worker implements Runnable {
     private static final Logger logger = LogManager.getLogger(Constants.DEFAULT_APP_NAME);
 
     private final KafkaProducer<String, String> outbound;
     private final String outboundTopic;
     private final ConsumerRecord<String, String> inboundMessage;
 
-    public ConverterWorker(ConsumerRecord<String, String> inboundMessage, KafkaProducer<String, String> outbound, String outboundTopic) {
+    public Worker(ConsumerRecord<String, String> inboundMessage, KafkaProducer<String, String> outbound, String outboundTopic) {
         this.inboundMessage = inboundMessage;
         this.outbound = outbound;
         this.outboundTopic = outboundTopic;

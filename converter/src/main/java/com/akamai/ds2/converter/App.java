@@ -2,9 +2,9 @@ package com.akamai.ds2.converter;
 
 import com.akamai.ds2.converter.constants.Constants;
 import com.akamai.ds2.converter.constants.ConverterConstants;
+import com.akamai.ds2.converter.util.ConverterUtil;
 import com.akamai.ds2.converter.util.SettingsUtil;
-import com.akamai.ds2.converter.util.helpers.ConverterWorker;
-import org.apache.commons.lang3.StringUtils;
+import com.akamai.ds2.converter.util.helpers.Worker;
 import org.apache.kafka.clients.admin.*;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -25,20 +25,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-public class App implements Runnable {
+public class App {
     private static final Logger logger = LogManager.getLogger(Constants.DEFAULT_APP_NAME);
-
-    private static String id;
-
-    public static String getId() throws IOException{
-        if(id == null) {
-            try (Scanner s = new Scanner(Runtime.getRuntime().exec(new String[]{"hostname"}).getInputStream()).useDelimiter("\\A")) {
-                return (s.hasNext() ? id = StringUtils.trim(s.next()) : "");
-            }
-        }
-
-        return id;
-    }
 
     private static Properties prepareKafkaConsumerParameters() throws IOException{
         String brokers = SettingsUtil.getKafkaBrokers();
@@ -49,7 +37,7 @@ public class App implements Runnable {
 
         properties.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, SettingsUtil.getKafkaBrokers());
         properties.setProperty(ConsumerConfig.GROUP_ID_CONFIG, Constants.DEFAULT_APP_NAME);
-        properties.setProperty(ConsumerConfig.CLIENT_ID_CONFIG, getId());
+        properties.setProperty(ConsumerConfig.CLIENT_ID_CONFIG, ConverterUtil.getId());
         properties.setProperty(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         properties.setProperty(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         properties.setProperty(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
@@ -65,7 +53,7 @@ public class App implements Runnable {
         Properties properties = new Properties();
 
         properties.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, SettingsUtil.getKafkaBrokers());
-        properties.setProperty(ProducerConfig.CLIENT_ID_CONFIG, getId());
+        properties.setProperty(ProducerConfig.CLIENT_ID_CONFIG, ConverterUtil.getId());
         properties.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         properties.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
 
@@ -172,7 +160,7 @@ public class App implements Runnable {
 
                     if (!inboundMessages.isEmpty()) {
                         for (ConsumerRecord<String, String> inboundMessage : inboundMessages)
-                            workersManager.submit(new ConverterWorker(inboundMessage, outbound, outboundTopic));
+                            workersManager.submit(new Worker(inboundMessage, outbound, outboundTopic));
                     }
                 }
                 catch(Throwable e) {

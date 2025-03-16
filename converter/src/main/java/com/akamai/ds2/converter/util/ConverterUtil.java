@@ -3,17 +3,31 @@ package com.akamai.ds2.converter.util;
 import com.akamai.ds2.converter.util.helpers.Filter;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public abstract class ConverterUtil {
     private static final String lineBreak = "\n";
     private static final ObjectMapper mapper = new ObjectMapper();
+
+    private static String id;
+
+    public static String getId() throws IOException{
+        if(id == null) {
+            try (Scanner s = new Scanner(Runtime.getRuntime().exec(new String[]{"hostname"}).getInputStream()).useDelimiter("\\A")) {
+                return (s.hasNext() ? id = StringUtils.trim(s.next()) : "");
+            }
+        }
+
+        return id;
+    }
 
     public static boolean filter(String value) throws IOException {
         List<Filter> filters = SettingsUtil.getFilters();
