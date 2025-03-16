@@ -31,15 +31,10 @@ public class App implements Runnable {
 
     private static String id;
 
-    public static String getId() {
+    public static String getId() throws IOException{
         if(id == null) {
-            try {
-                try (Scanner s = new Scanner(Runtime.getRuntime().exec(new String[]{"hostname"}).getInputStream()).useDelimiter("\\A")) {
-                    return s.hasNext() ? StringUtils.trim(s.next()) : "";
-                }
-            }
-            catch(Throwable e){
-                return Constants.DEFAULT_APP_NAME;
+            try (Scanner s = new Scanner(Runtime.getRuntime().exec(new String[]{"hostname"}).getInputStream()).useDelimiter("\\A")) {
+                return (s.hasNext() ? id = StringUtils.trim(s.next()) : "");
             }
         }
 
@@ -157,6 +152,8 @@ public class App implements Runnable {
     private void consumeMessages() throws IOException {
         KafkaConsumer<String, String> inbound = null;
         KafkaProducer<String, String> outbound = null;
+        MetricsAgent metricsAgent = null;
+        ExecutorService workersManager = null;
 
         try {
             final String inboundTopic = SettingsUtil.getKafkaInboundTopic();
@@ -166,42 +163,31 @@ public class App implements Runnable {
 
             outbound = new KafkaProducer<>(prepareKafkaProducerParameters());
             inbound = new KafkaConsumer<>(prepareKafkaConsumerParameters());
+            metricsAgent = MetricsAgent.getInstance(getId());
 
             inbound.subscribe(Collections.singletonList(inboundTopic));
 
-            ExecutorService workersManager = Executors.newFixedThreadPool(SettingsUtil.getWorkers());
+            workersManager = Executors.newFixedThreadPool(SettingsUtil.getWorkers());
 
             while (true) {
                 try {
                     ConsumerRecords<String, String> inboundMessages = inbound.poll(Duration.ofMillis(100));
 
                     if (!inboundMessages.isEmpty()) {
-                        MetricsAgent.getInstance(App.getId()).updateRawMessagesCount(inboundMessages.count());
-                        MetricsAgent.getInstance(App.getId()).updateRawMessagesActual(inboundMessages.count());
+                        metricsAgent.updateRawMessagesCount(inboundMessages.count());
+                        metricsAgent.updateRawMessagesActual(inboundMessages.count());
 
                         for (ConsumerRecord<String, String> inboundMessage : inboundMessages)
                             workersManager.submit(new ConverterWorker(inboundMessage, outbound, outboundTopic));
                     }
                 }
-                catch (Throwable e) {
-                    logger.error(e);
-
+                catch(Throwable e) {
                     break;
                 }
             }
-
-            logger.info("Waiting the conversion workers stop...");
-
-            try {
-                workersManager.shutdown();
-
-                if (workersManager.awaitTermination(ConverterConstants.DEFAULT_WORKERS_TIMEOUT, TimeUnit.SECONDS))
-                    logger.info("Conversion workers terminated!");
-                else
-                    logger.info("Termination timeout reached!");
-            }
-            catch (Throwable ignored){
-            }
+        }
+        catch(Throwable  e) {
+            logger.error(e.getMessage());
         }
         finally {
             if (inbound != null)
@@ -209,6 +195,21 @@ public class App implements Runnable {
 
             if (outbound != null)
                 outbound.close();
+
+            if (workersManager != null) {
+                logger.info("Stopping all workers...");
+
+                try {
+                    workersManager.shutdown();
+
+                    if (workersManager.awaitTermination(ConverterConstants.DEFAULT_WORKERS_TIMEOUT, TimeUnit.SECONDS))
+                        logger.info("All workers terminated!");
+                    else
+                        logger.info("Termination timeout reached!");
+                }
+                catch (Throwable ignored) {
+                }
+            }
         }
     }
 

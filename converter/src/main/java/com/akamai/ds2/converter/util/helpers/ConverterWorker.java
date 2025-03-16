@@ -27,18 +27,20 @@ public class ConverterWorker implements Runnable {
 
     @Override
     public void run() {
+        MetricsAgent metricsAgent = null;
         String key = this.inboundMessage.key();
         String value = this.inboundMessage.value();
+        int count = 0;
 
-        if (value != null && !value.isEmpty()) {
-            try {
+        try {
+            metricsAgent = MetricsAgent.getInstance(App.getId());
+
+            if (value != null && !value.isEmpty()) {
                 List<String> messages = ConverterUtil.process(value);
-                int count = 0;
 
                 if (messages != null && !messages.isEmpty()) {
-
                     for (String message : messages) {
-                        if(ConverterUtil.filter(message)) {
+                        if (ConverterUtil.filter(message)) {
                             this.outbound.send(new ProducerRecord<>(this.outboundTopic, key, message));
 
                             this.outbound.flush();
@@ -47,19 +49,22 @@ public class ConverterWorker implements Runnable {
                         }
                     }
 
-                    if(count > 0) {
+                    if (count > 0) {
                         if (count > 1)
                             logger.info("{} messages processed...", count);
                         else
                             logger.info("{} message processed...", count);
                     }
                 }
-
-                MetricsAgent.getInstance(App.getId()).updateProcessedMessagesCount(count);
-                MetricsAgent.getInstance(App.getId()).updateProcessedMessagesActual(count);
             }
-            catch (Throwable e) {
-                logger.error(e);
+        }
+        catch (Throwable e) {
+            logger.error(e);
+        }
+        finally{
+            if(metricsAgent != null) {
+                metricsAgent.updateProcessedMessagesCount(count);
+                metricsAgent.updateProcessedMessagesActual(count);
             }
         }
     }
