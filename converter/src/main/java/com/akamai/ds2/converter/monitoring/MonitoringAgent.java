@@ -30,7 +30,7 @@ public class MonitoringAgent {
 
         if(this.client == null || !this.connected) {
             this.client = InfluxDBFactory.connect(url);
-            this.client.setDatabase("metrics");
+            this.client.setDatabase(com.akamai.ds2.converter.constants.Constants.DEFAULT_APP_NAME);
 
             Pong pong = this.client.ping();
 

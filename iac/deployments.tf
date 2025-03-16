@@ -377,7 +377,7 @@ spec:
             - containerPort: 8086
           env:
             - name: INFLUXDB_DB
-              value: "metrics"
+              value: "converter"
             - name: INFLUXDB_HTTP_AUTH_ENABLED
               value: "false"
 EOT
