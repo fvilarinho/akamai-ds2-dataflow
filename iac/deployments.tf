@@ -262,18 +262,19 @@ spec:
         app: prometheus
     spec:
       containers:
-      - name: prometheus
-        image: prom/prometheus:v3.2.1
-        args:
-          - "--web.external-url=/monitoring"
-          - "--web.route-prefix=/monitoring"
-          - "--storage.tsdb.path=/prometheus"
-          - "--config.file=/etc/prometheus/prometheus.yml"
-        ports:
-          - containerPort: 9090
-        volumeMounts:
-          - name: prometheus-settings
-            mountPath: /etc/prometheus
+        - name: prometheus
+          image: prom/prometheus:v3.2.1
+          imagePullPolicy: Always
+          args:
+            - "--web.external-url=/monitoring"
+            - "--web.route-prefix=/monitoring"
+            - "--storage.tsdb.path=/prometheus"
+            - "--config.file=/etc/prometheus/prometheus.yml"
+          ports:
+            - containerPort: 9090
+          volumeMounts:
+            - name: prometheus-settings
+              mountPath: /etc/prometheus
       volumes:
         - name: prometheus-settings
           configMap:
@@ -297,6 +298,7 @@ spec:
       containers:
       - name: grafana
         image: grafana/grafana:11.5.2
+        imagePullPolicy: Always
         env:
           - name: GF_SECURITY_ADMIN_USER
             valueFrom:

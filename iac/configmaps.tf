@@ -140,10 +140,9 @@ metadata:
   namespace: ${var.settings.general.identifier}
 data:
   prometheus.yml: |
-    global:
-      scrape_interval: 15s
     scrape_configs:
     - job_name: 'queue-broker-monitoring'
+      scrape_interval: 5s
       static_configs:
       - targets: ['queue-broker-monitoring-agent:9308']
 ---

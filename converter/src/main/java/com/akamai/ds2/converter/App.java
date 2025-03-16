@@ -2,7 +2,6 @@ package com.akamai.ds2.converter;
 
 import com.akamai.ds2.converter.constants.Constants;
 import com.akamai.ds2.converter.constants.ConverterConstants;
-import com.akamai.ds2.converter.monitoring.MetricsAgent;
 import com.akamai.ds2.converter.util.SettingsUtil;
 import com.akamai.ds2.converter.util.helpers.ConverterWorker;
 import org.apache.commons.lang3.StringUtils;
@@ -152,7 +151,6 @@ public class App implements Runnable {
     private void consumeMessages() throws IOException {
         KafkaConsumer<String, String> inbound = null;
         KafkaProducer<String, String> outbound = null;
-        MetricsAgent metricsAgent = null;
         ExecutorService workersManager = null;
 
         try {
@@ -163,7 +161,6 @@ public class App implements Runnable {
 
             outbound = new KafkaProducer<>(prepareKafkaProducerParameters());
             inbound = new KafkaConsumer<>(prepareKafkaConsumerParameters());
-            metricsAgent = MetricsAgent.getInstance(getId());
 
             inbound.subscribe(Collections.singletonList(inboundTopic));
 
@@ -174,9 +171,6 @@ public class App implements Runnable {
                     ConsumerRecords<String, String> inboundMessages = inbound.poll(Duration.ofMillis(100));
 
                     if (!inboundMessages.isEmpty()) {
-                        metricsAgent.updateRawMessagesCount(inboundMessages.count());
-                        metricsAgent.updateRawMessagesActual(inboundMessages.count());
-
                         for (ConsumerRecord<String, String> inboundMessage : inboundMessages)
                             workersManager.submit(new ConverterWorker(inboundMessage, outbound, outboundTopic));
                     }
@@ -224,12 +218,7 @@ public class App implements Runnable {
         }
     }
 
-    public static void main(String[] args) throws Throwable {
-        try {
-            new App().run();
-       }
-        catch(Throwable e){
-            e.printStackTrace(System.out);
-        }
+    public static void main(String[] args){
+        new App().run();
     }
 }
