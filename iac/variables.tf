@@ -52,7 +52,7 @@ variable "settings" {
       }
 
       converter = {
-        count = 10
+        count = 1
         filters = [
           {
             fieldName = "<fieldName>"
@@ -60,7 +60,7 @@ variable "settings" {
             include   = false
           }
         ],
-        workers = 100
+        workers = 10
       }
 
       # Outbound attributes.

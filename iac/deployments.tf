@@ -354,5 +354,31 @@ spec:
         - name: proxy-auth
           secret:
             secretName: proxy-auth
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: influxdb
+  namespace: ${var.settings.general.identifier}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: influxdb
+  template:
+    metadata:
+      labels:
+        app: influxdb
+    spec:
+      containers:
+        - name: influxdb
+          image: influxdb:1.11.7
+          ports:
+            - containerPort: 8086
+          env:
+            - name: INFLUXDB_DB
+              value: "metrics"
+            - name: INFLUXDB_HTTP_AUTH_ENABLED
+              value: "false"
 EOT
 }

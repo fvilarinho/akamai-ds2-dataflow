@@ -36,6 +36,5 @@ metadata:
   namespace: ${var.settings.general.identifier}
 data:
   .htpasswd: ${base64encode(local.inboundCredentials)}
-
 EOT
 }

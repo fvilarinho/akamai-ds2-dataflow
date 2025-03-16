@@ -121,5 +121,18 @@ spec:
     - name: http
       port: 80
       targetPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: influxdb
+  namespace: ${var.settings.general.identifier}
+spec:
+  selector:
+    app: influxdb
+  ports:
+    - protocol: TCP
+      port: 8086
+      targetPort: 8086
 EOT
 }

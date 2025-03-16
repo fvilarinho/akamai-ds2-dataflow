@@ -31,6 +31,8 @@ dependencies {
     implementation "com.fasterxml.jackson.core:jackson-databind:2.18.2"
 
     implementation "org.apache.commons:commons-lang3:3.17.0"
+
+    implementation 'org.influxdb:influxdb-java:2.24'
 }
 
 // Exclusion list for the package.

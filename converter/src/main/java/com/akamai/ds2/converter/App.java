@@ -2,6 +2,7 @@ package com.akamai.ds2.converter;
 
 import com.akamai.ds2.converter.constants.Constants;
 import com.akamai.ds2.converter.constants.ConverterConstants;
+import com.akamai.ds2.converter.monitoring.MonitoringAgent;
 import com.akamai.ds2.converter.util.ConverterUtil;
 import com.akamai.ds2.converter.util.SettingsUtil;
 import com.akamai.ds2.converter.util.helpers.Worker;
@@ -139,6 +140,7 @@ public class App {
     private void consumeMessages() throws IOException {
         KafkaConsumer<String, String> inbound = null;
         KafkaProducer<String, String> outbound = null;
+        MonitoringAgent monitoringAgent = null;
         ExecutorService workersManager = null;
 
         try {
@@ -153,12 +155,15 @@ public class App {
             inbound.subscribe(Collections.singletonList(inboundTopic));
 
             workersManager = Executors.newFixedThreadPool(SettingsUtil.getWorkers());
+            monitoringAgent = MonitoringAgent.getInstance();
 
             while (true) {
                 try {
                     ConsumerRecords<String, String> inboundMessages = inbound.poll(Duration.ofMillis(100));
 
                     if (!inboundMessages.isEmpty()) {
+                        monitoringAgent.setRawMessagesCount(inboundMessages.count());
+
                         for (ConsumerRecord<String, String> inboundMessage : inboundMessages)
                             workersManager.submit(new Worker(inboundMessage, outbound, outboundTopic));
                     }
