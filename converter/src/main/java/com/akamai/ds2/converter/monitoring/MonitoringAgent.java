@@ -63,7 +63,7 @@ public class MonitoringAgent {
     public void setProcessedMessagesCount(long count) {
         if(this.connected) {
             try {
-                this.client.write(Point.measurement("processedMessage")
+                this.client.write(Point.measurement("processedMessages")
                            .time(System.currentTimeMillis(), TimeUnit.MILLISECONDS)
                            .addField("count", count)
                            .addField("source", ConverterUtil.getId()).build());
