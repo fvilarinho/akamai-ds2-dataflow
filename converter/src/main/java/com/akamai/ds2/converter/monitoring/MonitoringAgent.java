@@ -46,6 +46,24 @@ public class MonitoringAgent {
         return instance;
     }
 
+    public void setMessageReceiptDelay(final long timestamp, final long messageTimestamp) {
+        if(this.connected) {
+            new Thread(new MonitoringAgentThread(this.client) {
+                @Override
+                public void run() {
+                    try {
+                        getClient().write(Point.measurement("messageReceiptDelay")
+                                .time(timestamp, TimeUnit.MILLISECONDS)
+                                .addField("delay", (timestamp - messageTimestamp))
+                                .addField("source", ConverterUtil.getId()).build());
+                    }
+                    catch(IOException ignored) {
+                    }
+                }
+            }).start();
+        }
+    }
+
     public void setRawMessagesCount(final long timestamp, final long count) {
         if(this.connected) {
             new Thread(new MonitoringAgentThread(this.client) {

@@ -26,20 +26,22 @@ public class Worker implements Runnable {
 
     @Override
     public void run() {
+        long timestamp = this.inboundMessage.timestamp();
         String key = this.inboundMessage.key();
         String value = this.inboundMessage.value();
 
         try {
             if (value != null && !value.isEmpty()) {
-                List<String> messages = ConverterUtil.process(value);
+                List<String> messages = ConverterUtil.processMessages(value);
 
                 if (messages != null && !messages.isEmpty()) {
                     MonitoringAgent monitoringAgent = MonitoringAgent.getInstance();
-
                     int count = 0;
 
                     for (String message : messages) {
-                        if (ConverterUtil.filter(message)) {
+                        ConverterUtil.checkMessageReceiptDelay(timestamp, message);
+
+                        if (ConverterUtil.filterMessage(message)) {
                             this.outbound.send(new ProducerRecord<>(this.outboundTopic, key, message));
                             this.outbound.flush();
 
@@ -53,7 +55,7 @@ public class Worker implements Runnable {
                         else
                             logger.info("{} message processed...", count);
 
-                        monitoringAgent.setProcessedMessagesCount(inboundMessage.timestamp(), count);
+                        monitoringAgent.setProcessedMessagesCount(timestamp, count);
                     }
                 }
             }

@@ -35,7 +35,7 @@ function test() {
   index=0
 
   while true; do
-    timestamp=$(date +%s)
+    timestamp=1742220449.905
     statusCode=$($CURL_CMD -o /dev/null \
                            -s \
                            -w "%${local.testStatusCodeAttribute}" \
@@ -44,7 +44,7 @@ function test() {
                            -H "Accept: application/json" \
                            -u "$credentials" \
                            "$url" \
-                           -d "{\"index\": $index, \"timestamp\": $timestamp}" \
+                           -d "{\"index\": $index, \"reqTimeSec\": \"$timestamp\", \"value\": \"Hello!\"}" \
                            --insecure)
 
     echo "Timestamp: $timestamp, URL: $url, Index: $index, Status Code: $statusCode"

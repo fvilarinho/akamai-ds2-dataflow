@@ -1,5 +1,6 @@
 package com.akamai.ds2.converter.util;
 
+import com.akamai.ds2.converter.monitoring.MonitoringAgent;
 import com.akamai.ds2.converter.util.helpers.Filter;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,7 +21,7 @@ public abstract class ConverterUtil {
     private static String id;
 
     public static String getId() throws IOException{
-        if(id == null) {
+        if (id == null) {
             try (Scanner s = new Scanner(Runtime.getRuntime().exec(new String[]{"hostname"}).getInputStream()).useDelimiter("\\A")) {
                 return (s.hasNext() ? id = StringUtils.trim(s.next()) : "");
             }
@@ -29,69 +30,90 @@ public abstract class ConverterUtil {
         return id;
     }
 
-    public static boolean filter(String value) throws IOException {
+    public static void checkMessageReceiptDelay(long timestamp, String message) throws IOException {
+        Map<String, Object> messageObject = mapper.readValue(message, new TypeReference<>(){});
+
+        if (messageObject != null) {
+            String value = (String)messageObject.get("reqTimeSec");
+
+            if(value != null && !value.isEmpty()) {
+                long messageTimestamp = (long) (Double.parseDouble(value) * 1000L);
+                MonitoringAgent monitoringAgent = MonitoringAgent.getInstance();
+
+                monitoringAgent.setMessageReceiptDelay(timestamp, messageTimestamp);
+            }
+        }
+    }
+
+    public static boolean filterMessage(String message) throws IOException {
         List<Filter> filters = SettingsUtil.getFilters();
         boolean matches = true;
 
-        if(filters != null && !filters.isEmpty()) {
-            Map<String, Object> object = mapper.readValue(value, new TypeReference<>(){});
+        if (filters != null && !filters.isEmpty()) {
+            Map<String, Object> messageObject = mapper.readValue(message, new TypeReference<>(){});
 
-            for (Filter filter : filters) {
-                Object fieldValue = JsonUtil.getAttribute(object, filter.getFieldName());
+            if (messageObject != null) {
+                for (Filter filter : filters) {
+                    Object fieldValue = JsonUtil.getAttribute(messageObject, filter.getFieldName());
 
-                if (fieldValue != null) {
-                    Pattern pattern = Pattern.compile(filter.getRegex());
-                    Matcher matcher = pattern.matcher(fieldValue.toString());
+                    if (fieldValue != null) {
+                        Pattern pattern = Pattern.compile(filter.getRegex());
+                        Matcher matcher = pattern.matcher(fieldValue.toString());
 
-                    if (matcher.matches()) {
-                        if (!filter.isInclude()) {
-                            matches = false;
+                        if (matcher.matches()) {
+                            if (!filter.isInclude()) {
+                                matches = false;
 
-                            break;
+                                break;
+                            }
                         }
-                    } else {
+                        else {
+                            if (filter.isInclude()) {
+                                matches = false;
+
+                                break;
+                            }
+                        }
+                    }
+                    else {
                         if (filter.isInclude()) {
                             matches = false;
 
                             break;
                         }
                     }
-                } else {
-                    if (filter.isInclude()) {
-                        matches = false;
-
-                        break;
-                    }
                 }
             }
+            else
+                matches = false;
         }
 
         return matches;
     }
 
-    public static List<String> process(String value) throws IOException {
-        List<String> result = null;
-        Map<String, String> object = mapper.readValue(value, new TypeReference<>(){});
+    public static List<String> processMessages(String value) throws IOException {
+        List<String> messages = null;
+        Map<String, String> messageObject = mapper.readValue(value, new TypeReference<>(){});
 
-        if(object != null) {
-            String message = object.get("message");
+        if (messageObject != null) {
+            String message = messageObject.get("message");
 
             if (message != null && !message.isEmpty()) {
                 String line = message;
 
                 while (line != null && !line.isEmpty()) {
-                    if(result == null)
-                        result = new ArrayList<>();
+                    if (messages == null)
+                        messages = new ArrayList<>();
 
                     int pos = line.indexOf("\n");
 
-                    if(pos >= 0) {
-                        result.add(line.substring(0, pos));
+                    if (pos >= 0) {
+                        messages.add(line.substring(0, pos));
 
                         line = line.substring(pos + lineBreak.length());
                     }
                     else {
-                        result.add(line);
+                        messages.add(line);
 
                         line = null;
                     }
@@ -99,6 +121,6 @@ public abstract class ConverterUtil {
             }
         }
 
-        return result;
+        return messages;
     }
 }
