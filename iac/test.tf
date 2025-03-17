@@ -35,7 +35,7 @@ function test() {
   index=0
 
   while true; do
-    timestamp=1742220449.905
+    timestamp=$(date +%s)
     statusCode=$($CURL_CMD -o /dev/null \
                            -s \
                            -w "%${local.testStatusCodeAttribute}" \
