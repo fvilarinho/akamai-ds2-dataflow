@@ -212,19 +212,6 @@ data:
         proxy_set_header Connection "upgrade";
       }
 
-      location ^~ /monitoring {
-        auth_basic "Restricted Area";
-        auth_basic_user_file /etc/nginx/.htpasswd;
-
-        proxy_pass http://prometheus:9090/monitoring;
-        proxy_set_header X-Forwarded-For $remote_addr;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "upgrade";
-      }
-
       location ^~ /dashboards {
         proxy_pass http://grafana:3000/dashboards;
         proxy_set_header X-Forwarded-For $remote_addr;

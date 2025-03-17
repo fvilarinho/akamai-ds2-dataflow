@@ -308,8 +308,6 @@ spec:
           image: prom/prometheus:v3.2.1
           imagePullPolicy: Always
           args:
-            - "--web.external-url=/monitoring"
-            - "--web.route-prefix=/monitoring"
             - "--storage.tsdb.path=/prometheus"
             - "--config.file=/etc/prometheus/prometheus.yml"
           ports:
