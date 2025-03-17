@@ -250,6 +250,45 @@ spec:
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
+  name: influxdb
+  namespace: ${var.settings.general.identifier}
+spec:
+  serviceName: influxdb
+  replicas: 1
+  selector:
+    matchLabels:
+      app: influxdb
+  template:
+    metadata:
+      labels:
+        app: influxdb
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: influxdb
+          image: influxdb:1.11.7
+          ports:
+            - containerPort: 8086
+          env:
+            - name: INFLUXDB_DB
+              value: "converter"
+            - name: INFLUXDB_HTTP_AUTH_ENABLED
+              value: "false"
+          volumeMounts:
+            - name: influxdb-data
+              mountPath: /var/lib/influxdb
+  volumeClaimTemplates:
+    - metadata:
+        name: influxdb-data
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: 10Gi
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
   name: prometheus
   namespace: ${var.settings.general.identifier}
 spec:
@@ -278,10 +317,20 @@ spec:
           volumeMounts:
             - name: prometheus-settings
               mountPath: /etc/prometheus
+            - name: prometheus-data
+              mountPath: /prometheus
       volumes:
         - name: prometheus-settings
           configMap:
             name: prometheus-settings
+  volumeClaimTemplates:
+    - metadata:
+        name: prometheus-data
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: 10Gi
 ---
 apiVersion: apps/v1
 kind: StatefulSet
@@ -323,6 +372,17 @@ spec:
             value: /dashboards
         ports:
           - containerPort: 3000
+        volumeMounts:
+          - name: grafana-data
+            mountPath: /var/lib/grafana
+  volumeClaimTemplates:
+    - metadata:
+        name: grafana-data
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: 10Gi
 ---
 apiVersion: apps/v1
 kind: DaemonSet
@@ -359,33 +419,5 @@ spec:
         - name: proxy-auth
           secret:
             secretName: proxy-auth
----
-apiVersion: apps/v1
-kind: StatefulSet
-metadata:
-  name: influxdb
-  namespace: ${var.settings.general.identifier}
-spec:
-  serviceName: influxdb
-  replicas: 1
-  selector:
-    matchLabels:
-      app: influxdb
-  template:
-    metadata:
-      labels:
-        app: influxdb
-    spec:
-      restartPolicy: Always
-      containers:
-        - name: influxdb
-          image: influxdb:1.11.7
-          ports:
-            - containerPort: 8086
-          env:
-            - name: INFLUXDB_DB
-              value: "converter"
-            - name: INFLUXDB_HTTP_AUTH_ENABLED
-              value: "false"
 EOT
 }
