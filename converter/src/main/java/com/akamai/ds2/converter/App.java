@@ -140,8 +140,8 @@ public class App {
     private void consumeMessages() throws IOException {
         KafkaConsumer<String, String> inbound = null;
         KafkaProducer<String, String> outbound = null;
-        MonitoringAgent monitoringAgent = null;
         ExecutorService workersManager = null;
+        MonitoringAgent monitoringAgent;
 
         try {
             final String inboundTopic = SettingsUtil.getKafkaInboundTopic();

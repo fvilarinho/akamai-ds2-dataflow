@@ -66,6 +66,7 @@ variable "settings" {
       # Outbound attributes.
       outbound = {
         identifier = "processedlogs" # Topic identifier.
+        count = 1
 
         # Authentication attributes.
         auth = {

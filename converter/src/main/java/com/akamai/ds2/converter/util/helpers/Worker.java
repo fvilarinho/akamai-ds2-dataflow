@@ -28,16 +28,16 @@ public class Worker implements Runnable {
     public void run() {
         String key = this.inboundMessage.key();
         String value = this.inboundMessage.value();
-        MonitoringAgent monitoringAgent = null;
-        int count = 0;
 
         try {
-            monitoringAgent = MonitoringAgent.getInstance();
-
             if (value != null && !value.isEmpty()) {
                 List<String> messages = ConverterUtil.process(value);
 
                 if (messages != null && !messages.isEmpty()) {
+                    MonitoringAgent monitoringAgent = MonitoringAgent.getInstance();
+
+                    int count = 0;
+
                     for (String message : messages) {
                         if (ConverterUtil.filter(message)) {
                             this.outbound.send(new ProducerRecord<>(this.outboundTopic, key, message));
@@ -52,16 +52,14 @@ public class Worker implements Runnable {
                             logger.info("{} messages processed...", count);
                         else
                             logger.info("{} message processed...", count);
+
+                        monitoringAgent.setProcessedMessagesCount(inboundMessage.timestamp(), count);
                     }
                 }
             }
         }
         catch (Throwable e) {
             logger.error(e);
-        }
-        finally {
-            if(monitoringAgent != null)
-                monitoringAgent.setProcessedMessagesCount(this.inboundMessage.timestamp(), count);
         }
     }
 }

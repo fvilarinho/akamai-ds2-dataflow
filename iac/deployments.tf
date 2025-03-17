@@ -23,6 +23,7 @@ spec:
       labels:
         app: inbound
     spec:
+      restartPolicy: Always
       containers:
         - name: inbound
           image: $DOCKER_REGISTRY_URL/$DOCKER_REGISTRY_ID/fluentd:$BUILD_VERSION
@@ -38,11 +39,12 @@ spec:
             name: inbound-settings
 ---
 apiVersion: apps/v1
-kind: DaemonSet
+kind: Deployment
 metadata:
   name: outbound
   namespace: ${var.settings.general.identifier}
 spec:
+  replicas: ${var.settings.dataflow.outbound.count}
   selector:
     matchLabels:
       app: outbound
@@ -51,6 +53,7 @@ spec:
       labels:
         app: outbound
     spec:
+      restartPolicy: Always
       containers:
         - name: outbound
           image: $DOCKER_REGISTRY_URL/$DOCKER_REGISTRY_ID/fluentd:$BUILD_VERSION
@@ -98,6 +101,7 @@ metadata:
   name: queue-broker-controller
   namespace: ${var.settings.general.identifier}
 spec:
+  serviceName: queue-broker-controller
   replicas: 1
   selector:
     matchLabels:
@@ -213,14 +217,11 @@ ${join("\n", local.monitoredQUeueBrokersList)}
             - containerPort: 9308
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: DaemonSet
 metadata:
   name: queue-broker-ui
   namespace: ${var.settings.general.identifier}
 spec:
-  replicas: 1
-  strategy:
-    type: RollingUpdate
   selector:
     matchLabels:
       app: queue-broker-ui
@@ -247,11 +248,12 @@ spec:
             - containerPort: 8080
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: prometheus
   namespace: ${var.settings.general.identifier}
 spec:
+  serviceName: prometheus
   replicas: 1
   selector:
     matchLabels:
@@ -261,6 +263,7 @@ spec:
       labels:
         app: prometheus
     spec:
+      restartPolicy: Always
       containers:
         - name: prometheus
           image: prom/prometheus:v3.2.1
@@ -281,11 +284,12 @@ spec:
             name: prometheus-settings
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: grafana
   namespace: ${var.settings.general.identifier}
 spec:
+  serviceName: grafana
   replicas: 1
   selector:
     matchLabels:
@@ -295,6 +299,7 @@ spec:
       labels:
         app: grafana
     spec:
+      restartPolicy: Always
       containers:
       - name: grafana
         image: grafana/grafana:11.5.2
@@ -356,11 +361,12 @@ spec:
             secretName: proxy-auth
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: influxdb
   namespace: ${var.settings.general.identifier}
 spec:
+  serviceName: influxdb
   replicas: 1
   selector:
     matchLabels:
@@ -370,6 +376,7 @@ spec:
       labels:
         app: influxdb
     spec:
+      restartPolicy: Always
       containers:
         - name: influxdb
           image: influxdb:1.11.7
