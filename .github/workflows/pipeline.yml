@@ -9,6 +9,7 @@ on:
       - "*.md"
       - "banner.txt"
       - "deploy.sh"
+      - "/grafana/*"
       - "/iac/*.tf"
       - "/iac/*.sh"
       - "LICENSE"
