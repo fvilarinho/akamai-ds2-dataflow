@@ -23,12 +23,11 @@ public class MonitoringAgent {
     }
 
     public void connect(){
-        String hostname = System.getenv(Constants.MONITORING_HOSTNAME_ATTRIBUTE_ID);
-        int port = Integer.parseInt(System.getenv(Constants.MONITORING_PORT_ATTRIBUTE_ID));
-
-        String url = "http://" + hostname + ":" + port;
-
         if(this.client == null || !this.connected) {
+            String hostname = System.getenv(Constants.MONITORING_HOSTNAME_ATTRIBUTE_ID);
+            int port = Integer.parseInt(System.getenv(Constants.MONITORING_PORT_ATTRIBUTE_ID));
+            String url = "http://" + hostname + ":" + port;
+
             this.client = InfluxDBFactory.connect(url);
             this.client.setDatabase(com.akamai.ds2.converter.constants.Constants.DEFAULT_APP_NAME);
 
@@ -47,29 +46,39 @@ public class MonitoringAgent {
         return instance;
     }
 
-    public void setRawMessagesCount(long timestamp, long count) {
+    public void setRawMessagesCount(final long timestamp, final long count) {
         if(this.connected) {
-            try {
-                this.client.write(Point.measurement("rawMessages")
-                           .time(timestamp, TimeUnit.MILLISECONDS)
-                           .addField("count", count)
-                           .addField("source", ConverterUtil.getId()).build());
-            }
-            catch(IOException ignored) {
-            }
+            new Thread(new MonitoringAgentThread(this.client) {
+                @Override
+                public void run() {
+                    try {
+                        getClient().write(Point.measurement("rawMessages")
+                                   .time(timestamp, TimeUnit.MILLISECONDS)
+                                   .addField("count", count)
+                                   .addField("source", ConverterUtil.getId()).build());
+                    }
+                    catch(IOException ignored) {
+                    }
+                }
+            }).start();
         }
     }
 
-    public void setProcessedMessagesCount(long timestamp, long count) {
+    public void setProcessedMessagesCount(final long timestamp, final long count) {
         if(this.connected) {
-            try {
-                this.client.write(Point.measurement("processedMessages")
-                           .time(timestamp, TimeUnit.MILLISECONDS)
-                           .addField("count", count)
-                           .addField("source", ConverterUtil.getId()).build());
-            }
-            catch(IOException ignored) {
-            }
+            new Thread(new MonitoringAgentThread(this.client) {
+                @Override
+                public void run() {
+                    try {
+                        getClient().write(Point.measurement("processedMessages")
+                                   .time(timestamp, TimeUnit.MILLISECONDS)
+                                   .addField("count", count)
+                                   .addField("source", ConverterUtil.getId()).build());
+                    }
+                    catch(IOException ignored) {
+                    }
+                }
+            }).start();
         }
     }
 
@@ -78,5 +87,23 @@ public class MonitoringAgent {
 
         this.client = null;
         this.connected = false;
+    }
+}
+
+abstract class MonitoringAgentThread implements Runnable {
+    private InfluxDB client;
+
+    public MonitoringAgentThread(InfluxDB client) {
+        super();
+
+        setClient(client);
+    }
+
+    protected InfluxDB getClient() {
+        return this.client;
+    }
+
+    private void setClient(InfluxDB client) {
+        this.client = client;
     }
 }
