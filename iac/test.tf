@@ -29,7 +29,7 @@ function checkDependencies() {
 
 # Execute the test in loop.
 function test() {
-  host=${linode_instance.clusterManager.ip_address}
+  host=${linode_nodebalancer.inbound.ipv4}
   url=https://$host/ingest
   credentials="${var.settings.dataflow.inbound.auth.user}:${var.settings.dataflow.inbound.auth.password}"
   index=0
