@@ -1,6 +1,5 @@
 /.idea/
 /.gradle/
-/build/*
 /converter/build/
 /iac/.kubeconfig
 /iac/.terraform*
