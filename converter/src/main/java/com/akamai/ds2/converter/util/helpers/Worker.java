@@ -37,14 +37,14 @@ public class Worker implements Runnable {
                 if (messages != null && !messages.isEmpty()) {
                     MonitoringAgent monitoringAgent = MonitoringAgent.getInstance();
                     int count = 0;
+                    long delay = 0;
 
                     for (String message : messages) {
-                        ConverterUtil.checkMessageReceiptDelay(timestamp, message);
-
                         if (ConverterUtil.filterMessage(message)) {
                             this.outbound.send(new ProducerRecord<>(this.outboundTopic, key, message));
                             this.outbound.flush();
 
+                            delay += ConverterUtil.checkMessageReceiptDelay(timestamp, message);
                             count++;
                         }
                     }
@@ -55,7 +55,8 @@ public class Worker implements Runnable {
                         else
                             logger.info("{} message processed...", count);
 
-                        monitoringAgent.setProcessedMessagesCount(timestamp, count);
+                        monitoringAgent.setProcessedCount(timestamp, count);
+                        monitoringAgent.setReceiptDelay(timestamp,delay / count);
                     }
                 }
             }

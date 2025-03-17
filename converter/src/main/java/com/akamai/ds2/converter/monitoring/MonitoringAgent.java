@@ -1,6 +1,6 @@
 package com.akamai.ds2.converter.monitoring;
 
-import com.akamai.ds2.converter.monitoring.constants.Constants;
+import com.akamai.ds2.converter.constants.MonitoringConstants;
 import com.akamai.ds2.converter.util.ConverterUtil;
 import org.influxdb.InfluxDB;
 import org.influxdb.InfluxDBFactory;
@@ -24,9 +24,9 @@ public class MonitoringAgent {
 
     public void connect(){
         if(this.client == null || !this.connected) {
-            String hostname = System.getenv(Constants.MONITORING_HOSTNAME_ATTRIBUTE_ID);
-            int port = Integer.parseInt(System.getenv(Constants.MONITORING_PORT_ATTRIBUTE_ID));
-            String url = "http://" + hostname + ":" + port;
+            String hostname = System.getenv(MonitoringConstants.MONITORING_HOSTNAME_ATTRIBUTE_ID);
+            int port = Integer.parseInt(System.getenv(MonitoringConstants.MONITORING_PORT_ATTRIBUTE_ID));
+            String url = String.format("http://%s:%d", hostname, port);
 
             this.client = InfluxDBFactory.connect(url);
             this.client.setDatabase(com.akamai.ds2.converter.constants.Constants.DEFAULT_APP_NAME);
@@ -46,16 +46,16 @@ public class MonitoringAgent {
         return instance;
     }
 
-    public void setMessageReceiptDelay(final long timestamp, final long messageTimestamp) {
+    public void setReceiptDelay(final long timestamp, final long delay) {
         if(this.connected) {
             new Thread(new MonitoringAgentThread(this.client) {
                 @Override
                 public void run() {
                     try {
-                        getClient().write(Point.measurement("messageReceiptDelay")
-                                .time(timestamp, TimeUnit.MILLISECONDS)
-                                .addField("delay", (timestamp - messageTimestamp))
-                                .addField("source", ConverterUtil.getId()).build());
+                        getClient().write(Point.measurement(MonitoringConstants.MONITORING_RECEIPT_RAW_ATTRIBUTE_ID)
+                                   .time(timestamp, TimeUnit.MILLISECONDS)
+                                   .addField(MonitoringConstants.MONITORING_DELAY_ATTRIBUTE_ID, delay)
+                                   .addField(MonitoringConstants.MONITORING_SOURCE_ATTRIBUTE_ID, ConverterUtil.getId()).build());
                     }
                     catch(IOException ignored) {
                     }
@@ -64,16 +64,16 @@ public class MonitoringAgent {
         }
     }
 
-    public void setRawMessagesCount(final long timestamp, final long count) {
+    public void setRawCount(final long timestamp, final long count) {
         if(this.connected) {
             new Thread(new MonitoringAgentThread(this.client) {
                 @Override
                 public void run() {
                     try {
-                        getClient().write(Point.measurement("rawMessages")
+                        getClient().write(Point.measurement(MonitoringConstants.MONITORING_RAW_ATTRIBUTE_ID)
                                    .time(timestamp, TimeUnit.MILLISECONDS)
-                                   .addField("count", count)
-                                   .addField("source", ConverterUtil.getId()).build());
+                                   .addField(MonitoringConstants.MONITORING_COUNT_ATTRIBUTE_ID, count)
+                                   .addField(MonitoringConstants.MONITORING_SOURCE_ATTRIBUTE_ID, ConverterUtil.getId()).build());
                     }
                     catch(IOException ignored) {
                     }
@@ -82,16 +82,16 @@ public class MonitoringAgent {
         }
     }
 
-    public void setProcessedMessagesCount(final long timestamp, final long count) {
+    public void setProcessedCount(final long timestamp, final long count) {
         if(this.connected) {
             new Thread(new MonitoringAgentThread(this.client) {
                 @Override
                 public void run() {
                     try {
-                        getClient().write(Point.measurement("processedMessages")
+                        getClient().write(Point.measurement(MonitoringConstants.MONITORING_PROCESSED_ATTRIBUTE_ID)
                                    .time(timestamp, TimeUnit.MILLISECONDS)
-                                   .addField("count", count)
-                                   .addField("source", ConverterUtil.getId()).build());
+                                   .addField(MonitoringConstants.MONITORING_COUNT_ATTRIBUTE_ID, count)
+                                   .addField(MonitoringConstants.MONITORING_SOURCE_ATTRIBUTE_ID, ConverterUtil.getId()).build());
                     }
                     catch(IOException ignored) {
                     }
@@ -101,9 +101,12 @@ public class MonitoringAgent {
     }
 
     public void disconnect() {
-        this.client.close();
+        if (this.client != null) {
+            this.client.close();
 
-        this.client = null;
+            this.client = null;
+        }
+
         this.connected = false;
     }
 }

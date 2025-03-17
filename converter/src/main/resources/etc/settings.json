@@ -3,8 +3,8 @@
     "brokers": [
       "queue-broker:9092"
     ],
-    "inboundTopic": "rawlogs",
-    "outboundTopic": "processedlogs"
+    "inboundTopic": "raw",
+    "outboundTopic": "processed"
   },
   "count": 1,
   "filters": [],

@@ -31,7 +31,7 @@ variable "settings" {
     dataflow = {
       # Inbound attributes.
       inbound = {
-        identifier = "rawlogs" # Topic identifier.
+        identifier = "raw" # Topic identifier.
 
         # Authentication attributes.
         auth = {
@@ -65,7 +65,7 @@ variable "settings" {
 
       # Outbound attributes.
       outbound = {
-        identifier = "processedlogs" # Topic identifier.
+        identifier = "processed" # Topic identifier.
         count = 1
 
         # Authentication attributes.

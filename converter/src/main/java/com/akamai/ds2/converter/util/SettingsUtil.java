@@ -134,7 +134,7 @@ public abstract class SettingsUtil {
         List<Filter> filters = null;
 
         if(result != null)
-            filters = mapper.convertValue(result, new TypeReference<List<Filter>>() {});
+            filters = mapper.convertValue(result, new TypeReference<>(){});
 
         return filters;
     }

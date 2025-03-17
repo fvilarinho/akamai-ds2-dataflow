@@ -1,6 +1,5 @@
 package com.akamai.ds2.converter.util;
 
-import com.akamai.ds2.converter.monitoring.MonitoringAgent;
 import com.akamai.ds2.converter.util.helpers.Filter;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,19 +29,17 @@ public abstract class ConverterUtil {
         return id;
     }
 
-    public static void checkMessageReceiptDelay(long timestamp, String message) throws IOException {
+    public static long checkMessageReceiptDelay(long timestamp, String message) throws IOException {
         Map<String, Object> messageObject = mapper.readValue(message, new TypeReference<>(){});
 
         if (messageObject != null) {
-            String value = (String)messageObject.get("reqTimeSec");
+            String value = (String) messageObject.get("reqTimeSec");
 
-            if(value != null && !value.isEmpty()) {
-                long messageTimestamp = (long) (Double.parseDouble(value) * 1000L);
-                MonitoringAgent monitoringAgent = MonitoringAgent.getInstance();
-
-                monitoringAgent.setMessageReceiptDelay(timestamp, messageTimestamp);
-            }
+            if (value != null && !value.isEmpty())
+                return (timestamp - (long) (Double.parseDouble(value) * 1000L));
         }
+
+        return 0L;
     }
 
     public static boolean filterMessage(String message) throws IOException {

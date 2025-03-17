@@ -141,7 +141,7 @@ public class App {
         KafkaConsumer<String, String> inbound = null;
         KafkaProducer<String, String> outbound = null;
         ExecutorService workersManager = null;
-        MonitoringAgent monitoringAgent;
+        MonitoringAgent monitoringAgent = null;
 
         try {
             final String inboundTopic = SettingsUtil.getKafkaInboundTopic();
@@ -162,7 +162,7 @@ public class App {
                     ConsumerRecords<String, String> inboundMessages = inbound.poll(Duration.ofMillis(100));
 
                     if (!inboundMessages.isEmpty()) {
-                        monitoringAgent.setRawMessagesCount(System.currentTimeMillis(), inboundMessages.count());
+                        monitoringAgent.setRawCount(System.currentTimeMillis(), inboundMessages.count());
 
                         for (ConsumerRecord<String, String> inboundMessage : inboundMessages)
                             workersManager.submit(new Worker(inboundMessage, outbound, outboundTopic));
@@ -197,6 +197,9 @@ public class App {
                 catch (Throwable ignored) {
                 }
             }
+
+            if (monitoringAgent != null)
+                monitoringAgent.disconnect();
         }
     }
 
