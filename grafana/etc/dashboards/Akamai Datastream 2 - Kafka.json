@@ -134,7 +134,8 @@
                 "value": 80
               }
             ]
-          }
+          },
+          "unit": "short"
         },
         "overrides": [
           {
@@ -395,7 +396,8 @@
                 "value": 80
               }
             ]
-          }
+          },
+          "unit": "short"
         },
         "overrides": [
           {
@@ -814,6 +816,6 @@
   "timezone": "browser",
   "title": "Akamai Datastream 2 -> Kafka",
   "uid": "jwPKIsniz",
-  "version": 13,
+  "version": 2,
   "weekStart": ""
 }
