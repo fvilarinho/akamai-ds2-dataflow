@@ -162,19 +162,26 @@ public class App {
                     ConsumerRecords<String, String> inboundMessages = inbound.poll(Duration.ofMillis(100));
 
                     if (!inboundMessages.isEmpty()) {
-                        monitoringAgent.setRawCount(System.currentTimeMillis(), inboundMessages.count());
+                        monitoringAgent.logRawCount(System.currentTimeMillis(), inboundMessages.count());
 
                         for (ConsumerRecord<String, String> inboundMessage : inboundMessages)
                             workersManager.submit(new Worker(inboundMessage, outbound, outboundTopic));
                     }
                 }
                 catch(Throwable e) {
+                    logger.error(e);
+
+                    monitoringAgent.logError(System.currentTimeMillis(), e);
+
                     break;
                 }
             }
         }
         catch(Throwable  e) {
             logger.error(e.getMessage());
+
+            if(monitoringAgent != null)
+                monitoringAgent.logError(System.currentTimeMillis(), e);
         }
         finally {
             if (inbound != null)

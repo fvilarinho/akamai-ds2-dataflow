@@ -2,9 +2,8 @@
 locals {
   # Creates a indented list with all cluster instances hostnames.
   clusterHostnamesTabulation = join("", tolist([for index in range(7) : " "]))
-  clusterHostnamesList = [
-    for clusterInstance in data.linode_instances.clusterInstances.instances : "${local.clusterHostnamesTabulation} - ${replace(clusterInstance.ip_address, ".", "-")}.ip.linodeusercontent.com"
-  ]
+  clusterHostnamesList = concat([ for clusterInstance in data.linode_instances.clusterInstances.instances : "${local.clusterHostnamesTabulation} - ${replace(clusterInstance.ip_address, ".", "-")}.ip.linodeusercontent.com" ],
+                                [ "${local.clusterHostnamesTabulation} - ${linode_nodebalancer.inbound.hostname}" ])
 }
 
 # Defines the rules for the ingress traffic in the stack.
@@ -39,6 +38,8 @@ EOT
   depends_on = [
     linode_instance.clusterManager,
     linode_instance.clusterWorker,
-    data.linode_instances.clusterInstances
+    data.linode_instances.clusterInstances,
+    linode_nodebalancer.inbound,
+    linode_nodebalancer_config.inbound
   ]
 }

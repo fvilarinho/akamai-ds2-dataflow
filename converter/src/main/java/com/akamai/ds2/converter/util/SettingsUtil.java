@@ -61,7 +61,8 @@ public abstract class SettingsUtil {
                 in = SettingsUtil.class.getClassLoader().getResourceAsStream(SettingsConstants.DEFAULT_FILEPATH);
 
             load(in);
-        } else
+        }
+        else
             load(new FileInputStream(settingsFilepath));
     }
 

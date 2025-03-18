@@ -8,6 +8,20 @@ resource "linode_nodebalancer" "inbound" {
 # Definition of the inbound node balancer configuration.
 resource "linode_nodebalancer_config" "inbound" {
   nodebalancer_id = linode_nodebalancer.inbound.id
+  port            = 80
+  protocol        = "tcp"
+  check           = "connection"
+  check_interval  = 15
+  check_attempts  = 3
+  check_timeout   = 5
+  stickiness      = "table"
+  algorithm       = "source"
+
+  depends_on = [ linode_nodebalancer.inbound ]
+}
+
+resource "linode_nodebalancer_config" "secureInbound" {
+  nodebalancer_id = linode_nodebalancer.inbound.id
   port            = 443
   protocol        = "tcp"
   check           = "connection"
@@ -55,6 +69,25 @@ resource "linode_nodebalancer_node" "inboundManager" {
   ]
 }
 
+resource "linode_nodebalancer_node" "secureInboundManager" {
+  nodebalancer_id = linode_nodebalancer.inbound.id
+  config_id       = linode_nodebalancer_config.secureInbound.id
+  label           = "secure-inbound-manager"
+  address         = "${linode_instance.clusterManager.private_ip_address}:${data.external.inboundPort.result.securePort}"
+  weight          = floor(100 / var.settings.cluster.nodes.count)
+
+  lifecycle {
+    replace_triggered_by = [ linode_instance.clusterManager.id ]
+  }
+
+  depends_on = [
+    linode_nodebalancer.inbound,
+    linode_nodebalancer_config.secureInbound,
+    linode_instance.clusterManager,
+    data.external.inboundPort
+  ]
+}
+
 # Adds the worker nodes in the node balancer.
 resource "linode_nodebalancer_node" "inboundWorker" {
   count           = var.settings.cluster.nodes.count - 1
@@ -71,6 +104,26 @@ resource "linode_nodebalancer_node" "inboundWorker" {
   depends_on = [
     linode_nodebalancer.inbound,
     linode_nodebalancer_config.inbound,
+    linode_instance.clusterWorker,
+    data.external.inboundPort
+  ]
+}
+
+resource "linode_nodebalancer_node" "secureInboundWorker" {
+  count           = var.settings.cluster.nodes.count - 1
+  nodebalancer_id = linode_nodebalancer.inbound.id
+  config_id       = linode_nodebalancer_config.secureInbound.id
+  label           = "secure-inbound-worker${count.index}"
+  address         = "${linode_instance.clusterWorker[count.index].private_ip_address}:${data.external.inboundPort.result.securePort}"
+  weight          = floor(100 / var.settings.cluster.nodes.count)
+
+  lifecycle {
+    replace_triggered_by = [ linode_instance.clusterWorker[count.index].id ]
+  }
+
+  depends_on = [
+    linode_nodebalancer.inbound,
+    linode_nodebalancer_config.secureInbound,
     linode_instance.clusterWorker,
     data.external.inboundPort
   ]

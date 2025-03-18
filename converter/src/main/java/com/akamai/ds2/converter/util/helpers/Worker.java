@@ -30,22 +30,30 @@ public class Worker implements Runnable {
         String key = this.inboundMessage.key();
         String value = this.inboundMessage.value();
 
-        try {
-            if (value != null && !value.isEmpty()) {
+        if (value != null && !value.isEmpty()) {
+            MonitoringAgent monitoringAgent = MonitoringAgent.getInstance();
+
+            try {
                 List<String> messages = ConverterUtil.processMessages(value);
 
                 if (messages != null && !messages.isEmpty()) {
-                    MonitoringAgent monitoringAgent = MonitoringAgent.getInstance();
                     int count = 0;
                     long delay = 0;
 
                     for (String message : messages) {
-                        if (ConverterUtil.filterMessage(message)) {
-                            this.outbound.send(new ProducerRecord<>(this.outboundTopic, key, message));
-                            this.outbound.flush();
+                        try {
+                            if (ConverterUtil.filterMessage(message)) {
+                                this.outbound.send(new ProducerRecord<>(this.outboundTopic, key, message));
+                                this.outbound.flush();
 
-                            delay += ConverterUtil.checkMessageReceiptDelay(timestamp, message);
-                            count++;
+                                delay += ConverterUtil.checkMessageReceiptDelay(timestamp, message);
+                                count++;
+                            }
+                        }
+                        catch(Throwable e) {
+                            logger.error(e);
+
+                            monitoringAgent.logError(timestamp, e);
                         }
                     }
 
@@ -55,14 +63,16 @@ public class Worker implements Runnable {
                         else
                             logger.info("{} message processed...", count);
 
-                        monitoringAgent.setProcessedCount(timestamp, count);
-                        monitoringAgent.setReceiptDelay(timestamp,delay / count);
+                        monitoringAgent.logProcessedCount(timestamp, count);
+                        monitoringAgent.logReceiptDelay(timestamp, delay / count);
                     }
                 }
             }
-        }
-        catch (Throwable e) {
-            logger.error(e);
+            catch (Throwable e) {
+                logger.error(e);
+
+                monitoringAgent.logError(timestamp, e);
+            }
         }
     }
 }

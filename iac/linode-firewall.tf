@@ -68,7 +68,7 @@ resource "linode_firewall" "clusterNodes" {
     action   = "ACCEPT"
     label    = "allowed-ips-for-inbound"
     protocol = "TCP"
-    ports    = "443"
+    ports    = "80,443"
     ipv4     = concat(var.settings.dataflow.inbound.allowedIps.ipv4, [ "${jsondecode(data.http.myIp.response_body).ip}/32" ])
     ipv6     = concat(var.settings.dataflow.inbound.allowedIps.ipv6, [ "::1/128" ])
   }
@@ -150,7 +150,7 @@ resource "linode_firewall" "clusterNodeBalancers" {
     action   = "ACCEPT"
     label    = "allowed-ips-for-inbound"
     protocol = "TCP"
-    ports    = "443"
+    ports    = "80,443"
     ipv4     = concat(var.settings.dataflow.inbound.allowedIps.ipv4, [ "${jsondecode(data.http.myIp.response_body).ip}/32" ])
     ipv6     = concat(var.settings.dataflow.inbound.allowedIps.ipv6, [ "::1/128" ])
   }

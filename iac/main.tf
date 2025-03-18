@@ -7,6 +7,11 @@ terraform {
       version = "2.34.0"
     }
 
+    akamai = {
+      source  = "akamai/akamai"
+      version = "6.6.0"
+    }
+
     null = {
       source = "hashicorp/null"
       version = "3.2.3"
@@ -17,9 +22,4 @@ terraform {
       version = "3.6.3"
     }
   }
-}
-
-# Akamai Cloud Computing provider definition.
-provider "linode" {
-  token = var.linodeToken
 }
