@@ -159,10 +159,11 @@ public class App {
 
             while (true) {
                 try {
+                    long timestamp = System.currentTimeMillis();
                     ConsumerRecords<String, String> inboundMessages = inbound.poll(Duration.ofMillis(100));
 
                     if (!inboundMessages.isEmpty()) {
-                        monitoringAgent.logRawCount(System.currentTimeMillis(), inboundMessages.count());
+                        monitoringAgent.logRawCount(timestamp, inboundMessages.count());
 
                         for (ConsumerRecord<String, String> inboundMessage : inboundMessages)
                             workersManager.submit(new Worker(inboundMessage, outbound, outboundTopic));
