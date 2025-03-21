@@ -223,7 +223,7 @@
           "tags": []
         }
       ],
-      "title": "Inbound Logs (topic: raw)",
+      "title": "Raw Logs",
       "type": "timeseries"
     },
     {
@@ -485,7 +485,7 @@
           "tags": []
         }
       ],
-      "title": "Outbound Logs (topic: processed)",
+      "title": "Processed Logs",
       "type": "timeseries"
     },
     {
@@ -816,6 +816,6 @@
   "timezone": "browser",
   "title": "Akamai Datastream 2 -> Kafka",
   "uid": "jwPKIsniz",
-  "version": 2,
+  "version": 3,
   "weekStart": ""
 }
