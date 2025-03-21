@@ -63,8 +63,8 @@ EOT
 }
 
 # Defines the settings for the stack.
-resource "local_file" "configmaps" {
-  filename = abspath(pathexpand("./configmaps.yaml"))
+resource "local_file" "configMaps" {
+  filename = abspath(pathexpand("./configMaps.yaml"))
   content = <<EOT
 apiVersion: v1
 kind: ConfigMap

@@ -23,7 +23,7 @@ resource "null_resource" "applyStack" {
     null_resource.downloadKubeconfig,
     local_file.namespaces,
     local_file.certIssuer,
-    local_file.configmaps,
+    local_file.configMaps,
     local_file.secrets,
     local_file.services,
     local_file.deployments,

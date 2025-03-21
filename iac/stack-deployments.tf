@@ -366,8 +366,6 @@ spec:
             value: /dashboards
           - name: GF_SERVER_SERVE_FROM_SUB_PATH
             value: "true"
-          - name: GF_USERS_HOME_PAGE
-            value: /dashboards
         ports:
           - containerPort: 3000
         volumeMounts:
