@@ -4,8 +4,8 @@
 /converter/build/
 /iac/.kubeconfig
 /iac/.terraform*
-/iac/certissuer.yaml
-/iac/configmaps.yaml
+/iac/certIssuer.yaml
+/iac/configMaps.yaml
 /iac/deployments.yaml
 /iac/ingress.yaml
 /iac/namespaces.yaml
