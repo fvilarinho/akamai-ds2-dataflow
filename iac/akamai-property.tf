@@ -33,14 +33,11 @@ resource "akamai_property" "default" {
   # Definition of all hostnames of the property.
   hostnames {
     cname_from             = "${var.settings.general.identifier}.${var.settings.general.domain}"
-    cname_to               = akamai_edge_hostname.default.edge_hostname
+    cname_to               = "${var.settings.general.identifier}.${var.settings.general.domain}.edgesuite.net"
     cert_provisioning_type = "DEFAULT"
   }
 
-  depends_on = [
-    data.akamai_property_rules_template.default,
-    akamai_edge_hostname.default
-  ]
+  depends_on = [ data.akamai_property_rules_template.default ]
 }
 
 # Activates the property (CDN configuration) in staging network.

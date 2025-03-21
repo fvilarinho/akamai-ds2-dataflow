@@ -154,4 +154,15 @@ resource "linode_firewall" "clusterNodeBalancers" {
     ipv4     = concat(var.settings.dataflow.inbound.allowedIps.ipv4, [ "${jsondecode(data.http.myIp.response_body).ip}/32" ])
     ipv6     = concat(var.settings.dataflow.inbound.allowedIps.ipv6, [ "::1/128" ])
   }
+
+  depends_on = [
+    data.http.myIp,
+    data.external.inboundPort,
+    linode_instance.clusterManager,
+    linode_instance.clusterWorker,
+    null_resource.clusterManagerSetup,
+    null_resource.clusterWorkerSetup,
+    null_resource.downloadKubeconfig,
+    null_resource.applyStack
+  ]
 }

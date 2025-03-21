@@ -44,8 +44,7 @@ data "external" "inboundPort" {
   depends_on = [
     linode_instance.clusterManager,
     null_resource.clusterManagerSetup,
-    null_resource.downloadKubeconfig,
-    null_resource.applyStack
+    null_resource.downloadKubeconfig
   ]
 }
 

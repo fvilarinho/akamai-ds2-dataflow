@@ -8,13 +8,10 @@ resource "linode_domain_record" "default" {
   domain_id   = data.linode_domain.default.id
   name        = var.settings.general.identifier
   record_type = "CNAME"
-  target      = akamai_edge_hostname.default.edge_hostname
+  target      = "${var.settings.general.identifier}.${var.settings.general.domain}.edgesuite.net"
   ttl_sec     = 30
 
-  depends_on = [
-    data.linode_domain.default,
-    akamai_edge_hostname.default
-  ]
+  depends_on = [ data.linode_domain.default ]
 }
 
 data "akamai_property_hostnames" "default" {

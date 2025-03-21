@@ -27,6 +27,14 @@ resource "null_resource" "applyStack" {
     local_file.secrets,
     local_file.services,
     local_file.deployments,
-    local_file.ingress
+    local_file.ingress,
+    linode_nodebalancer.inbound,
+    linode_nodebalancer_config.inbound,
+    linode_nodebalancer_node.inboundManager,
+    linode_nodebalancer_node.inboundWorker,
+    linode_nodebalancer_config.secureInbound,
+    linode_nodebalancer_node.secureInboundManager,
+    linode_nodebalancer_node.secureInboundWorker
+
   ]
 }

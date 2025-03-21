@@ -48,12 +48,18 @@ public class MonitoringAgent {
             if(monitoringUrl.isEmpty())
                 monitoringUrl = MonitoringConstants.DEFAULT_MONITORING_URL;
 
-            this.client = InfluxDBFactory.connect(monitoringUrl);
-            this.client.setDatabase(Constants.DEFAULT_APP_NAME);
+            try {
+                this.client = InfluxDBFactory.connect(monitoringUrl);
+                this.client.setDatabase(Constants.DEFAULT_APP_NAME);
 
-            Pong pong = this.client.ping();
+                Pong pong = this.client.ping();
 
-            this.connected = (pong != null && pong.isGood());
+                this.connected = (pong != null && pong.isGood());
+            }
+            catch(Throwable ignored){
+                this.connected = false;
+                this.client = null;
+            }
         }
     }
 
