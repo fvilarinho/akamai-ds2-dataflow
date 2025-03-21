@@ -23,7 +23,7 @@ data:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: grafana-auth
+  name: monitoring-ui-auth
   namespace: ${var.settings.general.identifier}
 data:
   username: ${base64encode(var.settings.dataflow.inbound.auth.user)}

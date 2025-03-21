@@ -86,11 +86,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: prometheus
+  name: monitoring-server
   namespace: ${var.settings.general.identifier}
 spec:
   selector:
-    app: prometheus
+    app: monitoring-server
   ports:
     - name: http
       port: 9090
@@ -99,11 +99,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: influxdb
+  name: monitoring-database
   namespace: ${var.settings.general.identifier}
 spec:
   selector:
-    app: influxdb
+    app: monitoring-database
   ports:
     - protocol: TCP
       port: 8086
@@ -112,11 +112,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: grafana
+  name: monitoring-ui
   namespace: ${var.settings.general.identifier}
 spec:
   selector:
-    app: grafana
+    app: monitoring-ui
   ports:
     - name: http
       port: 3000

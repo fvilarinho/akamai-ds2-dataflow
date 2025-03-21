@@ -250,22 +250,22 @@ spec:
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: influxdb
+  name: monitoring-database
   namespace: ${var.settings.general.identifier}
 spec:
-  serviceName: influxdb
+  serviceName: monitoring-database
   replicas: 1
   selector:
     matchLabels:
-      app: influxdb
+      app: monitoring-database
   template:
     metadata:
       labels:
-        app: influxdb
+        app: monitoring-database
     spec:
       restartPolicy: Always
       containers:
-        - name: influxdb
+        - name: monitoring-database
           image: influxdb:1.11.7
           ports:
             - containerPort: 8086
@@ -275,11 +275,11 @@ spec:
             - name: INFLUXDB_HTTP_AUTH_ENABLED
               value: "false"
           volumeMounts:
-            - name: influxdb-data
+            - name: monitoring-database-data
               mountPath: /var/lib/influxdb
   volumeClaimTemplates:
     - metadata:
-        name: influxdb-data
+        name: monitoring-database-data
       spec:
         accessModes: [ "ReadWriteOnce" ]
         resources:
@@ -289,22 +289,22 @@ spec:
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: prometheus
+  name: monitoring-server
   namespace: ${var.settings.general.identifier}
 spec:
-  serviceName: prometheus
+  serviceName: monitoring-server
   replicas: 1
   selector:
     matchLabels:
-      app: prometheus
+      app: monitoring-server
   template:
     metadata:
       labels:
-        app: prometheus
+        app: monitoring-server
     spec:
       restartPolicy: Always
       containers:
-        - name: prometheus
+        - name: monitoring-server
           image: prom/prometheus:v3.2.1
           imagePullPolicy: Always
           args:
@@ -313,17 +313,17 @@ spec:
           ports:
             - containerPort: 9090
           volumeMounts:
-            - name: prometheus-settings
+            - name: monitoring-server-settings
               mountPath: /etc/prometheus
-            - name: prometheus-data
+            - name: monitoring-server-data
               mountPath: /prometheus
       volumes:
-        - name: prometheus-settings
+        - name: monitoring-server-settings
           configMap:
-            name: prometheus-settings
+            name: monitoring-server-settings
   volumeClaimTemplates:
     - metadata:
-        name: prometheus-data
+        name: monitoring-server-data
       spec:
         accessModes: [ "ReadWriteOnce" ]
         resources:
@@ -333,10 +333,10 @@ spec:
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: grafana
+  name: monitoring-ui
   namespace: ${var.settings.general.identifier}
 spec:
-  serviceName: grafana
+  serviceName: monitoring-ui
   replicas: 1
   selector:
     matchLabels:
@@ -344,11 +344,11 @@ spec:
   template:
     metadata:
       labels:
-        app: grafana
+        app: monitoring-ui
     spec:
       restartPolicy: Always
       containers:
-      - name: grafana
+      - name: monitoring-ui
         image: grafana/grafana:11.5.2
         imagePullPolicy: Always
         env:
@@ -360,7 +360,7 @@ spec:
           - name: GF_SECURITY_ADMIN_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: grafana-auth
+                name: monitoring-ui-auth
                 key: password
           - name: GF_SERVER_ROOT_URL
             value: /dashboards
@@ -371,11 +371,11 @@ spec:
         ports:
           - containerPort: 3000
         volumeMounts:
-          - name: grafana-data
+          - name: monitoring-ui-data
             mountPath: /var/lib/grafana
   volumeClaimTemplates:
     - metadata:
-        name: grafana-data
+        name: monitoring-ui-data
       spec:
         accessModes: [ "ReadWriteOnce" ]
         resources:

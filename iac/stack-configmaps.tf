@@ -136,7 +136,7 @@ ${join("\n", local.queueBrokerWorkerSettings)}
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: prometheus-settings
+  name: monitoring-server-settings
   namespace: ${var.settings.general.identifier}
 data:
   prometheus.yml: |
