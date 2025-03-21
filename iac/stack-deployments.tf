@@ -340,7 +340,7 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: grafana
+      app: monitoring-ui
   template:
     metadata:
       labels:
@@ -355,7 +355,7 @@ spec:
           - name: GF_SECURITY_ADMIN_USER
             valueFrom:
               secretKeyRef:
-                name: grafana-auth
+                name: monitoring-ui-auth
                 key: username
           - name: GF_SECURITY_ADMIN_PASSWORD
             valueFrom:

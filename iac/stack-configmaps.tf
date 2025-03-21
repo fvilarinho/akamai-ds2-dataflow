@@ -213,7 +213,7 @@ data:
       }
 
       location ^~ /dashboards {
-        proxy_pass http://grafana:3000/dashboards;
+        proxy_pass http://monitoring-ui:3000/dashboards;
         proxy_set_header X-Forwarded-For $remote_addr;
         proxy_set_header X-Forwarded-Proto $scheme;
         proxy_set_header Host $host;

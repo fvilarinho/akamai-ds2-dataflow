@@ -11,7 +11,7 @@ ENV BIN_DIR=${HOME_DIR}/bin
 ENV ETC_DIR=${HOME_DIR}/etc
 ENV LIBS_DIR=${HOME_DIR}/lib
 ENV LOGS_DIR=${HOME_DIR}/logs
-ENV MONITORING_HOSTNAME=influxdb
+ENV MONITORING_HOSTNAME=monitoring-database
 ENV MONITORING_PORT=8086
 
 # Installs the dependencies.
