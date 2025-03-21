@@ -146,7 +146,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Number of logs"
+                "value": "Count"
               }
             ]
           }
@@ -408,7 +408,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Number of logs"
+                "value": "Count"
               }
             ]
           }
