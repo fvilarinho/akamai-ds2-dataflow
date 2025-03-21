@@ -35,6 +35,5 @@ resource "null_resource" "applyStack" {
     linode_nodebalancer_config.secureInbound,
     linode_nodebalancer_node.secureInboundManager,
     linode_nodebalancer_node.secureInboundWorker
-
   ]
 }
