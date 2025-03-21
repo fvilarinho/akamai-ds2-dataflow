@@ -5,8 +5,6 @@ function prepareToExecute() {
   source functions.sh
 
   showBanner
-
-  cd iac || exit 1
 }
 
 # Checks the dependencies of this script.
