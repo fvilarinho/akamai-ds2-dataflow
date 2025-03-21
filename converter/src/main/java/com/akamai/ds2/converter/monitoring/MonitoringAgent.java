@@ -4,6 +4,8 @@ import com.akamai.ds2.converter.constants.Constants;
 import com.akamai.ds2.converter.constants.MonitoringConstants;
 import com.akamai.ds2.converter.util.ConverterUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.influxdb.InfluxDB;
 import org.influxdb.InfluxDBFactory;
 import org.influxdb.dto.Point;
@@ -16,6 +18,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class MonitoringAgent {
+    private static final Logger logger = LogManager.getLogger(Constants.DEFAULT_APP_NAME);
+
     private static MonitoringAgent instance;
 
     private InfluxDB client;
@@ -56,7 +60,9 @@ public class MonitoringAgent {
 
                 this.connected = (pong != null && pong.isGood());
             }
-            catch(Throwable ignored){
+            catch(Throwable e){
+                logger.error(e);
+
                 this.connected = false;
                 this.client = null;
             }

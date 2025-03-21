@@ -2,33 +2,6 @@
   "name": "Security",
   "children": [
     {
-      "name": "CORS",
-      "children": [],
-      "behaviors": [
-        {
-          "name": "corsSupport",
-          "options": {
-            "enabled": true,
-            "allowOrigins": "ANY",
-            "allowCredentials": false,
-            "allowHeaders": "ANY",
-            "methods": [
-              "GET",
-              "POST",
-              "PUT",
-              "DELETE",
-              "PATCH"
-            ],
-            "preflightMaxAge": "600s",
-            "exposeHeaders": []
-          }
-        }
-      ],
-      "criteria": [],
-      "criteriaMustSatisfy": "all",
-      "comments": ""
-    },
-    {
       "name": "Clickjack Prevention",
       "children": [],
       "behaviors": [

@@ -363,7 +363,7 @@ spec:
                 name: monitoring-ui-auth
                 key: password
           - name: GF_SERVER_ROOT_URL
-            value: /dashboards
+            value: "/dashboards"
           - name: GF_SERVER_SERVE_FROM_SUB_PATH
             value: "true"
         ports:

@@ -1,7 +1,7 @@
 package com.akamai.ds2.converter.constants;
 
 public class MonitoringConstants {
-    public static final String DEFAULT_MONITORING_URL = "https://influxdb:8086";
+    public static final String DEFAULT_MONITORING_URL = "http://monitoring-database:8086";
     public static final String MONITORING_URL = "http://${MONITORING_HOSTNAME}:${MONITORING_PORT}";
 
     public static final String COUNT_ATTRIBUTE_ID = "count";
