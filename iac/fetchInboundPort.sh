@@ -13,8 +13,19 @@ function checkDependencies() {
 
 # Fetches the inbound port to be used in the node balancer configuration.
 function fetchInboundPort() {
-  PORT=$($KUBECTL_CMD get svc traefik -n kube-system -o jsonpath='{.spec.ports[0].nodePort}')
-  SECURE_PORT=$($KUBECTL_CMD get svc traefik -n kube-system -o jsonpath='{.spec.ports[1].nodePort}')
+  PORT=
+  SECURE_PORT=
+
+  while true; do
+    PORT=$($KUBECTL_CMD get svc traefik -n kube-system -o jsonpath='{.spec.ports[0].nodePort}')
+    SECURE_PORT=$($KUBECTL_CMD get svc traefik -n kube-system -o jsonpath='{.spec.ports[1].nodePort}')
+
+    if [ -n "$PORT" ] && [ -n "$SECURE_PORT" ]; then
+      break
+    fi
+
+    sleep 1
+  done
 
   echo "{\"port\": \"$PORT\", \"securePort\": \"$SECURE_PORT\"}"
 }
