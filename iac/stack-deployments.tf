@@ -233,17 +233,11 @@ spec:
       restartPolicy: Always
       containers:
         - name: queue-broker-ui
-          image: provectuslabs/kafka-ui:v0.7.2
+          image: redpandadata/console:latest
           imagePullPolicy: Always
           env:
-            - name: KAFKA_CLUSTERS_0_NAME
-              value: "queue-broker-cluster"
-            - name: KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS
+            - name: KAFKA_BROKERS
               value: "${join(",", local.internalQueueBrokersEndpoints)}"
-            - name: KAFKA_CLUSTERS_0_ZOOKEEPER
-              value: "queue-broker-controller:2181"
-            - name: SERVER_SERVLET_CONTEXT_PATH
-              value: "/panel"
           ports:
             - containerPort: 8080
 ---

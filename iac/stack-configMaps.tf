@@ -176,8 +176,25 @@ data:
     server {
       listen 80;
 
-      location / {
-        return 403;
+      location ^~ / {
+        auth_basic "Restricted Area";
+        auth_basic_user_file /etc/nginx/.htpasswd;
+
+        proxy_pass http://queue-broker-ui:8080;
+        proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header Host $http_host;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+      }
+
+      location ^~ /dashboards {
+        proxy_pass http://monitoring-ui:3000/dashboards;
+        proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header Host $http_host;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
       }
 
       location = /ingest {
@@ -191,27 +208,6 @@ data:
         client_max_body_size 10M;
 
         proxy_pass http://inbound:9880/ingest;
-        proxy_set_header X-Forwarded-For $remote_addr;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header Host $http_host;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "upgrade";
-      }
-
-      location ^~ /panel {
-        auth_basic "Restricted Area";
-        auth_basic_user_file /etc/nginx/.htpasswd;
-
-        proxy_pass http://queue-broker-ui:8080/panel;
-        proxy_set_header X-Forwarded-For $remote_addr;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header Host $http_host;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "upgrade";
-      }
-
-      location ^~ /dashboards {
-        proxy_pass http://monitoring-ui:3000/dashboards;
         proxy_set_header X-Forwarded-For $remote_addr;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header Host $http_host;
