@@ -96,7 +96,7 @@ using [FluentD](https://www.fluentd.org/).
 - `Queue Broker Controller`: Responsible to manage the state of the `Queue Broker`. It operates using [Zookeeper](https://zookeeper.apache.org/).
 - `Queue Broker Monitoring Agent`: Responsible to monitor the health of the `Queue Broker`. It operates using 
 [Prometheus Kafka Exporter](https://github.com/danielqsj/kafka_exporter/).
-- `Queue Broker UI`: UI for `Queue Broker`. It operates using [Provectus](https://docs.kafka-ui.provectus.io/).
+- `Queue Broker UI`: UI for `Queue Broker`. It operates using [Redpanda Console](https://www.redpanda.com/redpanda-console-kafka-ui).
 - `Monitoring Server`: Responsible to centralize the metrics collected. It operates using [Prometheus](https://prometheus.io/).
 - `Monitoring Database`: Responsible to store the metrics collected. It operates using [InfluxDB](https://www.influxdata.com/).
 - `Converter`: Responsible to process and filter the logs sent to the `Queue Broker` by the `Inbound`. It operates using
