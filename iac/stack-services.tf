@@ -62,7 +62,6 @@ metadata:
   name: queue-broker-monitoring-agent
   namespace: ${var.settings.general.identifier}
 spec:
-  type: NodePort
   selector:
     app: queue-broker-monitoring-agent
   ports:

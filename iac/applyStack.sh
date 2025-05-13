@@ -55,6 +55,14 @@ function applyCertIssuer() {
 function applySecrets() {
   echo "APPLYING SECRETS..."
 
+  $KUBECTL_CMD create secret docker-registry "$NAMESPACE-registry" \
+               --docker-server="$DOCKER_REGISTRY_URL" \
+               --docker-username="$DOCKER_REGISTRY_ID" \
+               --docker-password="$DOCKER_REGISTRY_PASSWORD" \
+               -n "$NAMESPACE" \
+               -o yaml \
+               --dry-run=client | $KUBECTL_CMD apply -f -
+
   $KUBECTL_CMD apply -f secrets.yaml
 
   echo

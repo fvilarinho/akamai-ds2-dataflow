@@ -29,8 +29,8 @@ function checkDependencies() {
 
 # Execute the test in loop.
 function test() {
-  host=${linode_nodebalancer.inbound.ipv4}
-  url=https://$host/ingest
+  host="${linode_domain_record.default.name}.${data.linode_domain.default.domain}"
+  url="https://$host/ingest"
   credentials="${var.settings.dataflow.inbound.auth.user}:${var.settings.dataflow.inbound.auth.password}"
   index=0
 
@@ -65,5 +65,8 @@ function main() {
 main
 EOT
 
-  depends_on = [ linode_instance.clusterManager ]
+  depends_on = [
+    data.linode_domain.default,
+    linode_domain_record.default
+  ]
 }

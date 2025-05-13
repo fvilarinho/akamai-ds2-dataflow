@@ -33,6 +33,8 @@ spec:
             - name: inbound-settings
               mountPath: /opt/bitnami/fluentd/conf/fluentd.conf
               subPath: fluentd.conf
+      imagePullSecrets:
+      - name: ${var.settings.general.identifier}-registry
       volumes:
         - name: inbound-settings
           configMap:
@@ -61,6 +63,8 @@ spec:
             - name: outbound-settings
               mountPath: /opt/bitnami/fluentd/conf/fluentd.conf
               subPath: fluentd.conf
+      imagePullSecrets:
+      - name: ${var.settings.general.identifier}-registry
       volumes:
         - name: outbound-settings
           configMap:
@@ -90,6 +94,8 @@ spec:
             - name: converter-settings
               mountPath: /home/converter/etc/settings.json
               subPath: settings.json
+      imagePullSecrets:
+      - name: ${var.settings.general.identifier}-registry
       volumes:
         - name: converter-settings
           configMap:
@@ -173,6 +179,8 @@ spec:
               readOnly: true
             - name: queue-broker-data
               mountPath: /home/kafka-broker/data
+      imagePullSecrets:
+      - name: ${var.settings.general.identifier}-registry
       volumes:
         - name: queue-broker-settings
           configMap:
@@ -233,7 +241,7 @@ spec:
       restartPolicy: Always
       containers:
         - name: queue-broker-ui
-          image: redpandadata/console:latest
+          image: redpandadata/console:v3.1.0
           imagePullPolicy: Always
           env:
             - name: KAFKA_BROKERS
